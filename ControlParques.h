@@ -15,7 +15,7 @@ public:
     ControlParques(const string &nomFichEspecies, const string &nomFichParques);    //Hay que cargar los ficheros aqui
     ~ControlParques();
 
-    void asignarEspecieParque(const Especie &e, const Parque &p);
+    void asignarEspecieParque( Especie &e,  Parque &p);
     int contarEspecieParque(const string &nombre);
     Parque& buscarParque(const string &nombre);
     VDinamico<Especie>& listadoEspecieSubNombre(const string &cadena);

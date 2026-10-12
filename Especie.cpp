@@ -63,15 +63,17 @@ void Especie::set_nombre_cientifico(const string &nombre_cientifico) {
  * @brief Obtiene el tipo de planta de la especie.
  * @return Cadena de texto con el tipo de planta.
  */
-string Especie::get_tipo_planta() const {return this->tipoPlanta;}
+TipoPlanta Especie::get_tipo_planta() const {
+	return this->tipo_planta_;
+}
 
 /**
  * @brief Modifica el tipo de planta de la especie.
  * @param tipo_planta Cadena de texto con el nuevo tipo de planta.
  */
-void Especie::set_tipo_planta(const string &tipo_planta) {
+void Especie::set_tipo_planta(const TipoPlanta &tipo_planta) {
 
-      this->tipoPlanta = tipo_planta;
+      this->tipo_planta_ = tipo_planta;
 }
 
 /**
@@ -113,7 +115,7 @@ bool Especie::operator<(const Especie &arr) {
  * @throw std::invalid_argument Si el código introducido tiene una longitud menor a 2 caracteres.
  */
 Especie::Especie(const string &cod, const string &nombreComun, const string &nombreCientifico,
-				 const string &tipoPlanta) {
+				 const TipoPlanta &tipoPlanta) {
 
            if(cod.length()< 2) {
            throw invalid_argument("[Especie:Especie()]: codigo no válido "  );
@@ -122,7 +124,7 @@ Especie::Especie(const string &cod, const string &nombreComun, const string &nom
           this->codigoEspecie = cod;
           this->nombreCientifico = nombreCientifico;
           this->nombreComun = nombreComun;
-          this->tipoPlanta = tipoPlanta;
+          this->tipo_planta_ = tipoPlanta;
 
 }
 
@@ -137,6 +139,17 @@ void Especie::mostrarInfo() {
 	cout << "Codigo especie: " << this->codigoEspecie << endl;
 	cout << "Nombre común: " << this->nombreComun << endl;
 	cout << "Nombre cientifico: " << this->nombreCientifico << endl;
-	cout << "Tipo planta: " << this->tipoPlanta << endl;
+	cout << "Tipo planta: ";
+	if (tipo_planta_ == TipoPlanta::ARBUSTO) cout << "Arbusto" << endl;
+	if (tipo_planta_ == TipoPlanta::CONIFERA) cout << "Conifera" << endl;
+	if (tipo_planta_ == TipoPlanta::PALMACEA) cout << "Almacea" << endl;
+	if (tipo_planta_ == TipoPlanta::HERB_PERENNES) cout << "Herbácea Perenne" << endl;
+	if (tipo_planta_ == TipoPlanta::FRONDOSA) cout << "Frondosa" << endl;
+	if (tipo_planta_ == TipoPlanta::TAPIZANTE_TREPADORA) cout << "Tapizante/Trepadora" << endl;
+	if (tipo_planta_ == TipoPlanta::CACTACEA_SUCULENTA) cout << "Cactácea/Suculenta" << endl;
+	if (tipo_planta_ == TipoPlanta::SUBTROPICAL_TROPICAL) cout << "Subtropical/Tropical" << endl;
+	if (tipo_planta_ == TipoPlanta::HERB_ANUAL) cout << "Herbácea Anual" << endl;
+	if (tipo_planta_ == TipoPlanta::HERB_ANUALES) cout << "Herbáceas Anuales" << endl;
+
 	cout << " -------------------------------" << endl;
 }

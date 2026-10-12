@@ -6,6 +6,10 @@
 #define ESPECIE_H
 #include <string>
 #include <VDinamico.h>
+enum class TipoPlanta{
+	ARBUSTO,CONIFERA, PALMACEA, HERB_PERENNES, FRONDOSA, TAPIZANTE_TREPADORA
+	,CACTACEA_SUCULENTA, SUBTROPICAL_TROPICAL,  HERB_ANUAL, HERB_ANUALES
+};
 
 using namespace std;
 
@@ -14,7 +18,7 @@ private:
 	string codigoEspecie;
 	string nombreComun;
 	string nombreCientifico;
-	string tipoPlanta;
+	TipoPlanta tipo_planta_;
 
 public:
 	/**
@@ -37,15 +41,15 @@ public:
 
 	void set_nombre_cientifico(const string &nombre_cientifico);
 
-	string get_tipo_planta() const;
+	TipoPlanta get_tipo_planta() const;
 
-	void set_tipo_planta(const string &tipo_planta);
+	void set_tipo_planta(const TipoPlanta &tipo_planta);
 
 	bool operator==(const Especie &arr);
 	bool operator<(const Especie &arr);
 
 
-	Especie(const string &cod, const string &nombreComun, const string &nombreCientifico, const string &tipoPlanta);
+	Especie(const string &cod, const string &nombreComun, const string &nombreCientifico, const TipoPlanta &tipoPlanta);
 
 	Especie();
 

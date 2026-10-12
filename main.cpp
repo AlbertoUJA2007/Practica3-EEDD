@@ -110,7 +110,7 @@ void programa1() {
     getch();
 }
 void programa2() {
-    /* cout << "PROGRAMA DE PRUEBA 2" << endl;
+     cout << "PROGRAMA DE PRUEBA 2" << endl;
     ControlParques cp(RUTA_ESPECIES, RUTA_PARQUES);
 
     //Variables fuera del bucle por eficiencia
@@ -121,30 +121,30 @@ void programa2() {
     {
         Iterador<Parque> it = parques->iterador();
         Especie& esp = (*especies)[i];
-        int tipo = esp.get_tipo_planta();
-        for (it; !it.fin(); it.avanza())
+        TipoPlanta tipo = esp.get_tipo_planta();
+        for (it; !it.fin(); it.siguiente())
         {
             Parque& pq = it.dato();
             int resto = pq.getCodigoParque() % 2;
 
             //parques con codigo par
-            if ((tipo == ARBUSTO || tipo == CONIFERA || tipo == PALMACEA ||
-                tipo == HERB_PERENNES || tipo == FRONDOSA) && (resto == 0))
+            if ((tipo == TipoPlanta::ARBUSTO || tipo == TipoPlanta::CONIFERA || tipo == TipoPlanta::PALMACEA ||
+                tipo == TipoPlanta::HERB_PERENNES || tipo == TipoPlanta::FRONDOSA) && (resto == 0))
             {
-                pq.insertaEspecie(&esp);
+                pq.insertarEspecie(&esp);
                 //Parques con codigo impar
             }
-            else if ((tipo == TAPIZANTE_TREPADORA || tipo == CACTACEA_SUCULENTA ||
-                tipo == SUBTROPICAL_TROPICAL ||
-                tipo == HERB_ANUAL || tipo == HERB_ANUALES) && (resto == 1))
+            else if ((tipo == TipoPlanta::TAPIZANTE_TREPADORA || tipo == TipoPlanta::CACTACEA_SUCULENTA ||
+                tipo == TipoPlanta::SUBTROPICAL_TROPICAL ||
+                tipo == TipoPlanta::HERB_ANUAL || tipo == TipoPlanta::HERB_ANUALES) && (resto == 1))
             {
-                pq.insertaEspecie(&esp);
+                pq.insertarEspecie(&esp);
             }
         }
     }
 
     cout << endl << "ASIGNACIÓN DE ESPECIES A LOS PARQUES" << endl;
-    for (Iterador<Parque> it = parques->iterador(); !it.fin(); it.avanza())
+    for (Iterador<Parque> it = parques->iterador(); !it.fin(); it.siguiente())
     {
         cout << "  Codigo: " << to_string(it.dato().getCodigoParque()) << " nombre: " << it.dato().
             getNombreParque() << " total especies: " << to_string(
@@ -232,7 +232,7 @@ void programa2() {
     cout<< endl<<"CONTAR CUÁNTOS PARQUES TIENEN LA ESPECIE CON NOMBRE COMÚN ABETO"<<endl;
     it = cp.get_parks().iterador();
     int total = 0;
-    for (it; !it.fin(); it.avanza())
+    for (it; !it.fin(); it.siguiente())
     {
        VDinamico<Especie*>  esp = it.dato().get_contains();
         for (int i =0; i < esp.getLogico(); ++i)
@@ -245,16 +245,12 @@ void programa2() {
             }
         }
     }
-    cout<<"  Total: "<<total<<endl;*/
+    cout<<"  Total: "<<total<<endl;
 }
 int main()
 {
-
     programa1();
 
-
-
-
-
+    programa2();
     return 0;
 }

@@ -15,32 +15,40 @@ class Iterador {
 public:
 	Iterador(Nodo<T> *nodo): nodo(nodo){}
 
-	bool hayAnterior() {           //Comprobar si existe un nodo anterior
+	bool hayAnterior();
+
+	bool haySiguiente();
+
+	void anterior() { nodo = nodo->ant;}//Desplaza el iterador una posicion hacia atrás. Puntero nodo apunta al nodo anterior
+
+	void siguiente() { nodo = nodo->sig;} //Desplaza el iterador una posicion hacia delante. Puntero nodo apunta al nodo siguiente
+
+	T &dato() { return nodo->dato; }//Devuelve el contenido del nodo
+	bool fin();
+
+
+	template<typename  T>
+	bool hayAnterior()
+	{           //Comprobar si existe un nodo anterior
 		if (nodo->ant != nullptr) {
 			return true;
 		}
 		return false;
 
 	}
-
-	bool haySiguiente() {               //Comprobar si existe un nodo siguiente
+	template<typename  T>
+	bool haySiguiente(){               //Comprobar si existe un nodo siguiente
 		if (nodo->sig != nullptr) {
 			return true;
 		}
 		return false;
-
 	}
-
-	void anterior() {               //Desplaza el iterador una posicion hacia atrás. Puntero nodo apunta al nodo anterior
-		nodo = nodo->ant;
-	}
-
-	void siguiente() {              //Desplaza el iterador una posicion hacia delante. Puntero nodo apunta al nodo siguiente
-		nodo = nodo->sig;
-	}
-
-	T &dato() {                    //Devuelve el contenido del nodo
-		return nodo->dato;
+	template<typename T>
+	bool fin() {
+		if(nodo->sig == nullptr) {
+			return true;
+		}
+		return false;
 	}
 };
 #endif //ITERADOR_H

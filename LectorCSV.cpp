@@ -5,6 +5,8 @@
 #include "Especie.h"
 #include "VDinamico.h"
 
+std::size_t LectorCSV::numeroEspecies_ = 0;
+std::size_t LectorCSV::filasDescartadas_ = 0;
 /**
  * @brief Carga el fichero CSV indicado, mostrando cada especie por pantalla.
  *

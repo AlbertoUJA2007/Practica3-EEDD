@@ -83,7 +83,7 @@ void programa1() {
 
     cout<<endl<<"insertar el dato 100 delante del 101"<<endl;
     Iterador<int> itint = lista.iterador();
-    while (itint.dato() != 102)
+    while (itint.dato() != 101)
     {
         itint.siguiente();
     }

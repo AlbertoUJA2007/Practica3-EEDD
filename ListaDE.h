@@ -208,30 +208,30 @@ void ListaDE<T>::inserta(const Iterador<T> &i, const T &dato) {
     if (i.nodo==nullptr) {
         throw invalid_argument("[ListaDE::inserta]: Parametro no valido");
     }
-    Nodo<T> *p = new Nodo<T>(dato,nullptr,nullptr);
+    Nodo<T> *nuevo = new Nodo<T>(dato,nullptr,nullptr);
     if (cabecera==nullptr) {            //Comprobar si la lista esta vacia
-        cabecera=p;
-        cola=p;
+        cabecera=nuevo;
+        cola=nuevo;
 
     } else if (i.nodo==cabecera) {      //Comprobar si el iterador apunta a la cabecera
-        cabecera->ant=p;
-        p->sig=cabecera;
-        cabecera=p;
+        cabecera->ant=nuevo;
+        nuevo->sig=cabecera;
+        cabecera=nuevo;
 
         } else if (i.nodo==cola) {      //Comprobar si el iterador apunta a la cola
             Nodo<T> *t = cola->ant;
-            cola->ant=p;
-            p->sig=cola;
-            p->ant=t;
-            t->sig=p;
+            cola->ant=nuevo;
+            nuevo->sig=cola;
+            nuevo->ant=t;
+            t->sig=nuevo;
 
-            } else {                    //Posicion intermedia en lista con varios elementos
-                Nodo<T> *t = i.nodo->ant;
-                i.nodo->ant=p;
-                p->sig=i.nodo;
-                p->ant=t;
-                t->sig=p;
-            }
+        } else {                    //Posicion intermedia en lista con varios elementos
+            Nodo<T> *anterior = i.nodo->ant;
+            i.nodo->ant=nuevo;
+            nuevo->sig=i.nodo;
+            nuevo->ant=anterior;
+            anterior->sig=nuevo;
+        }
 }
 
 template<typename T>

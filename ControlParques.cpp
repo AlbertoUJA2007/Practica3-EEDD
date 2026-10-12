@@ -4,6 +4,7 @@
 
 #include "ControlParques.h"
 #include "LectorCSV.h"
+#include "ListaDE.h"
 
 /**
  *
@@ -14,12 +15,13 @@ ControlParques::ControlParques(const string &nomFichEspecies, const string &nomF
 	if(nomFichEspecies.empty() || nomFichParques.empty()) {
 		throw invalid_argument("[ControlParques]: parametros no validos ");
 	}
-	if(!LectorCSV::cargarParques(this->parques, nomFichParques)) {
-		throw std::runtime_error("[ControlParques:cargaParques]: error al abrir fichero ");
-	}
 	if(!LectorCSV::cargarEspecies(this->variantes, nomFichEspecies)) {
 		throw std::runtime_error("[ControlParques:cargaEspecies]: error al abrir fichero ");
 	}
+	if(!LectorCSV::cargarParques(this->parques, nomFichParques)) {
+		throw std::runtime_error("[ControlParques:cargaParques]: error al abrir fichero ");
+	}
+		//falta en enlace entre parque y especie
 }
 
 /**
@@ -52,7 +54,17 @@ void ControlParques::asignarEspecieParque( Especie &e,  Parque &p) {
 int ControlParques::contarEspecieParque(const string &nombre) {
 	int cant=0;
 
-	
+	Iterador<Parque> i= this->parques.iterador() ;
+
+	while(i.haySiguiente()) {
+		if(i.dato().getNombreParque() == nombre) {
+			cant++;
+		}
+		i.siguiente();
+	}
+	if(i.dato().getNombreParque() == nombre) cant++; //contabilizamos el ultimo valor tambien
+
+	return cant;
 }
 
 /**
@@ -61,12 +73,35 @@ int ControlParques::contarEspecieParque(const string &nombre) {
  * @return
  */
 Parque & ControlParques::buscarParque(const string &nombre) {
+
+	Iterador<Parque> i= this->parques.iterador() ;
+	Parque *parque = nullptr;
+	bool parar= false;
+	while(i.haySiguiente() && !parar) {
+		if(i.dato().getNombreParque() == nombre) {
+			parque = &i.dato();
+			parar =true;
+		}
+		i.siguiente();
+	}
+	if(i.dato().getNombreParque() == nombre) parque = &i.dato();
+
+	return *parque;
 }
 
 /**
- *
+* @def devuelve aquellas especies que contengan en su
+nombre científico una subcadena dada como parámetro
  * @param cadena
  * @return
  */
 VDinamico<Especie> & ControlParques::listadoEspecieSubNombre(const string &cadena) {
+
+	VDinamico<Especie> *especies = new VDinamico<Especie>();
+	for(int i =0; i < this->variantes.getLogico(); i++) {
+		if(this->variantes[i]->get_nombre_cientifico().find(cadena)) {
+			especies->insertar(*this->variantes[i]);
+		}
+	}
+	return *especies;
 }

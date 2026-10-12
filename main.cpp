@@ -9,9 +9,9 @@
 template <class T>
 void mostrarLista(ListaDE<T> l)
 {
-    for (Iterador<T> it = l.iterador(); !it.fin(); it.avanza())
+    for (Iterador<T> it = l.iterador(); it.haySiguiente(); it.siguiente())
     {
-        std::cout << std::to_string(it.getdato()) << "  ";
+        std::cout << std::to_string(it.dato()) << "  ";
     }
     cout << endl;
 }
@@ -20,9 +20,9 @@ void mostrarLista(ListaDE<T> l)
 Iterador<Parque> buscaParque(ListaDE<Parque>& lista, string nombre)
 {
     Iterador<Parque> it = lista.iterador();
-    for (it; !it.fin(); it.avanza())
+    for (it; it.haySiguiente(); it.siguiente())
     {
-        if (it.getdato().get_nbre_parque() == nombre)
+        if (it.dato().getNombreParque() == nombre)
         {
             return it;
         }
@@ -60,9 +60,7 @@ bool buscaEspecieNbrCientif(VDinamico<Especie*>& vector, string nombreCentif)
 const string RUTA_ESPECIES = "data/arbolado-especies.csv";
 const string RUTA_PARQUES = "data/parques.csv";
 
-int main()
-{
-
+void programa1() {
     cout << "PROGRAMA DE PRUEBA 1" << endl;
 
     //Crear la lista vacía
@@ -85,17 +83,17 @@ int main()
 
     cout<<endl<<"insertar el dato 100 delante del 101"<<endl;
     Iterador<int> itint = lista.iterador();
-    while (itint.getdato() != 102)
+    while (itint.dato() != 102)
     {
-        itint.avanza();
+        itint.siguiente();
     }
     lista.inserta(itint, 100);
     mostrarLista(lista);
 
     itint = lista.iterador();
-    while (itint.getdato() != 98)
+    while (itint.dato() != 98)
     {
-        itint.avanza();
+        itint.siguiente();
     }
     lista.inserta(itint, 99);
     mostrarLista(lista);
@@ -110,8 +108,9 @@ int main()
 
     cout<<endl<<"PULSAR CUALQUIER TECLA PARA CONTINUAR"<<endl;
     getch();
-
-    cout << "PROGRAMA DE PRUEBA 2" << endl;
+}
+void programa2() {
+    /* cout << "PROGRAMA DE PRUEBA 2" << endl;
     ControlParques cp(RUTA_ESPECIES, RUTA_PARQUES);
 
     //Variables fuera del bucle por eficiencia
@@ -125,8 +124,8 @@ int main()
         int tipo = esp.get_tipo_planta();
         for (it; !it.fin(); it.avanza())
         {
-            Parque& pq = it.getdato();
-            int resto = pq.get_cod_parque() % 2;
+            Parque& pq = it.dato();
+            int resto = pq.getCodigoParque() % 2;
 
             //parques con codigo par
             if ((tipo == ARBUSTO || tipo == CONIFERA || tipo == PALMACEA ||
@@ -147,14 +146,14 @@ int main()
     cout << endl << "ASIGNACIÓN DE ESPECIES A LOS PARQUES" << endl;
     for (Iterador<Parque> it = parques->iterador(); !it.fin(); it.avanza())
     {
-        cout << "  Codigo: " << to_string(it.getdato().get_cod_parque()) << " nombre: " << it.getdato().
-            get_nbre_parque() << " total especies: " << to_string(
-                it.getdato().get_contains().gettLogico()) << endl;
+        cout << "  Codigo: " << to_string(it.dato().getCodigoParque()) << " nombre: " << it.dato().
+            getNombreParque() << " total especies: " << to_string(
+                it.dato().()) << endl;
     }
 
 
     cout << endl << "BUSCAR EN PARQUE PRINCESA LEONOR LOS NOMBRES COMUNES EUCALIPTO ROJO Y ARCE DE SIERRA" << endl;
-    Parque& princLeonor = buscaParque(cp.get_parks(), "PARQUE PRINCESA LEONOR").getdato();
+    Parque& princLeonor = buscaParque(cp.get_parks(), "PARQUE PRINCESA LEONOR").dato();
     //Debe estar
     if (buscaEspecieNbrComun(princLeonor.get_contains(), "Eucalipto rojo"))
     {
@@ -176,7 +175,7 @@ int main()
     }
 
     cout << endl << "BUSCAR EN PARQUE MADRID RIO LOS NOMBRES CIENTÍFICOS HEBE FLORIBUNDA Y ANANAS COMOSA" << endl;
-    Parque& madridRio = buscaParque(cp.get_parks(), "PARQUE MADRID RIO").getdato();
+    Parque& madridRio = buscaParque(cp.get_parks(), "PARQUE MADRID RIO").dato();
     //No debe estar
     if (buscaEspecieNbrCientif(madridRio.get_contains(), "Hebe floribunda"))
     {
@@ -206,7 +205,7 @@ int main()
     }
     else
     {
-        cout<<"  codigo: " << to_string(it.getdato().get_cod_parque()) <<" nombre: "<< it.getdato().get_nbre_parque()<< endl;
+        cout<<"  codigo: " << to_string(it.dato().getCodigoParque()) <<" nombre: "<< it.dato().getNombreParque()<< endl;
     }
 
     Iterador<Parque> it2 = buscaParque(cp.get_parks(), "VIVERO DE MIGAS CALIENTES");
@@ -217,7 +216,7 @@ int main()
     }
     else
     {
-        cout<<"  codigo: " << to_string(it.getdato().get_cod_parque()) <<" nombre: "<< it.getdato().get_nbre_parque()<< endl;
+        cout<<"  codigo: " << to_string(it.dato().getCodigoParque()) <<" nombre: "<< it.dato().getNombreParque()<< endl;
     }
 
     cout<< endl<<"BUSCAR ESPECIES CON LA SUBCADENA ROSA EN SU NOMBRE CIENTÍFICO"<<endl;
@@ -235,7 +234,7 @@ int main()
     int total = 0;
     for (it; !it.fin(); it.avanza())
     {
-       VDinamico<Especie*>  esp = it.getdato().get_contains();
+       VDinamico<Especie*>  esp = it.dato().get_contains();
         for (int i =0; i < esp.getLogico(); ++i)
         {
             string nombreComun = esp[i]->get_nombre_comun();
@@ -246,7 +245,14 @@ int main()
             }
         }
     }
-    cout<<"  Total: "<<total<<endl;
+    cout<<"  Total: "<<total<<endl;*/
+}
+int main()
+{
+
+    programa1();
+
+
 
 
 

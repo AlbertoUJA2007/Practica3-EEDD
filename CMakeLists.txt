@@ -17,4 +17,5 @@ add_executable(Practica2_EEDD
         Parque.h
         ControlParques.cpp
         ControlParques.h
-        VDinamico.h)
+        VDinamico.h
+        Iterador.h)

@@ -17,6 +17,7 @@ private:
 public:
     Parque();
     Parque(int codigo,const string &nombre,const VDinamico<Especie*> &especies);
+    Parque(int codigo, const string &nombre);
     ~Parque();
 
     int getCodigoParque()const;

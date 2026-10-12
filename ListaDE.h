@@ -4,7 +4,8 @@
 
 #ifndef PRACTICA2_EEDD_LISTADE_H
 #define PRACTICA2_EEDD_LISTADE_H
-
+#include "Iterador.h"
+#include "Nodo.h"
 #include <iostream>
 using namespace std;
 
@@ -13,52 +14,10 @@ class ListaDE {
 
 private:
 
-    class Nodo {
-    public:
-        T dato;
-        Nodo *ant,*sig;
-        Nodo(const T &dato, Nodo *ant, Nodo *sig):
-                dato(dato),ant(ant),sig(sig){}
-    };
-
-    Nodo *cabecera;
-    Nodo *cola;
+    Nodo<T> *cabecera;
+    Nodo<T> *cola;
 
 public:
-    class Iterador {
-        Nodo *nodo;
-        friend class ListaDE<T>;
-    public:
-        Iterador(Nodo *nodo): nodo(nodo){}
-
-        bool hayAnterior() {           //Comprobar si existe un nodo anterior
-            if (nodo->ant != nullptr) {
-                return true;
-            } 
-            return false;
-            
-        }
-
-        bool haySiguiente() {               //Comprobar si existe un nodo siguiente
-            if (nodo->sig != nullptr) {
-                return true;
-            } 
-            return false;
-            
-        }
-
-        void anterior() {               //Desplaza el iterador una posicion hacia atrás. Puntero nodo apunta al nodo anterior
-            nodo = nodo->ant;
-        }
-
-        void siguiente() {              //Desplaza el iterador una posicion hacia delante. Puntero nodo apunta al nodo siguiente
-            nodo = nodo->sig;
-        }
-
-        T &dato() {                    //Devuelve el contenido del nodo
-            return nodo->dato;
-        }
-    };
 
     /**
      * @brief Constructor por defecto de una lista doblemente enlazada
@@ -94,7 +53,7 @@ public:
      * @brief Devuelve un objeto iterador para iterar sobre una lista bidireccionalmente
      * @return Un objeto iterador
      */
-    Iterador iterador();
+    Iterador<T> iterador();
 
     /**
      * @brief Insertar un dato al principio de una lista
@@ -113,7 +72,7 @@ public:
      * @param i iterador, apunta a la posición a partir de la cual se hará la inserción
      * @param dato objeto a insertar
      */
-    void inserta(const Iterador &i,const T &dato);
+    void inserta(const Iterador<T> &i,const T &dato);
 
     /**
      * @brief Borra el primer elemento de la lista
@@ -129,7 +88,7 @@ public:
      * @brief Borra el elemento de la lista referenciado por un iterador
      * @param i
      */
-    void borra(const Iterador &i);
+    void borra(const Iterador<T> &i);
 
     /**
      * @brief Devuelve de forma eficiente el numero de elementos de la lista
@@ -153,12 +112,12 @@ ListaDE<T>::ListaDE(const ListaDE<T> &orig) {       //Comprobamos si la lista es
         this->cabecera = nullptr;
         this->cola = nullptr;
     } else if (orig.cabecera == orig.cola) {            //Comprobamos si hay un solo elemento en la lista
-        this->cabecera = new Nodo(orig.cabecera->dato,nullptr,nullptr);
+        this->cabecera = new Nodo<T>(orig.cabecera->dato,nullptr,nullptr);
         this->cola = cabecera;
     } else { //hay mas de un elemetno
-        this->cabecera = new Nodo(orig.cabecera->dato,nullptr,nullptr);
+        this->cabecera = new Nodo<T>(orig.cabecera->dato,nullptr,nullptr);
         this->cola = cabecera;
-        Iterador i = orig.cabecera->sig;
+        Iterador<T> i = orig.cabecera->sig;
 
         while (i.haySiguiente()) {      //La condicion deja fuera al ultimo dato
             insertaFin(i.dato());
@@ -180,13 +139,13 @@ ListaDE<T> &ListaDE<T>::operator=(const ListaDE &lista) {
             this->cola = nullptr;
 
         } else if (lista.cabecera == lista.cola) {            //Comprobamos si hay un solo elemento en la lista
-            this->cabecera = new Nodo(lista.cabecera->dato,nullptr,nullptr);
+            this->cabecera = new Nodo<T>(lista.cabecera->dato,nullptr,nullptr);
             this->cola = cabecera;
 
         } else {
-            this->cabecera = new Nodo(lista.cabecera->dato,nullptr,nullptr);
+            this->cabecera = new Nodo<T>(lista.cabecera->dato,nullptr,nullptr);
             this->cola = cabecera;
-            Iterador i = lista.cabecera->sig;
+            Iterador<T> i = lista.cabecera->sig;
 
             while (i.haySiguiente()) {      //La condicion deja fuera al ultimo dato
                 insertaFin(i.dato());
@@ -217,7 +176,7 @@ T& ListaDE<T>::fin() {
 
 template<typename T>
 void ListaDE<T>::insertaInicio(const T& dato) {
-    Nodo *p = new Nodo(dato,nullptr,nullptr);
+    Nodo<T> *p = new Nodo<T>(dato,nullptr,nullptr);
 
     if (cola==nullptr) {        //Comprobar si la lista esta vacia
         cabecera = p;
@@ -232,7 +191,7 @@ void ListaDE<T>::insertaInicio(const T& dato) {
 
 template<typename T>
 void ListaDE<T>::insertaFin(const T &dato) {
-    Nodo *p = new Nodo(dato,nullptr,nullptr);
+    Nodo<T> *p = new Nodo<T>(dato,nullptr,nullptr);
 
     if (cola==nullptr) {       //Comprobar si la lista esta vacia
         cabecera = p;
@@ -245,11 +204,11 @@ void ListaDE<T>::insertaFin(const T &dato) {
 }
 
 template<typename T>
-void ListaDE<T>::inserta(const Iterador &i, const T &dato) {
+void ListaDE<T>::inserta(const Iterador<T> &i, const T &dato) {
     if (i.nodo==nullptr) {
         throw invalid_argument("[ListaDE::inserta]: Parametro no valido");
     }
-    Nodo *p = new Nodo(dato,nullptr,nullptr);
+    Nodo<T> *p = new Nodo<T>(dato,nullptr,nullptr);
     if (cabecera==nullptr) {            //Comprobar si la lista esta vacia
         cabecera=p;
         cola=p;
@@ -260,14 +219,14 @@ void ListaDE<T>::inserta(const Iterador &i, const T &dato) {
         cabecera=p;
 
         } else if (i.nodo==cola) {      //Comprobar si el iterador apunta a la cola
-            Nodo *t = cola->ant;
+            Nodo<T> *t = cola->ant;
             cola->ant=p;
             p->sig=cola;
             p->ant=t;
             t->sig=p;
 
             } else {                    //Posicion intermedia en lista con varios elementos
-                Nodo *t = i.nodo->ant;
+                Nodo<T> *t = i.nodo->ant;
                 i.nodo->ant=p;
                 p->sig=i.nodo;
                 p->ant=t;
@@ -281,7 +240,7 @@ void ListaDE<T>::borraInicio() {
         throw out_of_range("[ListaDE::borraInicio]: No hay elementos para borrar en la lista");
     }
 
-    Nodo *p = cabecera;
+    Nodo<T> *p = cabecera;
     if (cabecera==cola) {           //Comprobamos si solo hay un elemento en la lista
         cabecera=nullptr;
         cola=nullptr;
@@ -300,7 +259,7 @@ void ListaDE<T>::borraFinal() {
         throw out_of_range("[ListaDE::borraFinal]: No hay elementos para borrar en la lista");
     }
 
-    Nodo *p = cola;
+    Nodo<T> *p = cola;
     if (cabecera == cola) {         //Comprobamos si solo hay un elemento en la lista
         cabecera=nullptr;
         cola=nullptr;
@@ -314,7 +273,7 @@ void ListaDE<T>::borraFinal() {
 }
 
 template<class T>
-void ListaDE<T>::borra(const Iterador &i) {
+void ListaDE<T>::borra(const Iterador<T> &i) {
     if (i.nodo == nullptr) {        //Comprobamos que el iterador apunte a un nodo
         throw invalid_argument("[ListaDE::borra]: No hay elementos para borrar en la lista");
     }
@@ -322,8 +281,8 @@ void ListaDE<T>::borra(const Iterador &i) {
         throw out_of_range("[ListaDE::borra]: no hay elementos en la lista para borrar ");
     }
 
-    Nodo *siguiente = i.nodo->sig;
-    Nodo *anterior = i.nodo->ant;
+    Nodo<T> *siguiente = i.nodo->sig;
+    Nodo<T> *anterior = i.nodo->ant;
     if (cabecera == cola) {         //Comprobamos si solo hay un elemento en la lista
         cabecera = nullptr;
         cola = nullptr;
@@ -348,9 +307,9 @@ template<class T>
 int ListaDE<T>::tam() {
     int num=0;
     if (cabecera != nullptr) {          //Comprobar si la lista está vacía
-        Iterador i = cabecera;
+        Iterador<T> i = cabecera;
 
-        while (i.haySiguiente() != nullptr) {
+        while (i.haySiguiente() ) {
             i.siguiente();
             num++;
         }
@@ -369,7 +328,7 @@ ListaDE<T>::~ListaDE() {
 template<class T>
 ListaDE<T>& ListaDE<T>::operator+(const ListaDE<T> &lista) {
     if (lista.cabecera != nullptr) {
-        Iterador i = lista.cabecera;
+        Iterador<T> i = lista.cabecera;
         while (i.nodo != nullptr) {
             this->insertaFin(i.dato());
             i.siguiente();
@@ -388,7 +347,7 @@ ListaDE<T>& ListaDE<T>::concatena(const ListaDE<T> &lista) {
         listaNueva(this);
     } else { //ambas tienen valores
         listaNueva(this);
-        Iterador i = lista.cabecera;
+        Iterador<T> i = lista.cabecera;
         while (i.nodo != nullptr) {                 //Añadimos a esta nueva lista, la segunda
             listaNueva.insertaFin(i.dato());
             i.siguiente();
@@ -399,8 +358,8 @@ ListaDE<T>& ListaDE<T>::concatena(const ListaDE<T> &lista) {
 }
 
 template<class T>
-typename ListaDE<T>::Iterador ListaDE<T>::iterador() {
-    return Iterador(cabecera);
+ Iterador<T> ListaDE<T>::iterador() {
+    return Iterador<T>(cabecera);
 }
 
 

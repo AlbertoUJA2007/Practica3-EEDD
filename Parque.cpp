@@ -10,6 +10,11 @@ Parque::Parque(int codigo, const string &nombre, const VDinamico<Especie*> &espe
             codigo_parque(codigo),nombre_parque(nombre),contenedor(especies) {
 }
 
+Parque::Parque(int codigo, const string &nombre) {
+    this->codigo_parque = codigo;
+    this->nombre_parque = nombre;
+}
+
 Parque::~Parque() {
     for ( int i = contenedor.getLogico(); i >= 0; i--) {
         contenedor.borrar(i);

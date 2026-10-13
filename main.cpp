@@ -17,7 +17,7 @@ void mostrarLista(ListaDE<T> l)
 }
 
 
-Iterador<Parque> buscaParque(ListaDE<Parque>& lista, string nombre)
+Iterador<Parque> buscaParque(ListaDE<Parque>& lista, const string &nombre)
 {
     Iterador<Parque> it = lista.iterador();
     for (it; it.haySiguiente(); it.siguiente())
@@ -30,9 +30,9 @@ Iterador<Parque> buscaParque(ListaDE<Parque>& lista, string nombre)
     return it;
 }
 
-bool buscaEspecieNbrComun(VDinamico<Especie*>& vector, string nombreComun)
+bool buscaEspecieNbrComun(VDinamico<Especie*>& vector, const string &nombreComun)
 {
-    int n = vector.getLogico();
+    unsigned int  n = vector.getLogico();
     for (int i = 0; i < n; ++i)
     {
         if (vector[i]->get_nombre_comun() == nombreComun)
@@ -57,8 +57,8 @@ bool buscaEspecieNbrCientif(VDinamico<Especie*>& vector, string nombreCentif)
     return false;
 }
 
-const string RUTA_ESPECIES = "data/arbolado-especies.csv";
-const string RUTA_PARQUES = "data/parques.csv";
+const string RUTA_ESPECIES = "arbolado-especies.csv";
+const string RUTA_PARQUES = "parques.csv";
 
 void programa1() {
     cout << "PROGRAMA DE PRUEBA 1" << endl;
@@ -114,14 +114,14 @@ void programa2() {
     ControlParques cp(RUTA_ESPECIES, RUTA_PARQUES);
 
     //Variables fuera del bucle por eficiencia
-    VDinamico<Especie>* especies = &cp.get_varieties();
-    ListaDE<Parque>* parques = &cp.get_parks();
+    VDinamico<Especie*> especies = cp.getVariantes();
+    ListaDE<Parque>* parques = &cp.getparques();
 
-    for (int i = 0; i < especies->getLogico(); ++i)
+    for (int i = 0; i < especies.getLogico(); ++i)
     {
         Iterador<Parque> it = parques->iterador();
-        Especie& esp = (*especies)[i];
-        TipoPlanta tipo = esp.get_tipo_planta();
+        Especie *esp = (especies)[i];
+        TipoPlanta tipo = esp->get_tipo_planta();
         for (it; !it.fin(); it.siguiente())
         {
             Parque& pq = it.dato();
@@ -131,14 +131,14 @@ void programa2() {
             if ((tipo == TipoPlanta::ARBUSTO || tipo == TipoPlanta::CONIFERA || tipo == TipoPlanta::PALMACEA ||
                 tipo == TipoPlanta::HERB_PERENNES || tipo == TipoPlanta::FRONDOSA) && (resto == 0))
             {
-                pq.insertarEspecie(&esp);
+                pq.insertarEspecie(esp);
                 //Parques con codigo impar
             }
             else if ((tipo == TipoPlanta::TAPIZANTE_TREPADORA || tipo == TipoPlanta::CACTACEA_SUCULENTA ||
                 tipo == TipoPlanta::SUBTROPICAL_TROPICAL ||
                 tipo == TipoPlanta::HERB_ANUAL || tipo == TipoPlanta::HERB_ANUALES) && (resto == 1))
             {
-                pq.insertarEspecie(&esp);
+                pq.insertarEspecie(esp);
             }
         }
     }
@@ -148,14 +148,14 @@ void programa2() {
     {
         cout << "  Codigo: " << to_string(it.dato().getCodigoParque()) << " nombre: " << it.dato().
             getNombreParque() << " total especies: " << to_string(
-                it.dato().()) << endl;
+                it.dato().getCantEspecies()) << endl;
     }
 
 
     cout << endl << "BUSCAR EN PARQUE PRINCESA LEONOR LOS NOMBRES COMUNES EUCALIPTO ROJO Y ARCE DE SIERRA" << endl;
-    Parque& princLeonor = buscaParque(cp.get_parks(), "PARQUE PRINCESA LEONOR").dato();
+    Parque& princLeonor = buscaParque(cp.getparques(), "PARQUE PRINCESA LEONOR").dato();
     //Debe estar
-    if (buscaEspecieNbrComun(princLeonor.get_contains(), "Eucalipto rojo"))
+    if (buscaEspecieNbrComun(princLeonor.get_contenedor(), "Eucalipto rojo"))
     {
         cout << "  Encontrado Eucalipto rojo" << endl;
     }
@@ -165,7 +165,7 @@ void programa2() {
     }
 
     //No debe estar
-    if (buscaEspecieNbrComun(princLeonor.get_contains(), "Arce de sierra"))
+    if (buscaEspecieNbrComun(princLeonor.get_contenedor(), "Arce de sierra"))
     {
         cout << "  Encontrado Arce de sierra" << endl;
     }
@@ -175,9 +175,9 @@ void programa2() {
     }
 
     cout << endl << "BUSCAR EN PARQUE MADRID RIO LOS NOMBRES CIENTÍFICOS HEBE FLORIBUNDA Y ANANAS COMOSA" << endl;
-    Parque& madridRio = buscaParque(cp.get_parks(), "PARQUE MADRID RIO").dato();
+    Parque& madridRio = buscaParque(cp.getparques(), "PARQUE MADRID RIO").dato();
     //No debe estar
-    if (buscaEspecieNbrCientif(madridRio.get_contains(), "Hebe floribunda"))
+    if (buscaEspecieNbrCientif(madridRio.get_contenedor(), "Hebe floribunda"))
     {
         cout << "  Encontrado Hebe floribunda" << endl;
     }
@@ -187,7 +187,7 @@ void programa2() {
     }
 
     //No debe estar
-    if (buscaEspecieNbrComun(madridRio.get_contains(), "Ananas comosa"))
+    if (buscaEspecieNbrComun(madridRio.get_contenedor(), "Ananas comosa"))
     {
         cout << "  Encontrado Ananas comosa" << endl;
     }
@@ -198,7 +198,7 @@ void programa2() {
 
     cout << endl << "BUSCAR PARQUES JUAN CARLOS III Y VIVERO DE MIGAS CALIENTES" << endl;
     //No debe estar
-    Iterador<Parque> it = buscaParque(cp.get_parks(), "JUAN CARLOS III");
+    Iterador<Parque> it = buscaParque(cp.getparques(), "JUAN CARLOS III");
     if (it.fin())
     {
         cout << "  No se ha encontrado parque JUAN CARLOS III" << endl;
@@ -208,7 +208,7 @@ void programa2() {
         cout<<"  codigo: " << to_string(it.dato().getCodigoParque()) <<" nombre: "<< it.dato().getNombreParque()<< endl;
     }
 
-    Iterador<Parque> it2 = buscaParque(cp.get_parks(), "VIVERO DE MIGAS CALIENTES");
+    Iterador<Parque> it2 = buscaParque(cp.getparques(), "VIVERO DE MIGAS CALIENTES");
     //Sí debe estar
     if (it.fin())
     {
@@ -220,21 +220,21 @@ void programa2() {
     }
 
     cout<< endl<<"BUSCAR ESPECIES CON LA SUBCADENA ROSA EN SU NOMBRE CIENTÍFICO"<<endl;
-    for (int i =0; i < especies->getLogico(); ++i)
+    for (int i =0; i < especies.getLogico(); ++i)
     {
-        string ncientif = (*especies)[i].get_nombre_cientifico();
+        string ncientif = (especies)[i]->get_nombre_cientifico();
         if (ncientif.find("rosa") != string::npos)
         {
-            (*especies)[i].mostrarInfo();
+            (especies)[i]->mostrarInfo();
         }
     }
 
     cout<< endl<<"CONTAR CUÁNTOS PARQUES TIENEN LA ESPECIE CON NOMBRE COMÚN ABETO"<<endl;
-    it = cp.get_parks().iterador();
+    it = cp.getparques().iterador();
     int total = 0;
     for (it; !it.fin(); it.siguiente())
     {
-       VDinamico<Especie*>  esp = it.dato().get_contains();
+       VDinamico<Especie*>  esp = it.dato().get_contenedor();
         for (int i =0; i < esp.getLogico(); ++i)
         {
             string nombreComun = esp[i]->get_nombre_comun();
@@ -249,7 +249,7 @@ void programa2() {
 }
 int main()
 {
-    programa1();
+    //programa1();
 
     programa2();
     return 0;

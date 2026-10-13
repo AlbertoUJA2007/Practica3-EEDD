@@ -47,7 +47,10 @@ bool LectorCSV::cargarEspecies(VDinamico<Especie*> &vector, const std::string& r
         nombreComun = extraerCampo(linea, 1);
         nombreCientifico = extraerCampo(linea, 2);
         tipoPlanta = extraerCampo(linea, 3);
-        vector.insertar(new Especie(codigo, nombreComun, nombreCientifico,tipoPlanta));
+
+        TipoPlanta p = Especie::stringtotp(tipoPlanta);
+
+        vector.insertar(new Especie(codigo, nombreComun, nombreCientifico,p));
 
     }
     numeroEspecies_= vector.getLogico();
@@ -187,7 +190,7 @@ void LectorCSV::eliminarBOM(std::string& linea) {
 void LectorCSV::mostrarEspecie(const Especie& especie) {
     std::cout << " - [" << especie.get_codigo_especie() << "] " << especie.get_nombre_comun()
               << " (" << especie.get_nombre_cientifico() << ") - "
-              << especie.get_tipo_planta() << "\n";
+              << Especie::tptostring(especie.get_tipo_planta()) << "\n";
 }
 
 bool  LectorCSV::cargarParques(ListaDE<Parque > &parques, const std::string &rutaFichero) {

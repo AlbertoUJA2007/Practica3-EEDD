@@ -77,14 +77,14 @@ Parque & ControlParques::buscarParque(const string &nombre) {
 	Iterador<Parque> i= this->parques.iterador() ;
 	Parque *parque = nullptr;
 	bool parar= false;
-	while(i.haySiguiente() && !parar) {
+	while(!i.fin() && !parar) {
 		if(i.dato().getNombreParque() == nombre) {
 			parque = &i.dato();
 			parar =true;
 		}
 		i.siguiente();
 	}
-	if(i.dato().getNombreParque() == nombre) parque = &i.dato();
+
 
 	return *parque;
 }
@@ -104,4 +104,12 @@ VDinamico<Especie> & ControlParques::listadoEspecieSubNombre(const string &caden
 		}
 	}
 	return *especies;
+}
+
+VDinamico<Especie*> & ControlParques::getVariantes() {
+	return this->variantes;
+}
+
+ListaDE<Parque> & ControlParques::getparques() {
+	return this->parques;
 }

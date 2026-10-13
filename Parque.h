@@ -28,6 +28,10 @@ public:
     void insertarEspecie(Especie *esp);
     bool existeNComun(const string &nombre);
     bool existeNCientifico(const string &nombre);
+
+    unsigned int getCantEspecies();
+
+    VDinamico<Especie*>& get_contenedor();
 };
 
 

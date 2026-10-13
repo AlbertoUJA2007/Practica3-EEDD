@@ -140,16 +140,36 @@ void Especie::mostrarInfo() {
 	cout << "Nombre común: " << this->nombreComun << endl;
 	cout << "Nombre cientifico: " << this->nombreCientifico << endl;
 	cout << "Tipo planta: ";
-	if (tipo_planta_ == TipoPlanta::ARBUSTO) cout << "Arbusto" << endl;
-	if (tipo_planta_ == TipoPlanta::CONIFERA) cout << "Conifera" << endl;
-	if (tipo_planta_ == TipoPlanta::PALMACEA) cout << "Almacea" << endl;
-	if (tipo_planta_ == TipoPlanta::HERB_PERENNES) cout << "Herbácea Perenne" << endl;
-	if (tipo_planta_ == TipoPlanta::FRONDOSA) cout << "Frondosa" << endl;
-	if (tipo_planta_ == TipoPlanta::TAPIZANTE_TREPADORA) cout << "Tapizante/Trepadora" << endl;
-	if (tipo_planta_ == TipoPlanta::CACTACEA_SUCULENTA) cout << "Cactácea/Suculenta" << endl;
-	if (tipo_planta_ == TipoPlanta::SUBTROPICAL_TROPICAL) cout << "Subtropical/Tropical" << endl;
-	if (tipo_planta_ == TipoPlanta::HERB_ANUAL) cout << "Herbácea Anual" << endl;
-	if (tipo_planta_ == TipoPlanta::HERB_ANUALES) cout << "Herbáceas Anuales" << endl;
-
+	tptostring(this->tipo_planta_);
 	cout << " -------------------------------" << endl;
 }
+
+string Especie::tptostring(const TipoPlanta &p) {
+	if (p == TipoPlanta::ARBUSTO) return  "Arbusto";
+	if (p == TipoPlanta::CONIFERA)return  "Conifera";
+	if (p == TipoPlanta::PALMACEA) return "Almacea" ;
+	if (p == TipoPlanta::HERB_PERENNES) return "Herbácea Perenne" ;
+	if (p == TipoPlanta::FRONDOSA) return"Frondosa" ;
+	if (p == TipoPlanta::TAPIZANTE_TREPADORA) return "Tapizante/Trepadora";
+	if (p == TipoPlanta::CACTACEA_SUCULENTA) return "Cactácea/Suculenta" ;
+	if (p == TipoPlanta::SUBTROPICAL_TROPICAL) return "Subtropical/Tropical" ;
+	if (p == TipoPlanta::HERB_ANUAL) return "Herbácea Anual";
+	if (p == TipoPlanta::HERB_ANUALES) return "Herbáceas Anuales";
+	return "";
+}
+
+TipoPlanta Especie::stringtotp(const string &texto) {
+		if (texto == "ARBUSTO")              return TipoPlanta::ARBUSTO;
+		if (texto == "CONIFERA")             return TipoPlanta::CONIFERA;
+		if (texto == "PALMACEA")             return TipoPlanta::PALMACEA;
+		if (texto == "HERB_PERENNES")     return TipoPlanta::HERB_PERENNES;
+		if (texto == "FRONDOSA")             return TipoPlanta::FRONDOSA;
+		if (texto == "TAPIZANTE/TREPADORA")  return TipoPlanta::TAPIZANTE_TREPADORA;
+		if (texto == "CACTACEA/SUCULENTA")   return TipoPlanta::CACTACEA_SUCULENTA;
+		if (texto == "SUBTROPICAL/TROPICAL") return TipoPlanta::SUBTROPICAL_TROPICAL;
+		if (texto == "HERB_ANUAL")       return TipoPlanta::HERB_ANUAL;
+		if (texto == "HERB_ANUALES")    return TipoPlanta::HERB_ANUALES;
+
+
+	}
+

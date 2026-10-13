@@ -19,6 +19,8 @@ public:
     int contarEspecieParque(const string &nombre);
     Parque& buscarParque(const string &nombre);
     VDinamico<Especie>& listadoEspecieSubNombre(const string &cadena);
+    VDinamico<Especie*>& getVariantes();
+    ListaDE<Parque>& getparques();
 };
 
 

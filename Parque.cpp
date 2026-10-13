@@ -58,3 +58,11 @@ bool Parque::existeNCientifico(const string &nombre) {
     }
     return false;
 }
+
+unsigned int Parque::getCantEspecies() {
+    return this->contenedor.getLogico();
+}
+
+VDinamico<Especie *>& Parque::get_contenedor() {
+    return this->contenedor;
+}

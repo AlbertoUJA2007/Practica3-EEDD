@@ -55,7 +55,8 @@ public:
 
 	void mostrarInfo();
 
-
+	static string tptostring(const TipoPlanta &p);
+	static TipoPlanta stringtotp(const string &texto);
 
 };
 

@@ -9,9 +9,9 @@
 template <class T>
 void mostrarLista(ListaDE<T> l)
 {
-    for (Iterador<T> it = l.iterador(); it.haySiguiente(); it.siguiente())
+    for (Iterador<T> it = l.iterador(); !it.fin(); it.siguiente())
     {
-        std::cout << std::to_string(it.dato()) << "  ";
+        std::cout << std::to_string(it.dato()) << " ";
     }
     cout << endl;
 }
@@ -68,7 +68,7 @@ void programa1() {
 
     cout<<"Insetar al final del 101 al 200"<<endl;
 
-    for (int i = 101; i <= 200; ++i)
+    for (int i = 101; i <= 200; i++)
     {
         lista.insertaFin(i);
     }
@@ -269,7 +269,7 @@ void programa2() {
 }
 int main()
 {
-    //programa1();
+    programa1();
 
     programa2();
     return 0;

@@ -21,7 +21,7 @@ ControlParques::ControlParques(const string &nomFichEspecies, const string &nomF
 	if(!LectorCSV::cargarParques(this->parques, nomFichParques)) {
 		throw std::runtime_error("[ControlParques:cargaParques]: error al abrir fichero ");
 	}
-		//falta en enlace entre parque y especie
+
 
 }
 

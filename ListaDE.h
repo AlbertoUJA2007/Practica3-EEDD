@@ -12,8 +12,6 @@ using namespace std;
 template<class T>
 class ListaDE {
 
-private:
-
     Nodo<T> *cabecera;
     Nodo<T> *cola;
 

@@ -90,15 +90,17 @@ void programa1() {
     lista.inserta(itint, 100);
     mostrarLista(lista);
 
+    cout<<endl<<"insertar el dato 99 detras del 98"<<endl;
     itint = lista.iterador();
     while (itint.dato() != 98)
     {
         itint.siguiente();
     }
+    itint.siguiente();
     lista.inserta(itint, 99);
     mostrarLista(lista);
 
-    cout<<endl<<"Borrar los 10 primeros y los 10 últimos"<<endl;
+    cout<<endl<<"Borrar los 10 primeros y los 10 ultimos"<<endl;
     for (int i = 0; i < 10; ++i)
     {
         lista.borraInicio();
@@ -106,9 +108,27 @@ void programa1() {
     }
     mostrarLista(lista);
 
+    cout<<endl<<"Borrar todos los multiplos de 10"<<endl;
+    itint = lista.iterador();
+    while (itint.haySiguiente()) {
+
+        if (itint.dato()%10==0) {
+            Iterador<int> p = itint;
+            itint.siguiente();
+            lista.borra(p);
+        }
+        itint.siguiente();
+    }
+    if (itint.dato()%10==0) {
+        Iterador<int> p = itint;
+        lista.borra(p);
+    }
+    mostrarLista(lista);
+
     cout<<endl<<"PULSAR CUALQUIER TECLA PARA CONTINUAR"<<endl;
     getch();
 }
+
 void programa2() {
      cout << "PROGRAMA DE PRUEBA 2" << endl;
     ControlParques cp(RUTA_ESPECIES, RUTA_PARQUES);

@@ -213,7 +213,7 @@ bool  LectorCSV::cargarParques(ListaDE<Parque > &parques, const std::string &rut
             continue;
         }
 
-        if (contarCampos(linea) != 4) {
+        if (contarCampos(linea) < 2) {
             ++filasDescartadas_;
             continue;
         }

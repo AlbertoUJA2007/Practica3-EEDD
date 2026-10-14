@@ -155,6 +155,7 @@ string Especie::tptostring(const TipoPlanta &p) {
 	if (p == TipoPlanta::SUBTROPICAL_TROPICAL) return "Subtropical/Tropical" ;
 	if (p == TipoPlanta::HERB_ANUAL) return "Herbácea Anual";
 	if (p == TipoPlanta::HERB_ANUALES) return "Herbáceas Anuales";
+
 	return "";
 }
 
@@ -169,7 +170,7 @@ TipoPlanta Especie::stringtotp(const string &texto) {
 		if (texto == "SUBTROPICAL/TROPICAL") return TipoPlanta::SUBTROPICAL_TROPICAL;
 		if (texto == "HERB_ANUAL")       return TipoPlanta::HERB_ANUAL;
 		if (texto == "HERB_ANUALES")    return TipoPlanta::HERB_ANUALES;
-
+		if(texto.empty()) return TipoPlanta::NONE;
 
 	}
 

@@ -219,6 +219,7 @@ T& VDinamico<T>::operator[](const unsigned int &i){  //T& para permitir lectura 
 template<typename T>
 void VDinamico<T>::insertar(const T &dato, unsigned int pos) {
 
+
 	if( pos > tamfis && pos != UINT_MAX) {
 		throw invalid_argument("[insertar] posicion no valida");
 	}
@@ -229,8 +230,9 @@ void VDinamico<T>::insertar(const T &dato, unsigned int pos) {
 	if (pos==UINT_MAX) {					//Insercion al final del vector
 		v[tamlog]=dato;
 		tamlog++;
-	} else {								//Insercion en la posicion dada
-		for (int i=tamlog-1;i>=pos;i--) {
+	} else {
+		 //Insercion en la posicion dada
+		for (int i=tamlog;i>(int)pos;i--) {
 			v[i+1]=v[i];
 		}
 		v[pos]=dato;

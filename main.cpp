@@ -210,13 +210,13 @@ void programa2() {
 
     Iterador<Parque> it2 = buscaParque(cp.getparques(), "VIVERO DE MIGAS CALIENTES");
     //Sí debe estar
-    if (it.fin())
+    if (it2.fin())
     {
         cout << "  No se ha encontrado parque VIVERO DE MIGAS CALIENTES" << endl;
     }
     else
     {
-        cout<<"  codigo: " << to_string(it.dato().getCodigoParque()) <<" nombre: "<< it.dato().getNombreParque()<< endl;
+        cout<<"  codigo: " << to_string(it2.dato().getCodigoParque()) <<" nombre: "<< it2.dato().getNombreParque()<< endl;
     }
 
     cout<< endl<<"BUSCAR ESPECIES CON LA SUBCADENA ROSA EN SU NOMBRE CIENTÍFICO"<<endl;

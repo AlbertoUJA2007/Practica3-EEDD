@@ -114,3 +114,15 @@ VDinamico<Especie*> & ControlParques::getVariantes() {
 ListaDE<Parque> & ControlParques::getparques() {
 	return this->parques;
 }
+
+void ControlParques::eliminarParque(const string &nombre) {
+
+	Iterador<Parque> i = this->parques.iterador();
+
+	while(!i.fin()) {
+		if(i.dato().getNombreParque() == nombre) {
+			this->parques.borra(i);
+		}
+		i.siguiente();
+	}
+}

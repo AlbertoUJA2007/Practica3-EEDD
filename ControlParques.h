@@ -21,6 +21,7 @@ public:
     VDinamico<Especie>& listadoEspecieSubNombre(const string &cadena);
     VDinamico<Especie*>& getVariantes();
     ListaDE<Parque>& getparques();
+    void eliminarParque(const string &nombre);
 };
 
 

@@ -128,7 +128,6 @@ void programa1() {
     cout<<endl<<"PULSAR CUALQUIER TECLA PARA CONTINUAR"<<endl;
     getch();
 }
-
 void programa2() {
      cout << "PROGRAMA DE PRUEBA 2" << endl;
     ControlParques cp(RUTA_ESPECIES, RUTA_PARQUES);
@@ -266,7 +265,22 @@ void programa2() {
         }
     }
     cout<<"  Total: "<<total<<endl;
+
+    cout << "---------------------" << endl;
+    cout << "Trabajo por parejas" << endl;
+
+    cout << "Elimando parque VIVERO DE MIGAS CALIENTES" << endl;
+    cp.eliminarParque("VIVERO DE MIGAS CALIENTES");
+    cout << "Parque eliminado "<< endl;
+    cout << "Buscando el parque en la lista" << endl;
+
+    Parque *p = &cp.buscarParque("VIVERO DE MIGAS CALIENTES");
+
+    if(!p) cout << "El parque ya no existe en la lista" << endl;
+    else cout << "El parque sigue en la lista" << endl; 
 }
+
+
 int main()
 {
     programa1();

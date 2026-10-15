@@ -22,6 +22,7 @@ ControlParques::ControlParques(const string &nomFichEspecies, const string &nomF
 		throw std::runtime_error("[ControlParques:cargaParques]: error al abrir fichero ");
 	}
 
+	this->variantes.ordenar();  //ordenamos por id de menor
 
 }
 
@@ -57,13 +58,13 @@ int ControlParques::contarEspecieParque(const string &nombre) {
 
 	Iterador<Parque> i= this->parques.iterador() ;
 
-	while(i.haySiguiente()) {
+	while(!i.fin()) {
 		if(i.dato().getNombreParque() == nombre) {
 			cant++;
 		}
 		i.siguiente();
 	}
-	if(i.dato().getNombreParque() == nombre) cant++; //contabilizamos el ultimo valor tambien
+
 
 	return cant;
 }
@@ -75,7 +76,7 @@ int ControlParques::contarEspecieParque(const string &nombre) {
  */
 Parque & ControlParques::buscarParque(const string &nombre) {
 
-	Iterador<Parque> i= this->parques.iterador() ;
+	Iterador<Parque> i= this->parques.iterador();
 	Parque *parque = nullptr;
 	bool parar= false;
 	while(!i.fin() && !parar) {

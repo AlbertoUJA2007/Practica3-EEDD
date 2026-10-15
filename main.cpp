@@ -20,7 +20,7 @@ void mostrarLista(ListaDE<T> l)
 Iterador<Parque> buscaParque(ListaDE<Parque>& lista, const string &nombre)
 {
     Iterador<Parque> it = lista.iterador();
-    for (it; it.haySiguiente(); it.siguiente())
+    for (it; !it.fin(); it.siguiente())
     {
         if (it.dato().getNombreParque() == nombre)
         {
@@ -151,8 +151,8 @@ void programa2() {
                 tipo == TipoPlanta::HERB_PERENNES || tipo == TipoPlanta::FRONDOSA) && (resto == 0))
             {
                 pq.insertarEspecie(esp);
-                //Parques con codigo impar
-            }
+
+            }//Parques con codigo impar
             else if ((tipo == TipoPlanta::TAPIZANTE_TREPADORA || tipo == TipoPlanta::CACTACEA_SUCULENTA ||
                 tipo == TipoPlanta::SUBTROPICAL_TROPICAL ||
                 tipo == TipoPlanta::HERB_ANUAL || tipo == TipoPlanta::HERB_ANUALES) && (resto == 1))
@@ -161,6 +161,8 @@ void programa2() {
             }
         }
     }
+    cout << "Cantidad de especies " << especies.getLogico() << endl;
+    cout << "Cantidad de parques " << parques->tam() << endl;
 
     cout << endl << "ASIGNACIÓN DE ESPECIES A LOS PARQUES" << endl;
     for (Iterador<Parque> it = parques->iterador(); !it.fin(); it.siguiente())
@@ -239,14 +241,17 @@ void programa2() {
     }
 
     cout<< endl<<"BUSCAR ESPECIES CON LA SUBCADENA ROSA EN SU NOMBRE CIENTÍFICO"<<endl;
+    int cant=0;
     for (int i =0; i < especies.getLogico(); ++i)
     {
         string ncientif = (especies)[i]->get_nombre_cientifico();
         if (ncientif.find("rosa") != string::npos)
         {
             (especies)[i]->mostrarInfo();
+            cant++;
         }
     }
+    cout << "Cantidad encontrada de parques que tiene ROSA en su nombre cientifico" << cant << endl;
 
     cout<< endl<<"CONTAR CUÁNTOS PARQUES TIENEN LA ESPECIE CON NOMBRE COMÚN ABETO"<<endl;
     it = cp.getparques().iterador();
@@ -277,7 +282,7 @@ void programa2() {
     Parque *p = &cp.buscarParque("VIVERO DE MIGAS CALIENTES");
 
     if(!p) cout << "El parque ya no existe en la lista" << endl;
-    else cout << "El parque sigue en la lista" << endl; 
+    else cout << "El parque sigue en la lista" << endl;
 }
 
 

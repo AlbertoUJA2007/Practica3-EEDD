@@ -26,4 +26,49 @@ public:
     unsigned int altura();
     ~AVL(); //En postorden
 
+    //Metodos auxiliares
+    void inorden(Nodo<T> *p, VDinamico<T*> vector);
+
 };
+
+/**
+ *
+ */
+template<class T>
+AVL<T>::AVL() {
+    raiz = nullptr;
+}
+
+template<class T>
+AVL<T>::AVL(const AVL<T> &origen) {
+
+    if (origen.raiz) {
+        Nodo<T> *p = origen.raiz;
+        this->raiz = new Nodo<T>(raiz);
+        Nodo<T> *izq,*der;
+        izq = raiz->izq;
+        der = raiz->der;
+        insercionPreorden(izq, p->izq);
+        insercionPreorden(der,p->der);
+    }
+}
+
+template<class T>
+void AVL<T>::inorden(Nodo<T> *p, VDinamico<T*> &vector) {
+    if (p != nullptr) {                 //Vemos si ese nodo existe realmente, sino, va hacia atrás en la recursividad
+        inorden(p->izq,vector);         //Hacemos una llamada recursiva al nodo de la izquierda
+        vector.insertar(&p->dato);      //Si este existe y es el ultimo, lo insertamos en el vector. Si no existe
+                                        //  el nodo de la izquierda, insertamos el nodo padre en el vector
+        inorden(p->der,vector);         //hacemos una llamada recursiva al nodo de la derecha
+    }
+}
+
+
+template<class T>
+VDinamico<T*> AVL<T>::recorreInorden() {
+    VDinamico<T*> v;
+    inorden(this->raiz,v);
+    return v;               //Devuelve un vector de punteros a los elementos del AVL
+}
+
+

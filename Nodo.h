@@ -10,7 +10,7 @@ public:
 	T dato;
 
 	//Para listasDE
-	Nodo *ant,*sig;
+	Nodo<T> *ant,*sig;
 	Nodo(const T &dato, Nodo *ant, Nodo *sig):
 			dato(dato),ant(ant),sig(sig){}
 

@@ -29,6 +29,7 @@ private:
     //Metodos auxiliares
     void inorden(NodoArbol<T> *p, VDinamico<T*> vector);
     void preorden(NodoArbol<T> *p, VDinamico<T*> vector);
+    void copia(NodoArbol<T> *p);
 
 public:
     AVL<T>();
@@ -43,26 +44,15 @@ public:
     ~AVL(); //En postorden
 };
 
-/**
- *
- */
 template<class T>
 AVL<T>::AVL() {
     raiz = nullptr;
 }
 
 template<class T>
-AVL<T>::AVL(const AVL<T> &origen) {
-
-    if (origen.raiz) {
-        NodoArbol<T> *p = origen.raiz;
-        this->raiz = new NodoArbol<T>(raiz);
-        NodoArbol<T> *izq,*der;
-        izq = raiz->izq;
-        der = raiz->der;
-        insercionPreorden(izq, p->izq);
-        insercionPreorden(der,p->der);
-    }
+AVL<T>::AVL(const AVL<T> &origen): raiz(nullptr),numElementos(0)
+{
+    this->raiz = copia(origen.raiz);
 }
 
 template<class T>
@@ -74,7 +64,6 @@ void AVL<T>::inorden(NodoArbol<T> *p, VDinamico<T*> &vector) {
         inorden(p->der,vector);         //hacemos una llamada recursiva al nodo de la derecha
     }
 }
-
 
 template<class T>
 VDinamico<T*> AVL<T>::recorreInorden() {
@@ -90,4 +79,29 @@ void AVL<T>::preorden(NodoArbol<T> *p, VDinamico<T *> vector) {
         preorden(p->izq,vector);
         preorden(p->der,vector);
     }
+}
+
+template<class T>
+NodoArbol<T>* AVL<T>::copia(NodoArbol<T> *p) {
+    if (p == nullptr) {             //Si en el arbol orig no existe un nodo, no lo copiamos
+        return nullptr;
+    }
+    NodoArbol<T> *otro = new NodoArbol<T>(p->dato); //Creamos el nodo
+    otro->bal = p->bal;             //Copiamos el equilibrio del arbol origen
+    numElementos++;                 //Aumentamos el tamaño del nuevo arbol
+    otro->izq = copia(p->izq);      //Copia del nodo de la izquierda de forma recursiva
+    otro->der = copia(p->der);      //Copia del nodo de la derecha de forma recursiva
+
+    return otro;
+}
+
+template<class T>
+AVL<T> &AVL<T>::operator=(const AVL<T> &avl) {
+    if (this != &avl) {
+        if (this->raiz != nullptr) {
+            //FALTA BORRAR LOS ELEMENTOS DEL ARBOL
+        }
+        this->raiz = copia(avl.raiz);
+    }
+    return *this;
 }

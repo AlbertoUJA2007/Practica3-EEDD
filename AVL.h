@@ -15,6 +15,8 @@ public:
     NodoArbol(const T&dato, NodoArbol *izq, NodoArbol *der);
     NodoArbol<T>* getDer();
     NodoArbol<T>* getIzq();
+    void setDer(NodoArbol<T> *p);
+    void setIzq(NodoArbol<T> *p);
     T& getDato();
 };
 
@@ -29,8 +31,8 @@ private:
     void rotIzq(NodoArbol<T>* &nodo);
 
     //Metodos auxiliares
-    void inorden(NodoArbol<T> *p, VDinamico<T*> &vector);
-    void preorden(NodoArbol<T> *p, VDinamico<T*> vector);
+    void inorden_v(NodoArbol<T> *p, VDinamico<T*> &vector);
+    void preorden_v(NodoArbol<T> *p, VDinamico<T*> vector);
     NodoArbol<T>* copia(NodoArbol<T> *p);
 
 public:
@@ -40,13 +42,14 @@ public:
     bool inserta(T& dato);
     T* buscaRecursiva(T &dato); //busqueda recursiva
     T* buscaIterativa(T &dato); //busqueda iterativa
-    VDinamico<T*> recorreInorden();
+    VDinamico<T*> recorreInorden_v();
     unsigned int getNumElementos();
     unsigned int altura();
     NodoArbol<T> getIzq(NodoArbol<T> &p);
     NodoArbol<T> getDer(NodoArbol<T> &p);
     char getBal(NodoArbol<T> &p);
     ~AVL<T>() =default; //En postorden
+    int calculaAltura(NodoArbol<T> *p, int altura);
 };
 
 template<typename T>
@@ -84,10 +87,46 @@ template<class T>
 NodoArbol<T>* NodoArbol<T>::getIzq() { return der; }
 
 template<class T>
+void NodoArbol<T>::setDer(NodoArbol<T> *p) {this->der =p; }
+
+template<class T>
+void NodoArbol<T>::setIzq(NodoArbol<T> *p) {this->izq = p; }
+
+template<class T>
 T & NodoArbol<T>::getDato() {return dato; }
 
+template<class T>
+void AVL<T>::rotDer(NodoArbol<T> *&nodo) {
+    NodoArbol<T> *y = nodo;
+    NodoArbol<T> *z;
+
+    nodo = z = y->izq;
+    y->izq = z->der;
+    z->der = y;
+    y->bal--;
+    if (z->bal > 0) y->bal -= z->bal;
+    z->bal--;
+    if(y->bal < 0) z->bal -= -y->bal;
+
+}
+
+template<class T>
+void AVL<T>::rotIzq(NodoArbol<T> *&nodo) {
+    NodoArbol<T> *y;
+    NodoArbol<T> *z;
+
+    y = nodo;
+    nodo = z = y->der;
+    y->der = z->izq;
+    z->izq = y;
+    y->bal++;
+    if (z->bal < 0) y->bal += -z->bal;
+    z->bal++;
+    if(y->bal > 0) z->bal += y->bal;
+}
+
 template<typename T>
-void AVL<T>::inorden(NodoArbol<T> *p, VDinamico<T*> &vector) {
+void AVL<T>::inorden_v(NodoArbol<T> *p, VDinamico<T*> &vector) {
     if (p != nullptr) {                 //Vemos si ese nodo existe realmente, sino, va hacia atrás en la recursividad
         inorden(p->getIzq(),vector);         //Hacemos una llamada recursiva al nodo de la izquierda
         vector.insertar(&p->getDato());      //Si este existe y es el ultimo, lo insertamos en el vector. Si no existe
@@ -97,10 +136,18 @@ void AVL<T>::inorden(NodoArbol<T> *p, VDinamico<T*> &vector) {
 }
 
 template<typename T>
-VDinamico<T*> AVL<T>::recorreInorden() {
+VDinamico<T*> AVL<T>::recorreInorden_v() {
     VDinamico<T*> v;
     inorden(this->raiz,v);
     return v;               //Devuelve un vector de punteros a los elementos del AVL
+}
+
+template<class T>
+unsigned int AVL<T>::getNumElementos() {return this->numElementos; }
+
+template<class T>
+unsigned int AVL<T>::altura() {
+    return calculaAltura();
 }
 
 template<typename T>
@@ -112,11 +159,28 @@ NodoArbol<T> AVL<T>::getDer(NodoArbol<T> &p) {return p.der;}
 template<typename T>
 char AVL<T>::getBal(NodoArbol<T> &p) {return p.bal; }
 
+template<class T>
+int AVL<T>::calculaAltura(NodoArbol<T> *p, int altura) { //PROBABLEMENTE ESTA MAL, NO TOCAR, NECESITO LA INSERCION
+        int izq=0;
+        int der =0;
+        if(!p) return 0;
+        if(p->getIzq()) {
+            izq = altura+1;
+                calculaAltura(p->getIzq(), izq);
 
+        }
+        if(p->getDer()) {
+             der=altura+1;
+                 calculaAltura(p->getDer(), der);
+
+        }
+    if(izq > der ) return  izq;
+    return der;
+}
 
 
 template<typename T>
-void AVL<T>::preorden(NodoArbol<T> *p, VDinamico<T *> vector) {
+void AVL<T>::preorden_v(NodoArbol<T> *p, VDinamico<T *> vector) {
     if (p != nullptr) {
         vector.insertar(&p->dato);
         preorden(p->getIzq(),vector);

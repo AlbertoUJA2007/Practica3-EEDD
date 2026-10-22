@@ -288,10 +288,8 @@ void programa2() {
 }
 
 void programaprueba() {
-    AVL<Parque> a ;
-    Parque p(2323, "DADS");
 
-    a.recorreInorden( );
+    a.recorreInorden_v( );
 }
 int main()
 {

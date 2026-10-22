@@ -1,5 +1,7 @@
 #include <iostream>
 #include <conio.h>
+
+#include "AVL.h"
 #include "ControlParques.h"
 #include "LectorCSV.h"
 #include "ListaDE.h"
@@ -285,11 +287,15 @@ void programa2() {
     else cout << "El parque sigue en la lista" << endl;
 }
 
+void programaprueba() {
+    AVL<Parque> a ;
+    Parque p(2323, "DADS");
 
+    a.recorreInorden( );
+}
 int main()
 {
-    programa1();
-
-    programa2();
+    //programa1(); programa2();
+    programaprueba();
     return 0;
 }

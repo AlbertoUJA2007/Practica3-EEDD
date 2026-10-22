@@ -10,10 +10,12 @@ class NodoArbol {
 private:
     T dato;
     NodoArbol<T> *der,*izq;
-    char bal = 0;
+    char bal = 0; //factor de equilibrio en un avl, 0: equilibrado; -1 desequilibrado por la izq; 1 por la der
 public:
-    NodoArbol(const T&dato, NodoArbol *izq, NodoArbol *der):
-            dato(dato),izq(izq),der(der){}
+    NodoArbol(const T&dato, NodoArbol *izq, NodoArbol *der);
+    NodoArbol<T>* getDer();
+    NodoArbol<T>* getIzq();
+    T& getDato();
 };
 
 
@@ -21,15 +23,15 @@ template<class T>
 class AVL {
 private:
     unsigned int numElementos=0;
-    Nodo <T> *raiz;
+    NodoArbol <T> *raiz;
 
     void rotDer(NodoArbol<T>* &nodo);
     void rotIzq(NodoArbol<T>* &nodo);
 
     //Metodos auxiliares
-    void inorden(NodoArbol<T> *p, VDinamico<T*> vector);
+    void inorden(NodoArbol<T> *p, VDinamico<T*> &vector);
     void preorden(NodoArbol<T> *p, VDinamico<T*> vector);
-    void copia(NodoArbol<T> *p);
+    NodoArbol<T>* copia(NodoArbol<T> *p);
 
 public:
     AVL<T>();
@@ -39,49 +41,19 @@ public:
     T* buscaRecursiva(T &dato); //busqueda recursiva
     T* buscaIterativa(T &dato); //busqueda iterativa
     VDinamico<T*> recorreInorden();
-    unsigned int numElementos();
+    unsigned int getNumElementos();
     unsigned int altura();
-    ~AVL(); //En postorden
+    NodoArbol<T> getIzq(NodoArbol<T> &p);
+    NodoArbol<T> getDer(NodoArbol<T> &p);
+    char getBal(NodoArbol<T> &p);
+    ~AVL<T>() =default; //En postorden
 };
 
-template<class T>
+template<typename T>
 AVL<T>::AVL() {
     raiz = nullptr;
 }
-
-template<class T>
-AVL<T>::AVL(const AVL<T> &origen): raiz(nullptr),numElementos(0)
-{
-    this->raiz = copia(origen.raiz);
-}
-
-template<class T>
-void AVL<T>::inorden(NodoArbol<T> *p, VDinamico<T*> &vector) {
-    if (p != nullptr) {                 //Vemos si ese nodo existe realmente, sino, va hacia atrás en la recursividad
-        inorden(p->izq,vector);         //Hacemos una llamada recursiva al nodo de la izquierda
-        vector.insertar(&p->dato);      //Si este existe y es el ultimo, lo insertamos en el vector. Si no existe
-                                        //  el nodo de la izquierda, insertamos el nodo padre en el vector
-        inorden(p->der,vector);         //hacemos una llamada recursiva al nodo de la derecha
-    }
-}
-
-template<class T>
-VDinamico<T*> AVL<T>::recorreInorden() {
-    VDinamico<T*> v;
-    inorden(this->raiz,v);
-    return v;               //Devuelve un vector de punteros a los elementos del AVL
-}
-
-template<class T>
-void AVL<T>::preorden(NodoArbol<T> *p, VDinamico<T *> vector) {
-    if (p != nullptr) {
-        vector.insertar(&p->dato);
-        preorden(p->izq,vector);
-        preorden(p->der,vector);
-    }
-}
-
-template<class T>
+template<typename T>
 NodoArbol<T>* AVL<T>::copia(NodoArbol<T> *p) {
     if (p == nullptr) {             //Si en el arbol orig no existe un nodo, no lo copiamos
         return nullptr;
@@ -89,13 +61,71 @@ NodoArbol<T>* AVL<T>::copia(NodoArbol<T> *p) {
     NodoArbol<T> *otro = new NodoArbol<T>(p->dato); //Creamos el nodo
     otro->bal = p->bal;             //Copiamos el equilibrio del arbol origen
     numElementos++;                 //Aumentamos el tamaño del nuevo arbol
-    otro->izq = copia(p->izq);      //Copia del nodo de la izquierda de forma recursiva
-    otro->der = copia(p->der);      //Copia del nodo de la derecha de forma recursiva
+    otro->getIzq() = copia(p->getIzq());      //Copia del nodo de la izquierda de forma recursiva
+    otro->der = copia(p->getDer());      //Copia del nodo de la derecha de forma recursiva
 
     return otro;
 }
 
+template<typename T>
+AVL<T>::AVL(const AVL<T> &origen): raiz(nullptr)
+{
+    this->raiz = copia(origen.raiz);
+}
+
 template<class T>
+NodoArbol<T>::NodoArbol(const T &dato, NodoArbol *izq, NodoArbol *der) { dato=0; izq=0; der=0;
+}
+
+template<class T>
+NodoArbol<T>* NodoArbol<T>::getDer() {return izq; }
+
+template<class T>
+NodoArbol<T>* NodoArbol<T>::getIzq() { return der; }
+
+template<class T>
+T & NodoArbol<T>::getDato() {return dato; }
+
+template<typename T>
+void AVL<T>::inorden(NodoArbol<T> *p, VDinamico<T*> &vector) {
+    if (p != nullptr) {                 //Vemos si ese nodo existe realmente, sino, va hacia atrás en la recursividad
+        inorden(p->getIzq(),vector);         //Hacemos una llamada recursiva al nodo de la izquierda
+        vector.insertar(&p->getDato());      //Si este existe y es el ultimo, lo insertamos en el vector. Si no existe
+                                        //  el nodo de la izquierda, insertamos el nodo padre en el vector
+        inorden(p->getDer(),vector);         //hacemos una llamada recursiva al nodo de la derecha
+    }
+}
+
+template<typename T>
+VDinamico<T*> AVL<T>::recorreInorden() {
+    VDinamico<T*> v;
+    inorden(this->raiz,v);
+    return v;               //Devuelve un vector de punteros a los elementos del AVL
+}
+
+template<typename T>
+NodoArbol<T> AVL<T>::getIzq(NodoArbol<T> &p) {return p.izq;}
+
+template<typename T>
+NodoArbol<T> AVL<T>::getDer(NodoArbol<T> &p) {return p.der;}
+
+template<typename T>
+char AVL<T>::getBal(NodoArbol<T> &p) {return p.bal; }
+
+
+
+
+template<typename T>
+void AVL<T>::preorden(NodoArbol<T> *p, VDinamico<T *> vector) {
+    if (p != nullptr) {
+        vector.insertar(&p->dato);
+        preorden(p->getIzq(),vector);
+        preorden(p->getDer(),vector);
+    }
+}
+
+
+template<typename T>
 AVL<T> &AVL<T>::operator=(const AVL<T> &avl) {
     if (this != &avl) {
         if (this->raiz != nullptr) {

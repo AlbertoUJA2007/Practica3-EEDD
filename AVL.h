@@ -167,7 +167,6 @@ int AVL<T>::calculaAltura(NodoArbol<T> *p, int altura) { //PROBABLEMENTE ESTA MA
         if(p->getIzq()) {
             izq = altura+1;
                 calculaAltura(p->getIzq(), izq);
-
         }
         if(p->getDer()) {
              der=altura+1;

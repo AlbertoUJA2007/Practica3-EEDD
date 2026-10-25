@@ -56,8 +56,7 @@ NodoArbol<T>* AVL<T>::copia(NodoArbol<T> *p) {
         return nullptr;
     }
     NodoArbol<T> *otro = new NodoArbol<T>(p->dato); //Creamos el nodo
-    otro->bal = p->bal;             //Copiamos el equilibrio del arbol origen
-    numElementos++;                 //Aumentamos el tamaño del nuevo arbol
+    otro->bal = p->bal;             //Copiamos el equilibrio del nodo origen
     otro->izq = copia(p->izq);      //Copia del nodo de la izquierda de forma recursiva
     otro->der = copia(p->der);      //Copia del nodo de la derecha de forma recursiva
 
@@ -155,12 +154,15 @@ void AVL<T>::preorden_v(NodoArbol<T> *p, VDinamico<T *> vector) {
 
 
 template<typename T>
-AVL<T> &AVL<T>::operator=(const AVL<T> &avl) {          //ACABAR METODO
+AVL<T> &AVL<T>::operator=(const AVL<T> &avl) {
     if (this != &avl) {
         if (this->raiz != nullptr) {
-            //FALTA BORRAR LOS ELEMENTOS DEL ARBOL
+            borrar(this->raiz);
+            this->raiz = nullptr;
+            numElementos = 0;
         }
         this->raiz = copia(avl.raiz);
+        this->numElementos = avl.numElementos;
     }
     return *this;
 }
@@ -272,10 +274,19 @@ T *AVL<T>::busquedaAux(NodoArbol<T> *p, T &dato) {
 
 template<class T>
 void AVL<T>::borrar(NodoArbol<T> *p) {
+    if (p != nullptr) {        //Si no es un arbol vacio
 
+        borrar(p->izq);
+        borrar(p->der);
+
+        delete p;
+        p = nullptr;
+    }
 }
 
 template<class T>
 AVL<T>::~AVL() {
-
+    borrar(this->raiz);
+    this->raiz = nullptr;
+    numElementos = 0;
 }

@@ -2,7 +2,6 @@
 #ifndef PRACTICA2_EEDD_AVL_H
 #define PRACTICA2_EEDD_AVL_H
 #endif //PRACTICA2_EEDD_AVL_H
-#include "ListaDE.h"
 #include "VDinamico.h"
 
 template<class T>
@@ -178,25 +177,26 @@ bool AVL<T>::inserta(T &dato) {         //ACABAR METODO
     NodoArbol<T> *p = this->raiz;
     insertar_preorden(dato, p);
 
-
+    return false;
 }
 
 template<class T>
 bool AVL<T>::insertar_preorden(T &dato, NodoArbol<T> *p) {      //ACABAR METODO
     if (!p->izq || !p->der) {
 
-        if ( p->dato == dato) {
+        if ( p->dato == dato) { //no admitimos repetidos
             return false;
         }
-        if (dato < p->dato  && !p->izq) {
-            NodoArbol<T> nuevo = new NodoArbol<T>(dato,nullptr,nullptr);
+        NodoArbol<T> nuevo = new NodoArbol<T>(dato,nullptr,nullptr);
+        if (dato < p->dato  && !p->izq) { //la inserción se hara por la izq del nodo actual
             p->izq = nuevo;
             p->bal-1;
 
             return true;
         }
-        if (dato > p->dato && !p->der) {
-
+        if (dato > p->dato && !p->der) { //la inserciñon se hace a la derecha del nodo actual
+            p->der= nuevo;
+            p->bal+1;
             return true;
         }
 
@@ -213,12 +213,14 @@ bool AVL<T>::insertar_preorden(T &dato, NodoArbol<T> *p) {      //ACABAR METODO
     }if (dato > p->dato ){
         insertar_preorden(dato, p->der);
     }
+    return false ;
 }
 
 template<class T>
 int AVL<T>::alturaNodo(NodoArbol<T> *p) {
     if (!p->izq && !p->der ) return 0; // es nodo hoja
     if ((!p->izq && p->der) || (p->izq && !p->der)) return 1; // solo tiene un hijo
+    return 0;
 
 }
 
@@ -233,7 +235,8 @@ T* AVL<T>::buscaIterativa(T &dato) {
     while ( p != nullptr ) {        //Compruebo si ya pasó un nodo hoja
         if (p->dato == dato) {
             return &p->dato;        //Encuentra el dato
-        } else if (p->dato > dato) {
+        }
+        if (p->dato > dato) {
                 p = p->izq;         //Si el dato es mayor, me voy a la izquierda
                 } else {
                     p = p->der;     //Si el dato es menor, me voy a la derecha

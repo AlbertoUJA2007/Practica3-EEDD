@@ -5,7 +5,7 @@
 #include <Especie.h>
 using namespace std;
 
-template <class T>
+
 class Arbol {
 private:
     string assetnum;
@@ -32,6 +32,7 @@ public:
     string getCodigoEspecie() const;
     string getTipoEspecie() const;
     string getNombreComun() const;
+    float getAltura() const;
 };
 
 

@@ -6,7 +6,7 @@
 
 Parque::Parque():codigo_parque(0),nombre_parque(" ") {}
 
-Parque::Parque(int codigo, const string &nombre, const VDinamico<Especie*> &especies):
+Parque::Parque(int codigo, const string &nombre, const VDinamico<Arbol*> &especies):
             codigo_parque(codigo),nombre_parque(nombre),contenedor(especies) {
 }
 
@@ -37,32 +37,28 @@ void Parque::setNombreParque(const string &nombre) {
     this->nombre_parque = nombre;
 }
 
-void Parque::insertarEspecie(Especie *esp) {
-    contenedor.insertar(esp,contenedor.getLogico());
+void Parque::insertarArbol(Arbol *arbol) {
+    this->contenedor.insertar(arbol);
 }
 
 bool Parque::existeNComun(const string &nombre) {
-    for (int i = 0; i < contenedor.getLogico(); i++) {
-        if (contenedor[i]->get_nombre_comun() == nombre) {
+    for(int i =0; i < this->contenedor.getLogico(); i++) {
+        if(this->contenedor[i]->getNombreComun() == nombre) {
             return true;
         }
     }
     return false;
 }
 
-bool Parque::existeNCientifico(const string &nombre) {
-    for (int i = 0; i < contenedor.getLogico(); i++) {
-        if (contenedor[i]->get_nombre_cientifico() == nombre) {
-            return true;
+Arbol* Parque::arbolMasAlto() {
+
+    Arbol *a = this->contenedor[0];
+
+    for(int i =1; i < this->contenedor.getLogico(); i++) {
+        if(this->contenedor[i]->getAltura() > a->getAltura()) {
+            a= this->contenedor[i];
         }
     }
-    return false;
+    return a;
 }
 
-unsigned int Parque::getCantEspecies() {
-    return this->contenedor.getLogico();
-}
-
-VDinamico<Especie *>& Parque::get_contenedor() {
-    return this->contenedor;
-}

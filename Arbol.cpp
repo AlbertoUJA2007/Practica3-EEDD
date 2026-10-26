@@ -3,3 +3,7 @@
 //
 
 #include "Arbol.h"
+
+float Arbol::getAltura() const {
+	return altura;
+}

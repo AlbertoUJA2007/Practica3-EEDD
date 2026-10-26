@@ -121,22 +121,21 @@ unsigned int AVL<T>::getNumElementos() {return this->numElementos; }
 
 template<class T>
 unsigned int AVL<T>::altura() {
-    return calculaAltura();
+    return calculaAltura(this->raiz, 0);
 }
 
 template<class T>
-int AVL<T>::calculaAltura(NodoArbol<T> *p, int altura) { //PROBABLEMENTE ESTA MAL, NO TOCAR, NECESITO LA INSERCION
-        int izq=0;
-        int der =0;
+int AVL<T>::calculaAltura(NodoArbol<T> *p, int altura) {
+        int izq=0, der =0;
         if(!p) return 0;
         if(p->izq) {
-            izq = altura+1;
-                calculaAltura(p->izq, izq);
+            izq = calculaAltura(p->izq, altura+1);
         }
         if(p->der) {
-             der=altura+1;
-                 calculaAltura(p->der, der);
-
+             der=calculaAltura(p->der, altura+1);
+        }
+        if(!p->izq && !p->der) { //es nodo hoja
+            return altura+1;
         }
     if( izq > der ) return  izq;
     return der;

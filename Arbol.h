@@ -5,7 +5,6 @@
 #include <Especie.h>
 using namespace std;
 
-
 class Arbol {
 private:
     string assetnum;
@@ -28,9 +27,13 @@ public:
     Arbol(const Arbol &orig);
     ~Arbol();
 
-    void setEspecie(const Especie &e);
+    Arbol &operator=(const Arbol &arbol);
+    bool operator>(const Arbol &arbol);
+    bool operator<(const Arbol &arbol);
+
+    void setEspecie(Especie *e);
     string getCodigoEspecie() const;
-    string getTipoEspecie() const;
+    TipoPlanta getTipoEspecie() const;
     string getNombreComun() const;
     float getAltura() const;
 };

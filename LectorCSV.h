@@ -4,6 +4,7 @@
 #include <cstddef>
 #include <string>
 
+#include "AVL.h"
 #include "Especie.h"
 #include "ListaDE.h"
 #include "Parque.h"
@@ -21,6 +22,8 @@ class LectorCSV {
 public:
     bool static  cargarEspecies(VDinamico<Especie*> &vector, const std::string& rutaFichero);
     bool static cargarParques(ListaDE<Parque> &parques, const std::string &rutaFichero);
+
+    bool static cargosArbol(AVL<Arbol *> &arboles, const std::string &rutaFichero, ListaDE<Parque> &parques);
 
     std::size_t numeroEspecies() const;
     std::size_t filasDescartadas() const;

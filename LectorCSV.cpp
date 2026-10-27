@@ -229,3 +229,70 @@ bool  LectorCSV::cargarParques(ListaDE<Parque > &parques, const std::string &rut
     numeroEspecies_= parques.tam();
     return true;
 }
+
+bool LectorCSV::cargosArbol(AVL<Arbol *> &arboles, const std::string &rutaFichero, ListaDE<Parque> &parques) {
+    filasDescartadas_ = 0;
+
+    std::ifstream fichero(rutaFichero);
+    if (!fichero.is_open()) {
+        return false;
+    }
+
+    std::string linea;
+    if (std::getline(fichero, linea)) {
+        eliminarBOM(linea);
+    }
+
+    //Declaradas fuera del bucle por eficiencia
+
+    while (std::getline(fichero, linea)) {
+        if (linea.empty()) {
+            continue;
+        }
+
+        if (contarCampos(linea) < 2) {
+            ++filasDescartadas_;
+            continue;
+        }
+
+        string assetnum;
+        int num_parque;
+        int num_distrito;
+        string nombre_distrito;
+        int num_barrio;
+        string nombre_barrio;
+        double x;
+        double y;
+        float perimetro;
+        float altura;
+
+
+        assetnum = extraerCampo(linea, 0);
+        num_parque = stoi(extraerCampo(linea, 1));
+        num_distrito = stoi(extraerCampo(linea, 2));
+        nombre_distrito = extraerCampo(linea, 3);
+        num_barrio = stoi(extraerCampo(linea, 4));
+        nombre_barrio= extraerCampo(linea, 5);
+        x= stod(extraerCampo(linea, 6));
+        y= stod(extraerCampo(linea, 7));
+        perimetro = stof(extraerCampo(linea, 8));
+        altura = stof(extraerCampo(linea, 9));
+
+        Arbol *a = new Arbol(assetnum,  num_parque,  num_distrito,
+        nombre_distrito,  num_barrio, nombre_barrio,
+         x,  y,  perimetro,  altura);
+        arboles.inserta(a);
+
+        Iterador<Parque> i = parques.iterador();
+
+        while(!i.fin()) { //ligamos el arbol con un parque
+            if(i.dato().getCodigoParque() == num_parque) {
+                i.dato().insertarArbol(a);
+            }
+            i.siguiente();
+        }
+
+    }
+
+    return true;
+}

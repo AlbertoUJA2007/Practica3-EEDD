@@ -35,7 +35,9 @@ public:
     string getCodigoEspecie() const;
     TipoPlanta getTipoEspecie() const;
     string getNombreComun() const;
-    float getAltura() const;
+    void setAsNum(const string &asNum);
+
+    float get_altura() const;
 };
 
 

@@ -30,10 +30,11 @@ public:
     void insertarArbol(Arbol *arbol);
     bool existeNComun(const string &nombre);
     Arbol* arbolMasAlto();
-    int contrarEspecies();
-    int contarTipos();
 
-    unsigned int getCantEspecies();
+    unsigned int contrarEspecies();
+
+    unsigned int contarTipos();
+
 
     VDinamico<Arbol*>& get_contenedor();
 };

@@ -4,45 +4,173 @@
 #endif //PRACTICA2_EEDD_AVL_H
 #include "VDinamico.h"
 
+/**
+ * @brief Clase que representa un nodo en un árbol AVL.
+ * @tparam T Tipo de dato almacenado en el nodo.
+ */
 template<class T>
 class NodoArbol {
 public:
     T dato;
     NodoArbol<T> *der,*izq;
     char bal = 0; //factor de equilibrio en un avl, 0: equilibrado; -1 desequilibrado por la izq; 1 por la der
+
+    /**
+     * @brief Constructor del nodo.
+     * @param dato Dato a almacenar en el nodo.
+     * @param izq Puntero al hijo izquierdo (por defecto nullptr).
+     * @param der Puntero al hijo derecho (por defecto nullptr).
+     */
     NodoArbol(const T&dato, NodoArbol *izq, NodoArbol *der);
 };
 
-
+/**
+ * @brief Clase plantilla que implementa un árbol binario de búsqueda auto-balanceado (AVL).
+ * @tparam T Tipo de dato que almacenará el árbol AVL.
+ */
 template<class T>
 class AVL {
 private:
     unsigned int numElementos=0;
     NodoArbol <T> *raiz;
 
+    /**
+     * @brief Realiza una rotación simple a la derecha en el subárbol dado.
+     * @param[in,out] nodo Referencia al puntero del nodo raíz del subárbol a rotar.
+     */
     void rotDer(NodoArbol<T>* &nodo);
+    /**
+     * @brief Realiza una rotación simple a la izquierda en el subárbol dado.
+     * @param[in,out] nodo Referencia al puntero del nodo raíz del subárbol a rotar.
+     */
     void rotIzq(NodoArbol<T>* &nodo);
 
     //Metodos auxiliares
+
+    /**
+     * @brief Recorre en inorden el subárbol e inserta punteros a sus elementos en un vector dinámico.
+     * @param p Nodo raíz del subárbol a recorrer.
+     * @param[out] vector Vector dinámico donde se almacenarán los punteros a los datos.
+     */
     void inorden_v(NodoArbol<T> *p, VDinamico<T*> &vector);
+
+    /**
+     * @brief Recorre en preorden el subárbol e inserta punteros a sus elementos en un vector dinámico.
+     * @param p Nodo raíz del subárbol a recorrer.
+     * @param[out] vector Vector dinámico donde se almacenarán los punteros a los datos.
+     */
     void preorden_v(NodoArbol<T> *p, VDinamico<T*> vector);
+
+    /**
+     * @brief Realiza una copia profunda recursiva de una estructura de árbol.
+     * @param p Nodo raíz del subárbol a copiar.
+     * @return NodoArbol<T>* Puntero a la raíz de la nueva estructura copiada.
+     */
     NodoArbol<T>* copia(NodoArbol<T> *p);
+
+    /**
+     * @brief Calcula la altura máxima de un subárbol a partir del nodo dado.
+     * @param p Nodo desde el que se calcula la altura.
+     * @param altura Acumulador de nivel actual.
+     * @return int Altura total del subárbol.
+     */
     int calculaAltura(NodoArbol<T> *p, int altura);
+
+    /**
+     * @brief Método auxiliar recursivo para insertar un dato en preorden comprobando balanceo.
+     * @param[in] dato Dato a insertar.
+     * @param p Nodo actual del recorrido.
+     * @return true Si se realizó la inserción con éxito.
+     * @return false Si no se pudo insertar (por ejemplo, por estar duplicado).
+     */
     bool insertar_preorden(T &dato, NodoArbol<T> *p);
+
+    /**
+     * @brief Calcula la altura aproximada de un nodo según la presencia de sus hijos.
+     * @param p Puntero al nodo a evaluar.
+     * @return int Retorna 0 si es hoja o nulo, 1 si tiene un solo hijo.
+     */
     int alturaNodo(NodoArbol<T> *p);
+
+    /**
+     * @brief Método auxiliar recursivo para la búsqueda de un dato en el árbol.
+     * @param p Nodo actual en el recorrido de búsqueda.
+     * @param dato Dato a buscar.
+     * @return T* Puntero al dato encontrado.
+     * @throw std::out_of_range Si el dato no se encuentra en el subárbol.
+     */
     T* busquedaAux(NodoArbol<T> *p, T &dato);
+
+    /**
+     * @brief Elimina recursivamente en postorden todos los nodos de un subárbol y libera su memoria.
+     * @param p Nodo raíz del subárbol a borrar.
+     */
     void borrar(NodoArbol<T> *p);
 
 public:
+
+    /**
+     * @brief Constructor por defecto de la clase AVL. Crea un árbol vacío.
+     */
     AVL<T>();
+
+    /**
+     * @brief Constructor de copia. Crea una copia idéntica del árbol origen.
+     * @param origen Árbol AVL a copiar.
+     */
     AVL<T>(const AVL<T> &origen);   //En preorden y debe crear una copia identica
+
+    /**
+         * @brief Operador de asignación. Realiza una copia idéntica del árbol AVL dado.
+         * @param avl Árbol AVL a copiar.
+         * @return AVL<T>& Referencia al árbol actual asignado.
+         */
     AVL<T>& operator=(const AVL<T> &avl);   //Debe crear una copia identica
+
+    /**
+         * @brief Inserta un nuevo elemento en el árbol AVL manteniéndolo balanceado.
+         * @param dato Dato a insertar.
+         * @return true Si la inserción fue exitosa, false en caso contrario.
+         */
     bool inserta(T& dato);
+
+    /**
+     * @brief Busca un dato en el árbol de forma recursiva.
+     * @param dato Referencia al dato a buscar.
+     * @return T* Puntero al dato encontrado en el árbol.
+     * @throw std::out_of_range Si el árbol está vacío o el elemento no existe.
+     */
     T* buscaRecursiva(T &dato); //busqueda recursiva
+
+    /**
+     * @brief Busca un dato en el árbol de forma iterativa.
+     * @param dato Referencia al dato a buscar.
+     * @return T* Puntero al dato encontrado en el árbol.
+     * @throw std::out_of_range Si el árbol está vacío o el elemento no existe.
+     */
     T* buscaIterativa(T &dato); //busqueda iterativa
-    VDinamico<T*> recorreInorden_v();
+
+    /**
+     * @brief Realiza un recorrido en inorden y devuelve un vector dinámico con los elementos.
+     * @return VDinamico<T>* Vector dinámico con los punteros a los elementos del AVL.
+     */
+    VDinamico<T>* recorreInorden_v();
+
+    /**
+     * @brief Obtiene el número total de elementos almacenados en el árbol.
+     * @return unsigned int Cantidad de elementos del AVL.
+     */
     unsigned int getNumElementos();
+
+    /**
+     * @brief Calcula y devuelve la altura máxima del árbol.
+     * @return unsigned int Altura del árbol.
+     */
     unsigned int altura();
+
+    /**
+     * @brief Destructor de la clase AVL. Libera la memoria consumida por todos sus nodos en postorden.
+     */
     ~AVL<T>(); //En postorden
 };
 
@@ -109,8 +237,8 @@ void AVL<T>::inorden_v(NodoArbol<T> *p, VDinamico<T*> &vector) {
 }
 
 template<typename T>
-VDinamico<T*> AVL<T>::recorreInorden_v() {
-    VDinamico<T*> v;
+VDinamico<T>* AVL<T>::recorreInorden_v() {
+    VDinamico<T> *v = new VDinamico<T>();
     inorden(this->raiz,v);
     return v;               //Devuelve un vector de punteros a los elementos del AVL
 }

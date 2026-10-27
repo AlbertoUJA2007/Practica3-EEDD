@@ -4,6 +4,7 @@
 
 #ifndef PRACTICA2_EEDD_CONTROLPARQUES_H
 #define PRACTICA2_EEDD_CONTROLPARQUES_H
+#include "AVL.h"
 #include "ListaDE.h"
 #include "Parque.h"
 
@@ -11,17 +12,30 @@ class ControlParques {
 private:
     ListaDE<Parque> parques;
     VDinamico<Especie*> variantes;
+    AVL<Arbol*> arboles;
+
 public:
-    ControlParques(const string &nomFichEspecies, const string &nomFichParques);    //Hay que cargar los ficheros aqui
+    ControlParques(const string &nomFichEspecies, const string &nomFichParques, const string &nomFiceroArbol);    //Hay que cargar los ficheros aqui
     ~ControlParques();
 
-    void asignarEspecieParque( Especie &e,  Parque &p);
-    int contarEspecieParque(const string &nombre);
-    Parque& buscarParque(const string &nombre);
+
+    Parque *buscarParque(const string &nombre);
     VDinamico<Especie>& listadoEspecieSubNombre(const string &cadena);
     VDinamico<Especie*>& getVariantes();
     ListaDE<Parque>& getparques();
+    AVL<Arbol*>& getArboles();
+
+
+    Arbol& buscarArbol(const string &asnum);
     void eliminarParque(const string &nombre);
+    VDinamico<Arbol*>* listaArbolesParque(const string &nombre_parque);
+
+    Arbol *getArbolMasAlto();
+
+    unsigned int contarEspecies(const string &nombreparque);
+
+    unsigned int contarTipos();
+
 };
 
 

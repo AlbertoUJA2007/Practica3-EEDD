@@ -288,16 +288,16 @@ bool AVL<T>::inserta(T &dato) {         //ACABAR METODO
     }
 
     NodoArbol<T> *p = this->raiz;
-    insertar_preorden(dato, p);
+    return insertar_preorden(dato, p);
 
-    return false;
+
 }
 
 template<typename T>
 bool AVL<T>::insertar_preorden(T &dato, NodoArbol<T> *p) {      //ACABAR METODO
     if (!p->izq || !p->der) {
 
-        if ( p->dato == dato) { //no admitimos repetidos
+        if ( p->dato == dato && p != raiz) { //no admitimos repetidos
             return false;
         }
         NodoArbol<T> *nuevo = new NodoArbol<T>(dato,nullptr,nullptr);
@@ -326,7 +326,7 @@ bool AVL<T>::insertar_preorden(T &dato, NodoArbol<T> *p) {      //ACABAR METODO
     }if (dato > p->dato ){
         insertar_preorden(dato, p->der);
     }
-    return false ;
+
 }
 
 template<typename T>

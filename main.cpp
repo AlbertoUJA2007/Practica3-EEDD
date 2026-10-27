@@ -73,7 +73,7 @@ void cargarAVL(const std::string &ruta, AVL<Arbol> &avl)
             continue;
 
         Arbol arbol = leerArbol(linea);
-
+        cout << "insertado " << arbol.getAssetNum() << endl;
         if (!avl.inserta(arbol))
             throw std::runtime_error(
                 "Identificador duplicado: " + arbol.getAssetNum());

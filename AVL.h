@@ -202,10 +202,10 @@ bool AVL<T>::insertar_preorden(T &dato, NodoArbol<T> *p) {      //ACABAR METODO
 
         //verificamos rotaciones
         if (alturaNodo(p->izq)- alturaNodo(p->der) == -2) { //desbalanceo izq
-
+            rotDer(p);
         }
         if (alturaNodo(p->izq)- alturaNodo(p->der) == 2) {
-            // desbalanceo der
+            rotIzq(p);
         }
     }
     if (dato < p->dato) {

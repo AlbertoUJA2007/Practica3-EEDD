@@ -174,3 +174,14 @@ TipoPlanta Especie::stringtotp(const string &texto) {
 
 	}
 
+Especie::~Especie() {
+	this->codigoEspecie ="";
+	this->nombreComun="";
+	this->nombreCientifico="";
+	this->tipo_planta_ = TipoPlanta::NONE;
+}
+
+Especie::Especie(const string &cod, const string &nombre) {
+	this->codigoEspecie = cod; this->nombreComun = nombre;
+}
+

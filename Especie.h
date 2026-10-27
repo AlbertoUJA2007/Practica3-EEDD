@@ -57,6 +57,8 @@ public:
 
 	static string tptostring(const TipoPlanta &p);
 	static TipoPlanta stringtotp(const string &texto);
+	~Especie();
+	Especie(const string &cod, const string &nombre);
 
 };
 

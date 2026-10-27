@@ -22,7 +22,7 @@ float leerMedida(std::string campo)
     return campo.empty() ? -1.0f : std::stof(campo);
 }
 
-Arbol leerArbol(const std::string &linea)
+Arbol& leerArbol(const std::string &linea)
 {
     std::stringstream registro(linea);
     std::string campos[12];
@@ -39,7 +39,7 @@ Arbol leerArbol(const std::string &linea)
     std::replace(campos[6].begin(), campos[6].end(), ',', '.');
     std::replace(campos[7].begin(), campos[7].end(), ',', '.');
 
-    return Arbol(
+    Arbol *a  = new  Arbol(
         campos[0],
         std::stoi(campos[1]),
         std::stoi(campos[2]),
@@ -49,7 +49,9 @@ Arbol leerArbol(const std::string &linea)
         std::stod(campos[6]),
         std::stod(campos[7]),
         leerMedida(campos[10]),
-        leerMedida(campos[11]));
+        leerMedida(campos[11]),
+        new Especie(campos[10], campos[11]));
+    return *a;
 }
 
 void cargarAVL(const std::string &ruta, AVL<Arbol> &avl)
@@ -106,7 +108,7 @@ void prueba1() {
       std::cout << "PROGRAMA DE PRUEBA I\n"
                   << "-------------------\n\n";
 
-        const std::string ruta = "./data/arboladoMadrid.csv";
+        const std::string ruta = "arboladoMadrid.csv";
 
         AVL<Arbol> avl;
         VDinamico<Arbol> arboles;
@@ -239,7 +241,7 @@ void prueba1() {
         }
 
 }
-
+/*
 void prueba2() {
      std::cout << "\nPROGRAMA DE PRUEBA II\n"
                   << "-------------------\n\n";
@@ -440,7 +442,7 @@ void prueba2() {
                       << "\nTipo de planta: " << arbol->getTipo()
                       << '\n';
         }
-}
+}*/
 
 int main()
 {

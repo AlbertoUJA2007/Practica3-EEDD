@@ -280,9 +280,8 @@ AVL<T> &AVL<T>::operator=(const AVL<T> &avl) {
 template<typename T>
 bool AVL<T>::inserta(T &dato) {         //ACABAR METODO
     if (this->raiz == nullptr) {
-        this->raiz->dato = dato;
-        this->raiz->izq = nullptr;
-        this->raiz->der = nullptr;
+        NodoArbol<T> *nuevo = new NodoArbol<T>(dato,0,0);
+        this->raiz= nuevo;
         return true;
     }
 
@@ -388,14 +387,8 @@ T *AVL<T>::busquedaAux(NodoArbol<T> *p, T &dato) {
 
 template<typename T>
 void AVL<T>::borrar(NodoArbol<T> *p) {
-    if (p != nullptr) {        //Si no es un arbol vacio
-
-        borrar(p->izq);
-        borrar(p->der);
-
-        delete p;
-        p = nullptr;
-    }
+   NodoArbol<T> *borrado;
+    
 }
 
 template<typename T>

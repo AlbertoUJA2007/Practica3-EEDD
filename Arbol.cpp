@@ -25,9 +25,9 @@ Arbol::Arbol(): assetnum(""),num_parque(0),num_distrito(0),
  * @param altura Altura del árbol.
  */
 Arbol::Arbol(const string &assetnum, int num_parque, int num_distrito, const string &nombre_distrito, int num_barrio,
-    const string &nombre_barrio, double x, double y, float perimetro, float altura):
+    const string &nombre_barrio, double x, double y, float perimetro, float altura, Especie* especie):
         assetnum(assetnum),num_parque(num_parque),num_distrito(num_distrito),nombre_distrito(nombre_distrito),
-        num_barrio(num_barrio),nombre_barrio(nombre_barrio),x(x),y(y),perimetro(perimetro),altura(altura)
+        num_barrio(num_barrio),nombre_barrio(nombre_barrio),x(x),y(y),perimetro(perimetro),altura(altura), especie_arbol(especie)
 {
 }
 
@@ -42,7 +42,25 @@ Arbol::Arbol(const Arbol &orig): assetnum(orig.assetnum),num_parque(orig.num_par
 {
 }
 
-
+/**
+ * @brief Constructor parametrizado de la clase Arbol.
+ * @param assetnum Identificador único del árbol.
+ * @param num_parque Número del parque donde se ubica el árbol.
+ * @param num_distrito Número del distrito.
+ * @param nombre_distrito Nombre del distrito.
+ * @param num_barrio Número del barrio.
+ * @param nombre_barrio Nombre del barrio.
+ * @param x Coordenada X de la ubicación del árbol.
+ * @param y Coordenada Y de la ubicación del árbol.
+ * @param perimetro Perímetro del tronco del árbol.
+ * @param altura Altura del árbol.
+ */
+Arbol::Arbol(const string &assetnum, int num_parque, int num_distrito, const string &nombre_distrito, int num_barrio,
+	const string &nombre_barrio, double x, double y, float perimetro, float altura):
+		assetnum(assetnum),num_parque(num_parque),num_distrito(num_distrito),nombre_distrito(nombre_distrito),
+		num_barrio(num_barrio),nombre_barrio(nombre_barrio),x(x),y(y),perimetro(perimetro),altura(altura)
+{
+}
 
 /**
  * @brief Destructor de la clase Arbol.
@@ -59,8 +77,11 @@ Arbol::~Arbol() {
     this->y = 0;
     this->perimetro = 0;
     this->altura = 0;
-    delete especie_arbol;
-    especie_arbol = nullptr;
+	if(especie_arbol) {
+		delete especie_arbol;
+		especie_arbol = nullptr;
+	}
+
 }
 
 /**

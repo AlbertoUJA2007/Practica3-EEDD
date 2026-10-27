@@ -87,7 +87,7 @@ private:
      * @brief Elimina recursivamente en postorden todos los nodos de un subárbol y libera su memoria.
      * @param p Nodo raíz del subárbol a borrar.
      */
-    void borrar(NodoArbol<T> *p);
+    NodoArbol<T> *borrarNodo(NodoArbol<T> *p);
 
 public:
 
@@ -154,6 +154,8 @@ public:
      * @brief Destructor de la clase AVL. Libera la memoria consumida por todos sus nodos en postorden.
      */
     ~AVL<T>(); //En postorden
+
+    NodoArbol<T> *borraDato(T &dato, NodoArbol<T> *p);
 };
 
 template<typename T>
@@ -267,7 +269,7 @@ template<typename T>
 AVL<T> &AVL<T>::operator=(const AVL<T> &avl) {
     if (this != &avl) {
         if (this->raiz != nullptr) {
-            borrar(this->raiz);
+            borrarNodo(this->raiz);
             this->raiz = nullptr;
             numElementos = 0;
         }
@@ -386,15 +388,46 @@ T *AVL<T>::busquedaAux(NodoArbol<T> *p, T &dato) {
 }
 
 template<typename T>
-void AVL<T>::borrar(NodoArbol<T> *p) {
+NodoArbol<T> *AVL<T>::borrarNodo(NodoArbol<T> *p) {
    NodoArbol<T> *borrado;
-    
+    if(p) {
+        if(p->izq) {
+            return borrarNodo(p->izq);
+        }else {
+            borrado  =p;
+            p = p->der;
+        }
+    }
+    return borrado;
 }
 
 template<typename T>
 AVL<T>::~AVL() {
-    borrar(this->raiz);
+    borrarNodo(this->raiz);
     this->raiz = nullptr;
     numElementos = 0;
+}
+
+template<class T>
+NodoArbol<T> *AVL<T>::borraDato(T &dato, NodoArbol<T> *p) {
+
+    if(p) {
+        if(dato < p->dato) {
+            borraDato(dato, p->izq);
+        }
+        else if(dato> p->dato) {
+            borraDato(dato, p->der);
+        }
+        else { //el dato a eliminar es ese
+            NodoArbol<T> *aux =p;
+            if(!p->der) p = p->izq;
+            else if(p->izq && p->der) {
+                aux = borrarNodo(p->der);
+                p->dato = aux->dato;
+            }
+            delete aux;
+        }
+    }
+    return nullptr;
 }
 #endif //PRACTICA2_EEDD_AVL_H

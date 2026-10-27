@@ -39,6 +39,8 @@ public:
     void setAsNum(const string &asNum);
 
     float get_altura() const;
+    string getAssetNum() const;
+
 };
 
 

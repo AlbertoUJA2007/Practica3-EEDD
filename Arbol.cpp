@@ -42,6 +42,8 @@ Arbol::Arbol(const Arbol &orig): assetnum(orig.assetnum),num_parque(orig.num_par
 {
 }
 
+
+
 /**
  * @brief Destructor de la clase Arbol.
  * Reinicia los miembros a valores por defecto y libera la memoria asignada a la especie.
@@ -163,5 +165,8 @@ void Arbol::setAsNum(const string &asNum) {
  */
 float Arbol::get_altura() const {
     return altura;
+}
+
+string Arbol::getAssetNum() const {return this->assetnum;
 }
 

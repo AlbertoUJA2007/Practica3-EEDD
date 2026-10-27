@@ -21,9 +21,9 @@ ControlParques::ControlParques(const string &nomFichEspecies, const string &nomF
 	if(!LectorCSV::cargarEspecies(this->variantes, nomFichEspecies)) {
 		throw std::runtime_error("[ControlParques:cargaEspecies]: error al abrir fichero ");
 	}
-	if(!LectorCSV::cargarParques(this->parques, nomFichParques)) {
+	/*if(!LectorCSV::cargarParques(this->parques, nomFichParques)) {
 		throw std::runtime_error("[ControlParques:cargaParques]: error al abrir fichero ");
-	}
+	}*/
 	if(!LectorCSV::cargosArbol(this->arboles, nomFicheroArboles, this->parques)) { // lectura de arboles y ligue entre arbol y parque
 		throw std::runtime_error("[ControlParques:cargaArboles]: error al abrir fichero ");
 	}
@@ -99,7 +99,7 @@ ListaDE<Parque> & ControlParques::getparques() {
 
 /**
  * @brief Obtiene el árbol AVL que contiene todos los árboles del sistema.
- * @return AVL<Arbol*>& Referencia al árbol AVL de punteros a Arbol.
+ * @return AVL<Arbol>& Referencia al árbol AVL de punteros a Arbol.
  */
 AVL<Arbol> & ControlParques::getArboles() {
 	return this->arboles;
@@ -136,7 +136,7 @@ void ControlParques::eliminarParque(const string &nombre) {
 /**
  * @brief Devuelve el listado completo de árboles de un parque dado su nombre.
  * @param nombre_parque Nombre del parque del cual se quiere obtener la lista de árboles.
- * @return VDinamico<Arbol*>* Puntero al vector dinámico con los árboles del parque, o nullptr si el parque no existe.
+ * @return VDinamico<Arbol>* Puntero al vector dinámico con los árboles del parque, o nullptr si el parque no existe.
  */
 VDinamico<Arbol> * ControlParques::listaArbolesParque(const string &nombre_parque) {
 

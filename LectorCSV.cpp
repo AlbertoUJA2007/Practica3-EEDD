@@ -161,7 +161,14 @@ std::string LectorCSV::extraerCampo(const std::string& linea, std::size_t indice
             }
             ++indiceActual;
             ++i;
-        } else {
+        }else if(c == ';') {
+            if (indiceActual == indiceObjetivo) {
+                return campo;
+            }
+            ++indiceActual;
+            ++i;
+        }
+        else {
             if (indiceActual == indiceObjetivo) {
                 campo += c;
             }
@@ -259,15 +266,15 @@ cout << " v" << endl;
         }
 
         string assetnum;
-        int num_parque;
-        int num_distrito;
+        int num_parque=0;
+        int num_distrito=0;
         string nombre_distrito;
-        int num_barrio;
+        int num_barrio=0;
         string nombre_barrio;
-        double x;
-        double y;
-        float perimetro;
-        float altura;
+        double x=0.0;
+        double y=0.0;
+        float perimetro=0.0;
+        float altura=0.0;
 
 
         assetnum = extraerCampo(linea, 0);

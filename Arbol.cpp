@@ -109,6 +109,16 @@ bool Arbol::operator<(const Arbol &arbol) {
 }
 
 /**
+ * @brief Sobrecarga del operador de igualdad (==). Compara dos árboles según su identificador único (assetnum).
+ * @param arbol Objeto Arbol con el cual comparar.
+ * @return true Si ambos árboles tienen el mismo assetnum.
+ * @return false En caso contrario.
+ */
+bool Arbol::operator==(const Arbol &arbol) {
+	return (this->assetnum == arbol.assetnum) ;
+}
+
+/**
  * @brief Establece la especie asociada al árbol.
  * @param e Puntero al objeto Especie.
  */

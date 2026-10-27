@@ -199,6 +199,7 @@ void ListaDE<T>::insertaFin(const T &dato) {
         cola->sig=p;
         cola=p;
     }
+
 }
 
 template<typename T>

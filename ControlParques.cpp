@@ -101,7 +101,7 @@ ListaDE<Parque> & ControlParques::getparques() {
  * @brief Obtiene el árbol AVL que contiene todos los árboles del sistema.
  * @return AVL<Arbol*>& Referencia al árbol AVL de punteros a Arbol.
  */
-AVL<Arbol *> & ControlParques::getArboles() {
+AVL<Arbol> & ControlParques::getArboles() {
 	return this->arboles;
 }
 
@@ -114,7 +114,7 @@ Arbol &ControlParques::buscarArbol(const string &asnum) {
 
 	Arbol *a = new Arbol();
 	a->setAsNum(asnum);
-	return **this->arboles.buscaRecursiva(a);
+	return *this->arboles.buscaRecursiva(*a);
 }
 
 /**
@@ -138,13 +138,13 @@ void ControlParques::eliminarParque(const string &nombre) {
  * @param nombre_parque Nombre del parque del cual se quiere obtener la lista de árboles.
  * @return VDinamico<Arbol*>* Puntero al vector dinámico con los árboles del parque, o nullptr si el parque no existe.
  */
-VDinamico<Arbol*> * ControlParques::listaArbolesParque(const string &nombre_parque) {
+VDinamico<Arbol> * ControlParques::listaArbolesParque(const string &nombre_parque) {
 
 	Iterador<Parque> i = this->parques.iterador();
 
 	while(!i.fin()) {
 		if(i.dato().getNombreParque() == nombre_parque) {
-			return &i.dato().get_contenedor(); 
+			return &i.dato().get_contenedor();
 		}
 		i.siguiente(); 
 	}

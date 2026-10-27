@@ -209,7 +209,7 @@ bool  LectorCSV::cargarParques(ListaDE<Parque > &parques, const std::string &rut
     //Declaradas fuera del bucle por eficiencia
 
     while (std::getline(fichero, linea)) {
-        if (linea.empty()) {
+        if (linea.empty() && linea.back()== '\r') {
             continue;
         }
 
@@ -223,14 +223,17 @@ bool  LectorCSV::cargarParques(ListaDE<Parque > &parques, const std::string &rut
 
         codigo_parque = stoi(extraerCampo(linea, 0));
         nombre_parque = extraerCampo(linea, 1);
-        parques.insertaFin( Parque(codigo_parque,nombre_parque));
-
+        cout << " a2" << endl;
+        Parque p (codigo_parque,nombre_parque);
+        parques.insertaFin( p);
+        cout << " a" << endl;
     }
     numeroEspecies_= parques.tam();
     return true;
 }
 
-bool LectorCSV::cargosArbol(AVL<Arbol *> &arboles, const std::string &rutaFichero, ListaDE<Parque> &parques) {
+bool LectorCSV::cargosArbol(AVL<Arbol> &arboles, const std::string &rutaFichero, ListaDE<Parque> &parques) {
+cout << " v" << endl;
     filasDescartadas_ = 0;
 
     std::ifstream fichero(rutaFichero);
@@ -281,7 +284,7 @@ bool LectorCSV::cargosArbol(AVL<Arbol *> &arboles, const std::string &rutaFicher
         Arbol *a = new Arbol(assetnum,  num_parque,  num_distrito,
         nombre_distrito,  num_barrio, nombre_barrio,
          x,  y,  perimetro,  altura);
-        arboles.inserta(a);
+        arboles.inserta(*a);
 
         Iterador<Parque> i = parques.iterador();
 

@@ -1,28 +1,10 @@
 
 #ifndef PRACTICA2_EEDD_AVL_H
 #define PRACTICA2_EEDD_AVL_H
-#endif //PRACTICA2_EEDD_AVL_H
+
 #include "VDinamico.h"
+#include "NodoArbol.h"
 
-/**
- * @brief Clase que representa un nodo en un árbol AVL.
- * @tparam T Tipo de dato almacenado en el nodo.
- */
-template<class T>
-class NodoArbol {
-public:
-    T dato;
-    NodoArbol<T> *der,*izq;
-    char bal = 0; //factor de equilibrio en un avl, 0: equilibrado; -1 desequilibrado por la izq; 1 por la der
-
-    /**
-     * @brief Constructor del nodo.
-     * @param dato Dato a almacenar en el nodo.
-     * @param izq Puntero al hijo izquierdo (por defecto nullptr).
-     * @param der Puntero al hijo derecho (por defecto nullptr).
-     */
-    NodoArbol(const T&dato, NodoArbol *izq, NodoArbol *der);
-};
 
 /**
  * @brief Clase plantilla que implementa un árbol binario de búsqueda auto-balanceado (AVL).
@@ -52,14 +34,14 @@ private:
      * @param p Nodo raíz del subárbol a recorrer.
      * @param[out] vector Vector dinámico donde se almacenarán los punteros a los datos.
      */
-    void inorden_v(NodoArbol<T> *p, VDinamico<T*> &vector);
+    void inorden_v(NodoArbol<T> *p, VDinamico<T> &vector);
 
     /**
      * @brief Recorre en preorden el subárbol e inserta punteros a sus elementos en un vector dinámico.
      * @param p Nodo raíz del subárbol a recorrer.
      * @param[out] vector Vector dinámico donde se almacenarán los punteros a los datos.
      */
-    void preorden_v(NodoArbol<T> *p, VDinamico<T*> vector);
+    void preorden_v(NodoArbol<T> *p, VDinamico<T> vector);
 
     /**
      * @brief Realiza una copia profunda recursiva de una estructura de árbol.
@@ -196,7 +178,9 @@ AVL<T>::AVL(const AVL<T> &origen): raiz(nullptr)
     this->raiz = copia(origen.raiz);
 }
 
-template<class T>
+
+
+template<typename T>
 void AVL<T>::rotDer(NodoArbol<T> *&nodo) {
     NodoArbol<T> *y = nodo;
     NodoArbol<T> *z;
@@ -211,7 +195,7 @@ void AVL<T>::rotDer(NodoArbol<T> *&nodo) {
 
 }
 
-template<class T>
+template<typename T>
 void AVL<T>::rotIzq(NodoArbol<T> *&nodo) {
     NodoArbol<T> *y;
     NodoArbol<T> *z;
@@ -227,31 +211,31 @@ void AVL<T>::rotIzq(NodoArbol<T> *&nodo) {
 }
 
 template<typename T>
-void AVL<T>::inorden_v(NodoArbol<T> *p, VDinamico<T*> &vector) {
+void AVL<T>::inorden_v(NodoArbol<T> *p, VDinamico<T> &vector) {
     if (p != nullptr) {                 //Vemos si ese nodo existe realmente, sino, va hacia atrás en la recursividad
-        inorden(p->izq,vector);         //Hacemos una llamada recursiva al nodo de la izquierda
-        vector.insertar(&p->dato);      //Si este existe y es el ultimo, lo insertamos en el vector. Si no existe
+        inorden_v(p->izq,vector);         //Hacemos una llamada recursiva al nodo de la izquierda
+        vector.insertar(p->dato);      //Si este existe y es el ultimo, lo insertamos en el vector. Si no existe
                                         //  el nodo de la izquierda, insertamos el nodo padre en el vector
-        inorden(p->der,vector);         //hacemos una llamada recursiva al nodo de la derecha
+        inorden_v(p->der,vector);         //hacemos una llamada recursiva al nodo de la derecha
     }
 }
 
 template<typename T>
 VDinamico<T>* AVL<T>::recorreInorden_v() {
     VDinamico<T> *v = new VDinamico<T>();
-    inorden(this->raiz,v);
+    inorden_v(this->raiz,*v);
     return v;               //Devuelve un vector de punteros a los elementos del AVL
 }
 
-template<class T>
+template<typename T>
 unsigned int AVL<T>::getNumElementos() {return this->numElementos; }
 
-template<class T>
+template<typename T>
 unsigned int AVL<T>::altura() {
     return calculaAltura(this->raiz, 0);
 }
 
-template<class T>
+template<typename T>
 int AVL<T>::calculaAltura(NodoArbol<T> *p, int altura) {
         int izq=0, der =0;
         if(!p) return 0;
@@ -270,7 +254,7 @@ int AVL<T>::calculaAltura(NodoArbol<T> *p, int altura) {
 
 
 template<typename T>
-void AVL<T>::preorden_v(NodoArbol<T> *p, VDinamico<T *> vector) {
+void AVL<T>::preorden_v(NodoArbol<T> *p, VDinamico<T> vector) {
     if (p != nullptr) {
         vector.insertar(&p->dato);
         preorden(p->getIzq(),vector);
@@ -293,7 +277,7 @@ AVL<T> &AVL<T>::operator=(const AVL<T> &avl) {
     return *this;
 }
 
-template<class T>
+template<typename T>
 bool AVL<T>::inserta(T &dato) {         //ACABAR METODO
     if (this->raiz == nullptr) {
         this->raiz->dato = dato;
@@ -308,14 +292,14 @@ bool AVL<T>::inserta(T &dato) {         //ACABAR METODO
     return false;
 }
 
-template<class T>
+template<typename T>
 bool AVL<T>::insertar_preorden(T &dato, NodoArbol<T> *p) {      //ACABAR METODO
     if (!p->izq || !p->der) {
 
         if ( p->dato == dato) { //no admitimos repetidos
             return false;
         }
-        NodoArbol<T> nuevo = new NodoArbol<T>(dato,nullptr,nullptr);
+        NodoArbol<T> *nuevo = new NodoArbol<T>(dato,nullptr,nullptr);
         if (dato < p->dato  && !p->izq) { //la inserción se hara por la izq del nodo actual
             p->izq = nuevo;
             p->bal-1;
@@ -344,7 +328,7 @@ bool AVL<T>::insertar_preorden(T &dato, NodoArbol<T> *p) {      //ACABAR METODO
     return false ;
 }
 
-template<class T>
+template<typename T>
 int AVL<T>::alturaNodo(NodoArbol<T> *p) {
     if (!p->izq && !p->der ) return 0; // es nodo hoja
     if ((!p->izq && p->der) || (p->izq && !p->der)) return 1; // solo tiene un hijo
@@ -352,7 +336,7 @@ int AVL<T>::alturaNodo(NodoArbol<T> *p) {
 
 }
 
-template<class T>
+template<typename T>
 T* AVL<T>::buscaIterativa(T &dato) {
     if (this->raiz == nullptr) {
         throw out_of_range("[AVL::buscaIterativa]: El arbol esta vacio.");  //Si el arbol esta vacio, salta excepcion
@@ -375,7 +359,7 @@ T* AVL<T>::buscaIterativa(T &dato) {
 
 }
 
-template<class T>
+template<typename T>
 T *AVL<T>::buscaRecursiva(T &dato) {
     if (this->raiz == nullptr) {
         throw out_of_range("[AVL::buscaRecursiva]: El arbol esta vacio.");  //Si el arbol esta vacio, salta excepcion
@@ -384,7 +368,7 @@ T *AVL<T>::buscaRecursiva(T &dato) {
     return busquedaAux(this->raiz,dato);
 }
 
-template<class T>
+template<typename T>
 T *AVL<T>::busquedaAux(NodoArbol<T> *p, T &dato) {
 
     if (p == nullptr) {
@@ -402,7 +386,7 @@ T *AVL<T>::busquedaAux(NodoArbol<T> *p, T &dato) {
     return busquedaAux(p->izq,dato);         //Como el dato es menor, voy por el camino de la izquierda
 }
 
-template<class T>
+template<typename T>
 void AVL<T>::borrar(NodoArbol<T> *p) {
     if (p != nullptr) {        //Si no es un arbol vacio
 
@@ -414,9 +398,10 @@ void AVL<T>::borrar(NodoArbol<T> *p) {
     }
 }
 
-template<class T>
+template<typename T>
 AVL<T>::~AVL() {
     borrar(this->raiz);
     this->raiz = nullptr;
     numElementos = 0;
 }
+#endif //PRACTICA2_EEDD_AVL_H

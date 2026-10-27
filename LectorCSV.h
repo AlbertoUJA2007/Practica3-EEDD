@@ -23,7 +23,7 @@ public:
     bool static  cargarEspecies(VDinamico<Especie*> &vector, const std::string& rutaFichero);
     bool static cargarParques(ListaDE<Parque> &parques, const std::string &rutaFichero);
 
-    bool static cargosArbol(AVL<Arbol *> &arboles, const std::string &rutaFichero, ListaDE<Parque> &parques);
+    bool static cargosArbol(AVL<Arbol> &arboles, const std::string &rutaFichero, ListaDE<Parque> &parques);
 
     std::size_t numeroEspecies() const;
     std::size_t filasDescartadas() const;

@@ -30,6 +30,7 @@ public:
     Arbol &operator=(const Arbol &arbol);
     bool operator>(const Arbol &arbol);
     bool operator<(const Arbol &arbol);
+    bool operator==(const Arbol &arbol);
 
     void setEspecie(Especie *e);
     string getCodigoEspecie() const;

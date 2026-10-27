@@ -12,7 +12,7 @@ class ControlParques {
 private:
     ListaDE<Parque> parques;
     VDinamico<Especie*> variantes;
-    AVL<Arbol*> arboles;
+    AVL<Arbol> arboles;
 
 public:
     ControlParques(const string &nomFichEspecies, const string &nomFichParques, const string &nomFiceroArbol);    //Hay que cargar los ficheros aqui
@@ -23,12 +23,12 @@ public:
     VDinamico<Especie>& listadoEspecieSubNombre(const string &cadena);
     VDinamico<Especie*>& getVariantes();
     ListaDE<Parque>& getparques();
-    AVL<Arbol*>& getArboles();
+    AVL<Arbol>& getArboles();
 
 
     Arbol& buscarArbol(const string &asnum);
     void eliminarParque(const string &nombre);
-    VDinamico<Arbol*>* listaArbolesParque(const string &nombre_parque);
+    VDinamico<Arbol>* listaArbolesParque(const string &nombre_parque);
 
     Arbol *getArbolMasAlto();
 

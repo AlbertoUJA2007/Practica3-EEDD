@@ -67,16 +67,16 @@ void prueba1() {
     ControlParques cp(RUTA_ESPECIES, RUTA_PARQUES, RUTA_ARBOLES);
 
     //Variables fuera del bucle por eficiencia
-    VDinamico<Especie*> especies = cp.getVariantes();
+   /* VDinamico<Especie*> especies = cp.getVariantes();
     ListaDE<Parque>* parques = &cp.getparques();
-    VDinamico<Arbol*> arboles = *cp.getArboles().recorreInorden_v();
+    VDinamico<Arbol> arboles = *cp.getArboles().recorreInorden_v();
 
     VDinamico<string> aux;
 
 
     //GUARDAMOS EN UN VECTOR AUXILIAR los identificadores de 500 arboles
     for(int i =0; i < arboles.getLogico() && aux.getLogico() < 500; i+=250 ) {
-        aux.insertar(arboles[i]->getCodigoEspecie());
+        aux.insertar(arboles[i].getCodigoEspecie());
     }
 
     //BUSCAMOS EL ASSETNUM DE ESOS 500 ARBOLES EN EL AVL
@@ -89,7 +89,7 @@ void prueba1() {
     clock_t fin = clock();
 
     double tiempo_segundos = double(fin - inicio) / CLOCKS_PER_SEC;
-    std::cout << "Tiempo: " << tiempo_segundos << " segundos" << std::endl;
+    std::cout << "Tiempo: " << tiempo_segundos << " segundos" << std::endl;*/
 }
 
 void prueba2() {
@@ -98,5 +98,5 @@ void prueba2() {
 int main()
 {
     prueba1();
-    prueba2();
+    //prueba2();
 }

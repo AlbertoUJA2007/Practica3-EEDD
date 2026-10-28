@@ -100,7 +100,7 @@ void cargarVector(
             continue;
 
         Arbol arbol = leerArbol(linea);
-        cout << "arbol: " << Especie::tptostring(arbol.getTipoEspecie()) << endl;;
+       // cout << "arbol: " << Especie::tptostring(arbol.getTipoEspecie()) << endl;;
         arboles.insertar(arbol);
     }
 }

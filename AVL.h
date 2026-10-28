@@ -284,11 +284,15 @@ bool AVL<T>::inserta(T &dato) {         //ACABAR METODO
     if (this->raiz == nullptr) {
         NodoArbol<T> *nuevo = new NodoArbol<T>(dato,0,0);
         this->raiz= nuevo;
+        this->numElementos++;
         return true;
     }
 
     NodoArbol<T> *p = this->raiz;
-    return insertar_preorden(dato, p);
+    if( insertar_preorden(dato, p)) {
+        this->numElementos++;
+        return true;
+    }
 
 
 }

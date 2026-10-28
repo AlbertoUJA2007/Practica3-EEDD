@@ -296,6 +296,7 @@ bool AVL<T>::inserta(T &dato) {         //ACABAR METODO
 template<typename T>
 bool AVL<T>::insertar_preorden(T &dato, NodoArbol<T> *p) {      //ACABAR METODO
     if (!p->izq || !p->der) {
+        bool insertado =false;
 
         if ( p->dato == dato && p != raiz) { //no admitimos repetidos
             return false;
@@ -303,34 +304,38 @@ bool AVL<T>::insertar_preorden(T &dato, NodoArbol<T> *p) {      //ACABAR METODO
         NodoArbol<T> *nuevo = new NodoArbol<T>(dato,nullptr,nullptr);
         if (dato < p->dato  && !p->izq) { //la inserción se hara por la izq del nodo actual
             p->izq = nuevo;
-            p->bal-1;
-
-            return true;
+            p->bal++;
+            insertado = true;
+            if(p->bal == 2) { //desequilibrio por la izq
+                if(p->izq->bal == -1) rotIzq(p->izq); // rotacion doble izq-der
+                rotDer(p); //rot simple der
+            }
         }
-        if (dato > p->dato && !p->der) { //la inserciñon se hace a la derecha del nodo actual
+        else if (dato > p->dato && !p->der) { //la inserciñon se hace a la derecha del nodo actual
             p->der= nuevo;
-            p->bal+1;
-            return true;
+            p->bal--;
+            insertado = true;
+
+            if(p->bal ==-2) {
+                if(p->der->bal == 1) rotDer(p->der); //rotacion doble (der-izq)
+                rotIzq(p); //rot simple izq
+            }
         }
 
-        //verificamos rotaciones
-        if (alturaNodo(p->izq)- alturaNodo(p->der) == -2) { //desbalanceo izq
-            rotDer(p);
-        }
-        if (alturaNodo(p->izq)- alturaNodo(p->der) == 2) {
-            rotIzq(p);
-        }
+        if(insertado) return true;
+
     }
     if (dato < p->dato) {
-        insertar_preorden(dato, p->izq);
-    }if (dato > p->dato ){
-        insertar_preorden(dato, p->der);
+        return insertar_preorden(dato, p->izq);
+    } if (dato > p->dato ){
+        return insertar_preorden(dato, p->der);
     }
 
 }
 
 template<typename T>
 int AVL<T>::alturaNodo(NodoArbol<T> *p) {
+    if(!p) return  0;
     if (!p->izq && !p->der ) return 0; // es nodo hoja
     if ((!p->izq && p->der) || (p->izq && !p->der)) return 1; // solo tiene un hijo
     return 0;

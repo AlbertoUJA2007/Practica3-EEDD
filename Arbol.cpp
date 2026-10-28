@@ -78,7 +78,7 @@ Arbol::~Arbol() {
     this->perimetro = 0;
     this->altura = 0;
 	if(especie_arbol) {
-		delete especie_arbol;
+		//delete especie_arbol;
 		especie_arbol = nullptr;
 	}
 

@@ -242,7 +242,7 @@ void prueba1() {
         }
 
 }
-/*
+
 void prueba2() {
      std::cout << "\nPROGRAMA DE PRUEBA II\n"
                   << "-------------------\n\n";
@@ -443,7 +443,7 @@ void prueba2() {
                       << "\nTipo de planta: " << arbol->getTipo()
                       << '\n';
         }
-}*/
+}
 
 int main()
 {

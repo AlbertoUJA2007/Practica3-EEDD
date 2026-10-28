@@ -287,8 +287,6 @@ bool AVL<T>::insertar_preorden(T &dato, NodoArbol<T> *p) {      //ACABAR METODO
         if(!p) {
             NodoArbol<T> *nuevo = new NodoArbol<T>(dato,0,0);
             this->raiz= nuevo;
-            this->numElementos++;
-            p=raiz;
             return true;
         }
         if ( p->dato == dato && p != raiz) { //no admitimos repetidos
@@ -296,23 +294,27 @@ bool AVL<T>::insertar_preorden(T &dato, NodoArbol<T> *p) {      //ACABAR METODO
         }
         NodoArbol<T> *nuevo = new NodoArbol<T>(dato,nullptr,nullptr);
         if (dato < p->dato ) { //la inserción se hara por la izq del nodo actual
-            p->izq = nuevo;
-            p->bal++;
-            insertado = true;
-            if(p->bal == 2) { //desequilibrio por la izq
-                if(p->izq->bal == -1) rotIzq(p->izq); // rotacion doble izq-der
-                rotDer(p); //rot simple der
+            if(insertar_preorden(dato, p->der)) {
+                p->izq = nuevo;
+                p->bal++;
+                insertado = true;
+                if(p->bal == 2) { //desequilibrio por la izq
+                    if(p->izq->bal == -1) rotIzq(p->izq); // rotacion doble izq-der
+                    rotDer(p); //rot simple der
+                }
             }
         }
         else if (dato > p->dato ) { //la inserciñon se hace a la derecha del nodo actual
-            p->der= nuevo;
-            p->bal--;
-            insertado = true;
+           if(insertar_preorden(dato, p->izq)) {
+               p->der= nuevo;
+               p->bal--;
+               insertado = true;
 
-            if(p->bal ==-2) {
-                if(p->der->bal == 1) rotDer(p->der); //rotacion doble (der-izq)
-                rotIzq(p); //rot simple izq
-            }
+               if(p->bal ==-2) {
+                   if(p->der->bal == 1) rotDer(p->der); //rotacion doble (der-izq)
+                   rotIzq(p); //rot simple izq
+               }
+           }
         }
 
          return insertado;
@@ -373,14 +375,14 @@ T *AVL<T>::busquedaAux(NodoArbol<T> *p, T &dato) {
         return &p->dato;
     }
 
-    if (dato > p->dato && p->der) {                       //Como el dato es mayor, voy por el camino de la derecha
+    if (dato > p->dato ) {                       //Como el dato es mayor, voy por el camino de la derecha
         return  busquedaAux(p->der,dato);
     }
 
-    else if(dato < p->dato &&p->izq ){
+    //else if(dato < p->dato &&p->izq ){
         return  busquedaAux(p->izq,dato);         //Como el dato es menor, voy por el camino de la izquierda
 
-    }
+    //}
 }
 template<typename T>
 NodoArbol<T> *AVL<T>::borrarNodo(NodoArbol<T> *p) {

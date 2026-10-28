@@ -29,5 +29,6 @@ NodoArbol<T>::NodoArbol(const T &dato, NodoArbol *izq, NodoArbol *der) {
 	this->dato = dato;
 	this->izq = izq;
 	this->der = der;
+	bal=0;
 }
 #endif //NODOARBOL_H

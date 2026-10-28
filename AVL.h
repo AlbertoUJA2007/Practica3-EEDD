@@ -64,7 +64,7 @@ private:
      * @return true Si se realizó la inserción con éxito.
      * @return false Si no se pudo insertar (por ejemplo, por estar duplicado).
      */
-    bool insertar_preorden(T &dato, NodoArbol<T> *p);
+    int insertar_preorden(T &dato, NodoArbol<T> *&p);
 
     /**
      * @brief Calcula la altura aproximada de un nodo según la presencia de sus hijos.
@@ -233,10 +233,10 @@ unsigned int AVL<T>::altura() {
 
 template<typename T>
 int AVL<T>::calculaAltura(NodoArbol<T> *p) {
-        int izq=0, der =0, h=0;
+        int  h=0;
         if(p) {
-            izq = calculaAltura(p->izq);
-            der=calculaAltura(p->der);
+            int izq = calculaAltura(p->izq);
+            int der=calculaAltura(p->der);
 
             h = max(izq,der) +1;
         }
@@ -281,23 +281,19 @@ bool AVL<T>::inserta(T &dato) {
 }
 
 template<typename T>
-bool AVL<T>::insertar_preorden(T &dato, NodoArbol<T> *p) {      //ACABAR METODO
+int AVL<T>::insertar_preorden(T &dato, NodoArbol<T> *&p) {      //ACABAR METODO
 
-        bool insertado =false;
+        int deltaH=0;
+
         if(!p) {
-            NodoArbol<T> *nuevo = new NodoArbol<T>(dato,0,0);
-            this->raiz= nuevo;
-            return true;
+            p =  new NodoArbol<T>(dato,0,0);
+           deltaH =1;
         }
-        if ( p->dato == dato && p != raiz) { //no admitimos repetidos
-            return false;
-        }
-        NodoArbol<T> *nuevo = new NodoArbol<T>(dato,nullptr,nullptr);
         if (dato < p->dato ) { //la inserción se hara por la izq del nodo actual
-            if(insertar_preorden(dato, p->der)) {
-                p->izq = nuevo;
+            if(insertar_preorden(dato, p->izq)) {
                 p->bal++;
-                insertado = true;
+                if(p->bal == -1) deltaH =1;
+
                 if(p->bal == 2) { //desequilibrio por la izq
                     if(p->izq->bal == -1) rotIzq(p->izq); // rotacion doble izq-der
                     rotDer(p); //rot simple der
@@ -305,9 +301,9 @@ bool AVL<T>::insertar_preorden(T &dato, NodoArbol<T> *p) {      //ACABAR METODO
             }
         }
         else if (dato > p->dato ) { //la inserciñon se hace a la derecha del nodo actual
-           if(insertar_preorden(dato, p->izq)) {
-               p->der= nuevo;
+           if(insertar_preorden(dato, p->der)) {
                p->bal--;
+
                insertado = true;
 
                if(p->bal ==-2) {
@@ -379,10 +375,9 @@ T *AVL<T>::busquedaAux(NodoArbol<T> *p, T &dato) {
         return  busquedaAux(p->der,dato);
     }
 
-    //else if(dato < p->dato &&p->izq ){
-        return  busquedaAux(p->izq,dato);         //Como el dato es menor, voy por el camino de la izquierda
 
-    //}
+    return  busquedaAux(p->izq,dato);         //Como el dato es menor, voy por el camino de la izquierda
+
 }
 template<typename T>
 NodoArbol<T> *AVL<T>::borrarNodo(NodoArbol<T> *p) {

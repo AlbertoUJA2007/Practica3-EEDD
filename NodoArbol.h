@@ -14,7 +14,7 @@ class NodoArbol {
 public:
 	T dato;
 	NodoArbol<T> *der,*izq;
-	char bal = 0; //factor de equilibrio en un avl, 0: equilibrado; -1 desequilibrado por la izq; 1 por la der
+	int bal = 0; //factor de equilibrio en un avl, 0: equilibrado; -1 desequilibrado por la izq; 1 por la der
 
 	/**
 	 * @brief Constructor del nodo.

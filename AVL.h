@@ -53,10 +53,9 @@ private:
     /**
      * @brief Calcula la altura máxima de un subárbol a partir del nodo dado.
      * @param p Nodo desde el que se calcula la altura.
-     * @param altura Acumulador de nivel actual.
      * @return int Altura total del subárbol.
      */
-    int calculaAltura(NodoArbol<T> *p, int altura);
+    int calculaAltura(NodoArbol<T> *p);
 
     /**
      * @brief Método auxiliar recursivo para insertar un dato en preorden comprobando balanceo.
@@ -184,32 +183,27 @@ AVL<T>::AVL(const AVL<T> &origen): raiz(nullptr)
 
 template<typename T>
 void AVL<T>::rotDer(NodoArbol<T> *&nodo) {
-    NodoArbol<T> *y = nodo;
-    NodoArbol<T> *z;
-
-    nodo = z = y->izq;
-    y->izq = z->der;
-    z->der = y;
-    y->bal--;
-    if (z->bal > 0) y->bal -= z->bal;
-    z->bal--;
-    if(y->bal < 0) z->bal -= -y->bal;
+    NodoArbol<T> *q = nodo, *l;
+    nodo = l = q->izq;
+    q->izq = l->der;
+    l->der = q;
+    q->bal--;
+    if (l->bal > 0) q->bal -= l->bal;
+    l->bal--;
+    if(q->bal < 0) l->bal -= -q->bal;
 
 }
 
 template<typename T>
 void AVL<T>::rotIzq(NodoArbol<T> *&nodo) {
-    NodoArbol<T> *y;
-    NodoArbol<T> *z;
-
-    y = nodo;
-    nodo = z = y->der;
-    y->der = z->izq;
-    z->izq = y;
-    y->bal++;
-    if (z->bal < 0) y->bal += -z->bal;
-    z->bal++;
-    if(y->bal > 0) z->bal += y->bal;
+    NodoArbol<T>*q=nodo, *r;
+    nodo=r=q->der;
+    q->der=r->izq;
+    r->izq=q;
+    q->bal++;
+    if(r->bal<0)q->bal+= -r->bal;
+    r->bal++;
+    if(q->bal>0) r->bal +=q->bal;
 }
 
 template<typename T>
@@ -234,24 +228,20 @@ unsigned int AVL<T>::getNumElementos() {return this->numElementos; }
 
 template<typename T>
 unsigned int AVL<T>::altura() {
-    return calculaAltura(this->raiz, 0);
+    return calculaAltura(this->raiz);
 }
 
 template<typename T>
-int AVL<T>::calculaAltura(NodoArbol<T> *p, int altura) {
-        int izq=0, der =0;
-        if(!p) return 0;
-        if(p->izq) {
-            izq = calculaAltura(p->izq, altura+1);
+int AVL<T>::calculaAltura(NodoArbol<T> *p) {
+        int izq=0, der =0, h=0;
+        if(p) {
+            izq = calculaAltura(p->izq);
+            der=calculaAltura(p->der);
+
+            h = max(izq,der) +1;
         }
-        if(p->der) {
-             der=calculaAltura(p->der, altura+1);
-        }
-        if(!p->izq && !p->der) { //es nodo hoja
-            return altura+1;
-        }
-    if( izq > der ) return  izq;
-    return der;
+
+    return h;
 }
 
 
@@ -280,16 +270,9 @@ AVL<T> &AVL<T>::operator=(const AVL<T> &avl) {
 }
 
 template<typename T>
-bool AVL<T>::inserta(T &dato) {         //ACABAR METODO
-    if (this->raiz == nullptr) {
-        NodoArbol<T> *nuevo = new NodoArbol<T>(dato,0,0);
-        this->raiz= nuevo;
-        this->numElementos++;
-        return true;
-    }
+bool AVL<T>::inserta(T &dato) {
 
-    NodoArbol<T> *p = this->raiz;
-    if( insertar_preorden(dato, p)) {
+    if( insertar_preorden(dato, this->raiz)) {
         this->numElementos++;
         return true;
     }
@@ -299,14 +282,20 @@ bool AVL<T>::inserta(T &dato) {         //ACABAR METODO
 
 template<typename T>
 bool AVL<T>::insertar_preorden(T &dato, NodoArbol<T> *p) {      //ACABAR METODO
-    if (!p->izq || !p->der) {
-        bool insertado =false;
 
+        bool insertado =false;
+        if(!p) {
+            NodoArbol<T> *nuevo = new NodoArbol<T>(dato,0,0);
+            this->raiz= nuevo;
+            this->numElementos++;
+            p=raiz;
+            return true;
+        }
         if ( p->dato == dato && p != raiz) { //no admitimos repetidos
             return false;
         }
         NodoArbol<T> *nuevo = new NodoArbol<T>(dato,nullptr,nullptr);
-        if (dato < p->dato  && !p->izq) { //la inserción se hara por la izq del nodo actual
+        if (dato < p->dato ) { //la inserción se hara por la izq del nodo actual
             p->izq = nuevo;
             p->bal++;
             insertado = true;
@@ -315,7 +304,7 @@ bool AVL<T>::insertar_preorden(T &dato, NodoArbol<T> *p) {      //ACABAR METODO
                 rotDer(p); //rot simple der
             }
         }
-        else if (dato > p->dato && !p->der) { //la inserciñon se hace a la derecha del nodo actual
+        else if (dato > p->dato ) { //la inserciñon se hace a la derecha del nodo actual
             p->der= nuevo;
             p->bal--;
             insertado = true;
@@ -326,14 +315,10 @@ bool AVL<T>::insertar_preorden(T &dato, NodoArbol<T> *p) {      //ACABAR METODO
             }
         }
 
-        if(insertado) return true;
+         return insertado;
 
-    }
-    if (dato < p->dato) {
-        return insertar_preorden(dato, p->izq);
-    } if (dato > p->dato ){
-        return insertar_preorden(dato, p->der);
-    }
+
+
 
 }
 
@@ -380,7 +365,6 @@ T *AVL<T>::buscaRecursiva(T &dato) {
 
 template<typename T>
 T *AVL<T>::busquedaAux(NodoArbol<T> *p, T &dato) {
-
     if (p == nullptr) {
         throw out_of_range("[AVL::busquedaAux]: El dato no esta en el arbol");  //Si al final del nodo hoja todavia no
     }                                                                           //encontró el dato salta la excepcion
@@ -389,13 +373,15 @@ T *AVL<T>::busquedaAux(NodoArbol<T> *p, T &dato) {
         return &p->dato;
     }
 
-    if (dato > p->dato) {                       //Como el dato es mayor, voy por el camino de la derecha
-        return busquedaAux(p->der,dato);
+    if (dato > p->dato && p->der) {                       //Como el dato es mayor, voy por el camino de la derecha
+        return  busquedaAux(p->der,dato);
     }
 
-    return busquedaAux(p->izq,dato);         //Como el dato es menor, voy por el camino de la izquierda
-}
+    else if(dato < p->dato &&p->izq ){
+        return  busquedaAux(p->izq,dato);         //Como el dato es menor, voy por el camino de la izquierda
 
+    }
+}
 template<typename T>
 NodoArbol<T> *AVL<T>::borrarNodo(NodoArbol<T> *p) {
    NodoArbol<T> *borrado;

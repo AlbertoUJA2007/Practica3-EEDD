@@ -113,7 +113,7 @@ public:
          * @param dato Dato a insertar.
          * @return true Si la inserción fue exitosa, false en caso contrario.
          */
-    bool inserta(T& dato);
+    bool inserta(T &dato);
 
     /**
      * @brief Busca un dato en el árbol de forma recursiva.
@@ -238,7 +238,8 @@ int AVL<T>::calculaAltura(NodoArbol<T> *p) {
             int izq = calculaAltura(p->izq);
             int der=calculaAltura(p->der);
 
-            h = max(izq,der) +1;
+            h = max(izq,der) ;
+            h+=1;
         }
 
     return h;
@@ -272,48 +273,49 @@ AVL<T> &AVL<T>::operator=(const AVL<T> &avl) {
 template<typename T>
 bool AVL<T>::inserta(T &dato) {
 
-    if( insertar_preorden(dato, this->raiz)) {
-        this->numElementos++;
-        return true;
+    if( insertar_preorden(dato, this->raiz) ==-1) {
+        return false ;
     }
-
-
+    return true;
 }
 
 template<typename T>
-int AVL<T>::insertar_preorden(T &dato, NodoArbol<T> *&p) {      //ACABAR METODO
-
+int AVL<T>::insertar_preorden(T &dato, NodoArbol<T> *&p) {
+        NodoArbol<T> *c = p;
         int deltaH=0;
 
-        if(!p) {
-            p =  new NodoArbol<T>(dato,0,0);
-           deltaH =1;
+        if(!c) {
+            c =  new NodoArbol<T>(dato,0,0);
+            p = c;
+            deltaH =1;
+            this->numElementos++;
         }
-        if (dato < p->dato ) { //la inserción se hara por la izq del nodo actual
-            if(insertar_preorden(dato, p->izq)) {
-                p->bal++;
-                if(p->bal == -1) deltaH =1;
+        if (dato < c->dato ) { //la inserción se hara por la izq del nodo actual
+            if(insertar_preorden(dato, c->izq)) {
+                c->bal++;
+                if(c->bal == 1) deltaH =1;
 
-                if(p->bal == 2) { //desequilibrio por la izq
-                    if(p->izq->bal == -1) rotIzq(p->izq); // rotacion doble izq-der
+                else if(c->bal == 2) { //desequilibrio por la izq
+                    if(c->izq->bal == -1) rotIzq(c->izq); // rotacion doble izq-der
                     rotDer(p); //rot simple der
                 }
             }
         }
-        else if (dato > p->dato ) { //la inserciñon se hace a la derecha del nodo actual
-           if(insertar_preorden(dato, p->der)) {
-               p->bal--;
+        else if (dato > c->dato ) { //la inserciñon se hace a la derecha del nodo actual
+           if(insertar_preorden(dato, c->der)) {
+               c->bal--;
 
-               insertado = true;
+               if(c->bal==-1) deltaH =1;
 
-               if(p->bal ==-2) {
-                   if(p->der->bal == 1) rotDer(p->der); //rotacion doble (der-izq)
+               else if(c->bal ==-2) {
+                   if(c->der->bal == 1) rotDer(c->der); //rotacion doble (der-izq)
                    rotIzq(p); //rot simple izq
                }
            }
         }
+        if(c->dato == dato && c != raiz) return -1;
 
-         return insertado;
+         return deltaH;
 
 
 

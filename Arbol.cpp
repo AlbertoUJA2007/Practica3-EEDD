@@ -161,8 +161,8 @@ string Arbol::getCodigoEspecie() const {
  * @brief Obtiene el tipo de planta de la especie del árbol.
  * @return TipoPlanta Enumerado o tipo con la categoría de la planta.
  */
-TipoPlanta Arbol::getTipoEspecie() const {
-    return especie_arbol->get_tipo_planta();
+string Arbol::getTipoEspecie() const {
+    return Especie::tptostring(this->especie_arbol->get_tipo_planta());
 }
 
 /**
@@ -190,4 +190,13 @@ float Arbol::get_altura() const {
 
 string Arbol::getAssetNum() const {return this->assetnum;
 }
+
+int Arbol::get_num_parque() const {
+	return num_parque;
+}
+
+string Arbol::getNombreCientifico() const {return this->especie_arbol->get_nombre_cientifico();
+}
+
+
 

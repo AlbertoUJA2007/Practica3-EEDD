@@ -38,13 +38,16 @@ public:
 
     void setEspecie(Especie *e);
     string getCodigoEspecie() const;
-    TipoPlanta getTipoEspecie() const;
     string getNombreComun() const;
     void setAsNum(const string &asNum);
 
     float get_altura() const;
     string getAssetNum() const;
 
+    int get_num_parque() const;
+
+    string getNombreCientifico() const;
+    string getTipoEspecie() const;
 };
 
 

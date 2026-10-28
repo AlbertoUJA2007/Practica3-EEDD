@@ -53,7 +53,14 @@ Arbol& leerArbol(const std::string &linea)
         new Especie(campos[10], campos[11]));
     return *a;
 }
-
+void printArbol(const Arbol &arbol) {
+    std::cout << "\nIdentificador: " << arbol.getAssetNum()
+                      << "\nCodigo de parque: " << arbol.get_num_parque()
+                      << "\nNombre comun: " << arbol.getNombreComun()
+                      << "\nNombre cientifico: " << arbol.getNombreCientifico()
+                      << "\nTipo de planta: " <<arbol.getTipoEspecie()
+                      << '\n';
+}
 void cargarAVL(const std::string &ruta, AVL<Arbol> &avl)
 {
     std::ifstream fichero(ruta);
@@ -79,6 +86,8 @@ void cargarAVL(const std::string &ruta, AVL<Arbol> &avl)
                 "Identificador duplicado: " + arbol.getAssetNum());
     }
 }
+
+
 
 void cargarVector(
     const std::string &ruta, VDinamico<Arbol> &arboles)
@@ -241,15 +250,15 @@ void prueba1() {
         }
 
 }
-/*
+
 void prueba2() {
      std::cout << "\nPROGRAMA DE PRUEBA II\n"
                   << "-------------------\n\n";
 
         ControlParques control(
-            "./data/arbolado-especies.csv",
-            "./data/parques.csv",
-            "./data/arboladoMadrid.csv");
+            "arbolado-especies.csv",
+            "parques.csv",
+            "arboladoMadrid.csv");
 
         std::cout << "\nEJERCICIO 5: BUSQUEDA DE ARBOLES\n";
         std::cout << "-------------------------------\n";
@@ -268,33 +277,24 @@ void prueba2() {
                 continue;
             }
 
-            std::cout << "\nIdentificador: " << arbol->getAssetNum()
-                      << "\nCodigo de parque: " << arbol->getNumParque()
-                      << "\nNombre comun: " << arbol->getNombreComun()
-                      << "\nNombre cientifico: " << arbol->getNbreCientifico()
-                      << "\nTipo de planta: " << arbol->getTipo()
-                      << '\n';
+           printArbol(*arbol);
         }
 
         std::cout << "\nEJERCICIO 6: ARBOLES DEL RETIRO\n";
         std::cout << "-------------------------------\n";
 
-        VDinamico<Arbol *> arbolesRetiro =
-            control.listaArbParque("JARDINES DEL BUEN RETIRO");
+        VDinamico<Arbol > *arbolesRetiro =
+            control.listaArbolesParque("JARDINES DEL BUEN RETIRO");
 
         std::cout << "Numero de arboles: "
-                  << arbolesRetiro.tamLog() << '\n';
+                  << arbolesRetiro->getLogico() << '\n';
 
         for (unsigned int i = 0;
-             i < 10 && i < arbolesRetiro.tamLog(); ++i)
+             i < 10 && i < arbolesRetiro->getLogico(); ++i)
         {
-            Arbol *arbol = arbolesRetiro[i];
+            Arbol arbol_1 = (*arbolesRetiro)[i];
 
-            std::cout << "\nIdentificador: " << arbol->getAssetNum()
-                      << "\nNombre comun: " << arbol->getNombreComun()
-                      << "\nNombre cientifico: " << arbol->getNbreCientifico()
-                      << "\nTipo de planta: " << arbol->getTipo()
-                      << '\n';
+            printArbol(arbol_1);
         }
 
         std::cout << "\nEJERCICIO 7: COMPROBACION DE OBJETOS\n";
@@ -304,9 +304,9 @@ void prueba2() {
         unsigned int correctos = 0;
 
         for (unsigned int i = 0;
-             i < 10 && i < arbolesRetiro.tamLog(); ++i)
+             i < 10 && i < arbolesRetiro->getLogico(); ++i)
         {
-            Arbol *listado = arbolesRetiro[i];
+            Arbol *listado = &(*arbolesRetiro)[i];
             Arbol *encontrado = control.buscarArbol(listado->getAssetNum());
 
             bool coincide = (encontrado == listado);
@@ -389,7 +389,7 @@ void prueba2() {
 
             for (const std::string &nombre : especies)
             {
-                bool existe = retiro->existeNbreCom(nombre);
+                bool existe = retiro->existeNComun(nombre);
 
                 std::cout << nombre << ": "
                           << (existe ? "PRESENTE" : "AUSENTE")
@@ -417,14 +417,14 @@ void prueba2() {
             std::cout << "Identificador: " << masAlto->getAssetNum()
                       << "\nAltura: " << masAlto->get_altura() << " m"
                       << "\nEspecie: " << masAlto->getNombreComun()
-                      << " (" << masAlto->getNbreCientifico() << ")\n";
+                      << " (" << masAlto->getNombreCientifico() << ")\n";
         }
 
         // Ejercicio por parejas
         std::cout << "\nEJERCICIO POR PAREJAS: BUSQUEDA POR INTERVALO\n";
         std::cout << "-------------------------------\n";
 
-        VDinamico<Arbol *> resultadoRango =
+       /* VDinamico<Arbol *> resultadoRango =
             control.buscarArbolesRango("5700000", "5709999");
 
         std::cout << "Numero de arboles encontrados: "
@@ -435,21 +435,16 @@ void prueba2() {
         {
             Arbol *arbol = resultadoRango[i];
 
-            std::cout << "\nIdentificador: " << arbol->getAssetNum()
-                      << "\nCodigo de parque: " << arbol->getNumParque()
-                      << "\nNombre comun: " << arbol->getNombreComun()
-                      << "\nNombre cientifico: " << arbol->getNbreCientifico()
-                      << "\nTipo de planta: " << arbol->getTipo()
-                      << '\n';
-        }
-}*/
+            printArbol(*arbol);
+        }*/
+}
 
 int main()
 {
     try
     {
-      prueba1();
-      //prueba2();
+      //prueba1();
+      prueba2();
     }
     catch (const std::exception &error)
     {

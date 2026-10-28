@@ -26,9 +26,11 @@ public:
     AVL<Arbol>& getArboles();
 
 
-    Arbol& buscarArbol(const string &asnum);
+    Arbol *buscarArbol(const string &asnum);
     void eliminarParque(const string &nombre);
     VDinamico<Arbol>* listaArbolesParque(const string &nombre_parque);
+
+    VDinamico<Arbol*>& buscarArbolesRango();
 
     Arbol *getArbolMasAlto();
 

@@ -38,7 +38,7 @@ bool LectorCSV::cargarEspecies(VDinamico<Especie*> &vector, const std::string& r
             continue;
         }
 
-        if (contarCampos(linea) != 4) {
+        if (contarCampos(linea) > 4) {
             ++filasDescartadas_;
             continue;
         }
@@ -46,6 +46,7 @@ bool LectorCSV::cargarEspecies(VDinamico<Especie*> &vector, const std::string& r
         codigo = extraerCampo(linea, 0);
         nombreComun = extraerCampo(linea, 1);
         nombreCientifico = extraerCampo(linea, 2);
+
         tipoPlanta = extraerCampo(linea, 3);
 
         TipoPlanta p = Especie::stringtotp(tipoPlanta);

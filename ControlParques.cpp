@@ -110,11 +110,11 @@ AVL<Arbol> & ControlParques::getArboles() {
  * @param asnum Identificador único del árbol como cadena (asnum).
  * @return Arbol& Referencia al objeto Arbol encontrado.
  */
-Arbol &ControlParques::buscarArbol(const string &asnum) {
+Arbol *ControlParques::buscarArbol(const string &asnum) {
 
 	Arbol *a = new Arbol();
 	a->setAsNum(asnum);
-	return *this->arboles.buscaRecursiva(*a);
+	return this->arboles.buscaRecursiva(*a);
 }
 
 /**

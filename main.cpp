@@ -260,7 +260,7 @@ void prueba2() {
             "parques.csv",
             "arboladoMadrid.csv");
 
-        std::cout << "\nEJERCICIO 5: BUSQUEDA DE ARBOLES\n";
+       /* std::cout << "\nEJERCICIO 5: BUSQUEDA DE ARBOLES\n";
         std::cout << "-------------------------------\n";
 
         const std::string ids[] = {

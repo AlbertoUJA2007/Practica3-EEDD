@@ -38,17 +38,15 @@ bool LectorCSV::cargarEspecies(VDinamico<Especie*> &vector, const std::string& r
             continue;
         }
 
-        if (contarCampos(linea) > 4) {
+        if (contarCampos(linea) != 4) {
             ++filasDescartadas_;
             continue;
         }
 
         codigo = extraerCampo(linea, 0);
         nombreComun = extraerCampo(linea, 1);
-        nombreCientifico = extraerCampo(linea, 2);
-
+        nombreCientifico = extraerCampo(linea, 2) ;
         tipoPlanta = extraerCampo(linea, 3);
-
         TipoPlanta p = Especie::stringtotp(tipoPlanta);
 
         vector.insertar(new Especie(codigo, nombreComun, nombreCientifico,p));
@@ -106,6 +104,9 @@ std::size_t LectorCSV::contarCampos(const std::string& linea) {
             dentroComillas = true;
             ++i;
         } else if (c == ',') {
+            ++numCampos;
+            ++i;
+        }else if (c == ';') {
             ++numCampos;
             ++i;
         } else {
@@ -226,14 +227,14 @@ bool  LectorCSV::cargarParques(ListaDE<Parque > &parques, const std::string &rut
             continue;
         }
 
-        int codigo_parque;              //Id de parque
+        int codigo_parque=0;              //Id de parque
         string nombre_parque;
 
         codigo_parque = stoi(extraerCampo(linea, 0));
         nombre_parque = extraerCampo(linea, 1);
         cout << " a2" << endl;
-        Parque p (codigo_parque,nombre_parque);
-        parques.insertaFin( p);
+
+        parques.insertaFin( Parque  (codigo_parque,nombre_parque));
         cout << " a" << endl;
     }
     numeroEspecies_= parques.tam();

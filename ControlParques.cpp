@@ -21,9 +21,9 @@ ControlParques::ControlParques(const string &nomFichEspecies, const string &nomF
 	if(!LectorCSV::cargarEspecies(this->variantes, nomFichEspecies)) {
 		throw std::runtime_error("[ControlParques:cargaEspecies]: error al abrir fichero ");
 	}
-	/*if(!LectorCSV::cargarParques(this->parques, nomFichParques)) {
+	if(!LectorCSV::cargarParques(this->parques, nomFichParques)) {
 		throw std::runtime_error("[ControlParques:cargaParques]: error al abrir fichero ");
-	}*/
+	}
 	if(!LectorCSV::cargosArbol(this->arboles, nomFicheroArboles, this->parques)) { // lectura de arboles y ligue entre arbol y parque
 		throw std::runtime_error("[ControlParques:cargaArboles]: error al abrir fichero ");
 	}

@@ -267,7 +267,7 @@ void prueba2() {
 
 
 
-       /* std::cout << "\nEJERCICIO 5: BUSQUEDA DE ARBOLES\n";
+        std::cout << "\nEJERCICIO 5: BUSQUEDA DE ARBOLES\n";
         std::cout << "-------------------------------\n";
 
         const std::string ids[] = {
@@ -427,7 +427,7 @@ void prueba2() {
                       << "\nAltura: " << masAlto->get_altura() << " m"
                       << "\nEspecie: " << masAlto->getNombreComun()
                       << " (" << masAlto->getNombreCientifico() << ")\n";
-        }*/
+        }
 
         // Ejercicio por parejas
         std::cout << "\nEJERCICIO POR PAREJAS: BUSQUEDA POR INTERVALO\n";

@@ -40,15 +40,27 @@ bool LectorCSV::cargarEspecies(VDinamico<Especie*> &vector, const std::string& r
             continue;
         }
 
-        if (contarCampos(linea) != 4) {
-            ++filasDescartadas_;
-            continue;
-        }
 
         codigo = extraerCampo(linea, 0);
-        nombreComun = extraerCampo(linea, 1);
-        nombreCientifico = extraerCampo(linea, 2);
-        tipoPlanta = extraerCampo(linea, 3);
+
+        if(!extraerCampo(linea, 5).empty()) {
+            nombreComun = extraerCampo(linea, 1);
+            nombreComun += "," + extraerCampo(linea, 2);
+            nombreCientifico = extraerCampo(linea, 2);
+            nombreCientifico += "," + extraerCampo(linea, 3);
+            tipoPlanta = extraerCampo(linea, 4);
+        }
+        else if(!extraerCampo(linea, 4).empty()) {
+            nombreComun = extraerCampo(linea, 1);
+            nombreCientifico = extraerCampo(linea, 2);
+            nombreCientifico += "," + extraerCampo(linea, 3);
+            tipoPlanta = extraerCampo(linea, 4);
+        }
+        else {
+            nombreComun = extraerCampo(linea, 1);
+            nombreCientifico = extraerCampo(linea, 2);
+            tipoPlanta = extraerCampo(linea, 3);
+        }
 
         TipoPlanta p = Especie::stringtotp(tipoPlanta);
 

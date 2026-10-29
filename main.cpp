@@ -267,7 +267,7 @@ void prueba2() {
 
 
 
-        std::cout << "\nEJERCICIO 5: BUSQUEDA DE ARBOLES\n";
+       /* std::cout << "\nEJERCICIO 5: BUSQUEDA DE ARBOLES\n";
         std::cout << "-------------------------------\n";
 
         const std::string ids[] = {
@@ -287,7 +287,7 @@ void prueba2() {
            printArbol(*arbol);
         }
 
-       /* std::cout << "\nEJERCICIO 6: ARBOLES DEL RETIRO\n";
+        std::cout << "\nEJERCICIO 6: ARBOLES DEL RETIRO\n";
         std::cout << "-------------------------------\n";
 
         VDinamico<Arbol *> *arbolesRetiro =
@@ -404,7 +404,7 @@ void prueba2() {
                           << (existe ? "PRESENTE" : "AUSENTE")
                           << '\n';
             }
-        }*/
+        }
 
         std::cout << "\nEJERCICIO 11: TIPOS DE PLANTA EN TODOS LOS PARQUES\n";
         std::cout << "-------------------------------\n";
@@ -427,13 +427,13 @@ void prueba2() {
                       << "\nAltura: " << masAlto->get_altura() << " m"
                       << "\nEspecie: " << masAlto->getNombreComun()
                       << " (" << masAlto->getNombreCientifico() << ")\n";
-        }
+        }*/
 
         // Ejercicio por parejas
         std::cout << "\nEJERCICIO POR PAREJAS: BUSQUEDA POR INTERVALO\n";
         std::cout << "-------------------------------\n";
 
-       /* VDinamico<Arbol *> resultadoRango =
+        VDinamico<Arbol *> resultadoRango =
             control.buscarArbolesRango("5700000", "5709999");
 
         std::cout << "Numero de arboles encontrados: "
@@ -445,7 +445,7 @@ void prueba2() {
             Arbol *arbol = resultadoRango[i];
 
             printArbol(*arbol);
-        }*/
+        }
 }
 
 int main()

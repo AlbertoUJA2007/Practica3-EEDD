@@ -155,6 +155,23 @@ VDinamico<Arbol*> * ControlParques::listaArbolesParque(const string &nombre_parq
 
 }
 
+VDinamico<Arbol *> & ControlParques::buscarArbolesRango(const string &asNumMin, const string &asNumMax) {
+	VDinamico<Arbol*> *nuevo = new VDinamico<Arbol *>;
+
+	if(asNumMin > asNumMax) {
+		throw invalid_argument("[BUSCAR_ARBOLES_RANGO] se a introducido una cota inferior con valor mayor que la cota superior");
+	}
+	int min = stoi(asNumMin);
+	int max = stoi (asNumMax);
+	Arbol *aux;
+	for(int i=min; i <= max; i++) {
+		aux = this->buscarArbol(std::to_string(i));
+		if(aux) nuevo->insertar(aux);
+	}
+
+	return *nuevo;
+}
+
 /**
  * @brief Devuelve el árbol de mayor altura de entre todos los parques. Si hay empate, devuelve el primero encontrado.
  * @return Arbol* Puntero al árbol de mayor altura de todo el sistema.
@@ -176,6 +193,13 @@ Arbol *ControlParques::getArbolMasAlto() {
 	return encontrado; 
 }
 
+/**
+ * @brief Busca si un tipo de planta existe en un vector de tipos.
+ *
+ * @param tipo_planta Tipo de planta a buscar.
+ * @param tipos Vector dinámico donde realizar la búsqueda.
+ * @return true si lo encuentra, false en caso contrario.
+ */
 bool ControlParques::buscar_tipo_planta(const TipoPlanta &tipo_planta,  VDinamico<TipoPlanta> tipos) {
 	for(int i =0; i < tipos.getLogico(); i++) {
 		if(tipos[i] == tipo_planta) {

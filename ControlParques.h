@@ -30,7 +30,7 @@ public:
     void eliminarParque(const string &nombre);
     VDinamico<Arbol*>* listaArbolesParque(const string &nombre_parque);
 
-    VDinamico<Arbol*>& buscarArbolesRango();
+    VDinamico<Arbol*>& buscarArbolesRango(const string &asNumMin, const string &asNumMax);
 
     Arbol *getArbolMasAlto();
     bool buscar_tipo_planta(const TipoPlanta &tipo_planta,  VDinamico<TipoPlanta> tipos);

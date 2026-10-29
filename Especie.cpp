@@ -128,12 +128,18 @@ Especie::Especie(const string &cod, const string &nombreComun, const string &nom
 
 }
 
+/**
+ * @brief Constructor por defecto de la clase Especie.
+ */
 Especie::Especie() {
 	this->codigoEspecie="";
 	this->nombreCientifico="";
 	this->nombreComun="";
+	this->tipo_planta_ = TipoPlanta::NONE;
 }
-
+/**
+ * @brief Muestra por consola los datos detallados de la especie.
+ */
 void Especie::mostrarInfo() {
 	cout << " -------------------------------" << endl;
 	cout << "Codigo especie: " << this->codigoEspecie << endl;
@@ -144,6 +150,11 @@ void Especie::mostrarInfo() {
 	cout << " -------------------------------" << endl;
 }
 
+/**
+ * @brief Convierte un valor de TipoPlanta a su representación en texto en mayúsculas.
+ * @param p Tipo de planta a convertir.
+ * @return Cadena con el nombre legible del tipo de planta.
+ */
 string Especie::tptostring(const TipoPlanta &p) {
 	if (p == TipoPlanta::ARBUSTO) return "ARBUSTO";
 	if (p == TipoPlanta::CONIFERA) return "CONÍFERA";
@@ -159,6 +170,11 @@ string Especie::tptostring(const TipoPlanta &p) {
 	return "";
 }
 
+/**
+ * @brief Convierte una cadena de texto a su valor correspondiente de TipoPlanta.
+ * @param texto Cadena a convertir.
+ * @return Enumerado TipoPlanta asignado.
+ */
 TipoPlanta Especie::stringtotp(const string &texto) {
 		if (texto == "ARBUSTO")              return TipoPlanta::ARBUSTO;
 		if (texto == "CONÍFERA" || texto == "CONIFERA")             return TipoPlanta::CONIFERA;
@@ -171,20 +187,32 @@ TipoPlanta Especie::stringtotp(const string &texto) {
 		if (texto == "HERB_ANUAL")       return TipoPlanta::HERB_ANUAL;
 		if (texto == "HERB_ANUALES" || texto == "HERBÁCEAS ANUALES")    return TipoPlanta::HERB_ANUALES;
 		if(texto.empty()) return TipoPlanta::NONE;
-
+		else return TipoPlanta::NONE;
 	}
 
+/**
+ * @brief Destructor de la clase Especie.
+ */
 Especie::~Especie() {
 	this->codigoEspecie ="";
 	this->nombreComun="";
 	this->nombreCientifico="";
 	this->tipo_planta_ = TipoPlanta::NONE;
 }
-
+/**
+ * @brief Constructor parametrizado.
+ * @param cod Código de la especie.
+ * @param nombre Nombre común de la especie.
+ */
 Especie::Especie(const string &cod, const string &nombre) {
 	this->codigoEspecie = cod; this->nombreComun = nombre;
+	this->tipo_planta_ = TipoPlanta::NONE;
 }
 
+/**
+ * @brief Constructor de copia.
+ * @param arr Objeto Especie a copiar.
+ */
 Especie::Especie(const Especie &arr) {
 	this->codigoEspecie = arr.get_codigo_especie();
 	this->tipo_planta_ = arr.get_tipo_planta();

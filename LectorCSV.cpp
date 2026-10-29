@@ -2,6 +2,8 @@
 
 #include <fstream>
 #include <iostream>
+#include <sstream>
+
 #include "Especie.h"
 #include "VDinamico.h"
 
@@ -45,8 +47,9 @@ bool LectorCSV::cargarEspecies(VDinamico<Especie*> &vector, const std::string& r
 
         codigo = extraerCampo(linea, 0);
         nombreComun = extraerCampo(linea, 1);
-        nombreCientifico = extraerCampo(linea, 2) ;
+        nombreCientifico = extraerCampo(linea, 2);
         tipoPlanta = extraerCampo(linea, 3);
+
         TipoPlanta p = Especie::stringtotp(tipoPlanta);
 
         vector.insertar(new Especie(codigo, nombreComun, nombreCientifico,p));
@@ -202,47 +205,57 @@ void LectorCSV::mostrarEspecie(const Especie& especie) {
               << Especie::tptostring(especie.get_tipo_planta()) << "\n";
 }
 
-bool  LectorCSV::cargarParques(ListaDE<Parque > &parques, const std::string &rutaFichero) {
-    filasDescartadas_ = 0;
+float LectorCSV::leerMedida(string campo) {
+    std::replace(campo.begin(), campo.end(), ',', '.');
 
-    std::ifstream fichero(rutaFichero);
-    if (!fichero.is_open()) {
-        return false;
-    }
-
-    std::string linea;
-    if (std::getline(fichero, linea)) {
-        eliminarBOM(linea);
-    }
-
-    //Declaradas fuera del bucle por eficiencia
-
-    while (std::getline(fichero, linea)) {
-        if (linea.empty() && linea.back()== '\r') {
-            continue;
-        }
-
-        if (contarCampos(linea) < 2) {
-            ++filasDescartadas_;
-            continue;
-        }
-
-        int codigo_parque=0;              //Id de parque
-        string nombre_parque;
-
-        codigo_parque = stoi(extraerCampo(linea, 0));
-        nombre_parque = extraerCampo(linea, 1);
-        cout << " a2" << endl;
-
-        parques.insertaFin( Parque  (codigo_parque,nombre_parque));
-        cout << " a" << endl;
-    }
-    numeroEspecies_= parques.tam();
-    return true;
+    return campo.empty() ? -1.0f : std::stof(campo);
 }
 
-bool LectorCSV::cargosArbol(AVL<Arbol> &arboles, const std::string &rutaFichero, ListaDE<Parque> &parques) {
-cout << " v" << endl;
+Arbol & LectorCSV::leerArbol_csv(const string &linea,  VDinamico<Especie*> especies) {
+    std::stringstream registro(linea);
+    std::string campos[12];
+
+    for (unsigned int i = 0; i < 12; ++i)
+    {
+        if (!std::getline(registro, campos[i], ';'))
+        {
+            if (i != 11 || linea.empty() || linea.back() != ';')
+                throw std::runtime_error("Registro de arbol incompleto");
+        }
+    }
+
+    std::replace(campos[6].begin(), campos[6].end(), ',', '.');
+    std::replace(campos[7].begin(), campos[7].end(), ',', '.');
+
+
+
+    Arbol *a  = new  Arbol(
+        campos[0],
+        std::stoi(campos[1]),
+        std::stoi(campos[2]),
+        campos[3],
+        std::stoi(campos[4]),
+        campos[5],
+        std::stod(campos[6]),
+        std::stod(campos[7]),
+        leerMedida(campos[10]),
+        leerMedida(campos[11]),
+        new Especie(*buscaEspecie(campos[8], especies)));
+    return  *a;
+}
+
+Especie * LectorCSV::buscaEspecie(const string &cod, VDinamico<Especie*> especies) {
+    Especie *e = nullptr;
+    for(int i=0; i < especies.getLogico(); i++) {
+         e= especies[i];
+        if(e->get_codigo_especie() == cod) {
+            return e;
+        }
+    }
+    return e;
+}
+
+bool  LectorCSV::cargarParques(ListaDE<Parque > &parques, const std::string &rutaFichero) {
     filasDescartadas_ = 0;
 
     std::ifstream fichero(rutaFichero);
@@ -261,50 +274,58 @@ cout << " v" << endl;
         if (linea.empty()) {
             continue;
         }
-
         if (contarCampos(linea) < 2) {
             ++filasDescartadas_;
             continue;
         }
 
-        string assetnum;
-        int num_parque=0;
-        int num_distrito=0;
-        string nombre_distrito;
-        int num_barrio=0;
-        string nombre_barrio;
-        double x=0.0;
-        double y=0.0;
-        float perimetro=0.0;
-        float altura=0.0;
+        int codigo_parque;              //Id de parque
+        string nombre_parque;
 
+        codigo_parque = stoi(extraerCampo(linea, 0));
+        nombre_parque = extraerCampo(linea, 1);
+        parques.insertaFin( Parque(codigo_parque,nombre_parque));
 
-        assetnum = extraerCampo(linea, 0);
-        num_parque = stoi(extraerCampo(linea, 1));
-        num_distrito = stoi(extraerCampo(linea, 2));
-        nombre_distrito = extraerCampo(linea, 3);
-        num_barrio = stoi(extraerCampo(linea, 4));
-        nombre_barrio= extraerCampo(linea, 5);
-        x= stod(extraerCampo(linea, 6));
-        y= stod(extraerCampo(linea, 7));
-        perimetro = stof(extraerCampo(linea, 8));
-        altura = stof(extraerCampo(linea, 9));
+    }
+    numeroEspecies_= parques.tam();
+    return true;
+}
 
-        Arbol *a = new Arbol(assetnum,  num_parque,  num_distrito,
-        nombre_distrito,  num_barrio, nombre_barrio,
-         x,  y,  perimetro,  altura);
-        arboles.inserta(*a);
+bool LectorCSV::cargosArbol(AVL<Arbol> &arboles, const std::string &rutaFichero, ListaDE<Parque> &parques, VDinamico<Especie *> especies) {
+
+    std::ifstream fichero(rutaFichero);
+
+    if (!fichero.is_open())
+        throw std::runtime_error("No se puede abrir: " + rutaFichero);
+
+    std::string linea;
+    std::getline(fichero, linea); // Saltar cabecera.
+
+    while (std::getline(fichero, linea))
+    {
+        if (!linea.empty() && linea.back() == '\r')
+            linea.pop_back();
+
+        if (linea.empty())
+            continue;
+
+        Arbol arbol = leerArbol_csv(linea, especies);
+
+        if (!arboles.inserta(arbol))
+            throw std::runtime_error(
+                "Identificador duplicado: " + arbol.getAssetNum());
 
         Iterador<Parque> i = parques.iterador();
-
         while(!i.fin()) { //ligamos el arbol con un parque
-            if(i.dato().getCodigoParque() == num_parque) {
-                i.dato().insertarArbol(a);
+            if(i.dato().getCodigoParque() == arbol.get_num_parque()) {
+                i.dato().insertarArbol(new Arbol(arbol));
             }
             i.siguiente();
         }
-
     }
+
+
+
 
     return true;
 }

@@ -95,7 +95,7 @@ Arbol & Arbol::operator=(const Arbol &arbol) {
         delete especie_arbol;
         especie_arbol = nullptr;
 
-        this->especie_arbol = arbol.especie_arbol;
+        this->especie_arbol = new Especie(*arbol.especie_arbol);
         this->assetnum = arbol.assetnum;
         this->num_parque = arbol.num_parque;
         this->num_distrito = arbol.num_distrito;

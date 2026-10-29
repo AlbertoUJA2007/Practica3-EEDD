@@ -185,3 +185,10 @@ Especie::Especie(const string &cod, const string &nombre) {
 	this->codigoEspecie = cod; this->nombreComun = nombre;
 }
 
+Especie::Especie(const Especie &arr) {
+	this->codigoEspecie = arr.get_codigo_especie();
+	this->tipo_planta_ = arr.get_tipo_planta();
+	this->nombreComun = arr.get_nombre_comun();
+	this->nombreCientifico = arr.get_nombre_cientifico();
+}
+

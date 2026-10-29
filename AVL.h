@@ -366,7 +366,7 @@ T *AVL<T>::buscaRecursiva(T &dato) {
 template<typename T>
 T *AVL<T>::busquedaAux(NodoArbol<T> *p, T &dato) {
     if (p == nullptr) {
-        throw out_of_range("[AVL::busquedaAux]: El dato no esta en el arbol");  //Si al final del nodo hoja todavia no
+       return nullptr;
     }                                                                           //encontró el dato salta la excepcion
 
     if (p->dato == dato) {                      //Encontró el dato que buscaba

@@ -259,8 +259,14 @@ void prueba2() {
             "arbolado-especies.csv",
             "parques.csv",
             "arboladoMadrid.csv");
+        cout << "Especies cargadas " << control.getVariantes().getLogico() << endl;
+        cout << "Parques cargados " << control.getparques().tam() << endl;
+        cout << "Arboles cargados " << control.getArboles().getNumElementos() << endl;
+        cout << "Altura del arbol " << control.getArboles().altura() << endl;
 
-       /* std::cout << "\nEJERCICIO 5: BUSQUEDA DE ARBOLES\n";
+
+
+        std::cout << "\nEJERCICIO 5: BUSQUEDA DE ARBOLES\n";
         std::cout << "-------------------------------\n";
 
         const std::string ids[] = {
@@ -283,7 +289,7 @@ void prueba2() {
         std::cout << "\nEJERCICIO 6: ARBOLES DEL RETIRO\n";
         std::cout << "-------------------------------\n";
 
-        VDinamico<Arbol > *arbolesRetiro =
+        VDinamico<Arbol *> *arbolesRetiro =
             control.listaArbolesParque("JARDINES DEL BUEN RETIRO");
 
         std::cout << "Numero de arboles: "
@@ -292,12 +298,12 @@ void prueba2() {
         for (unsigned int i = 0;
              i < 10 && i < arbolesRetiro->getLogico(); ++i)
         {
-            Arbol arbol_1 = (*arbolesRetiro)[i];
+            Arbol *arbol_1 = (*arbolesRetiro)[i];
 
-            printArbol(arbol_1);
+            printArbol(*arbol_1);
         }
 
-        std::cout << "\nEJERCICIO 7: COMPROBACION DE OBJETOS\n";
+        /*std::cout << "\nEJERCICIO 7: COMPROBACION DE OBJETOS\n";
         std::cout << "-------------------------------\n";
 
         unsigned int comprobados = 0;
@@ -306,7 +312,7 @@ void prueba2() {
         for (unsigned int i = 0;
              i < 10 && i < arbolesRetiro->getLogico(); ++i)
         {
-            Arbol *listado = &(*arbolesRetiro)[i];
+            Arbol *listado = (*arbolesRetiro)[i];
             Arbol *encontrado = control.buscarArbol(listado->getAssetNum());
 
             bool coincide = (encontrado == listado);

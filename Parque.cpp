@@ -18,7 +18,7 @@ Parque::Parque():codigo_parque(0),nombre_parque(" ") {}
  * @param nombre Nombre del parque.
  * @param especies Vector dinámico con los punteros a los árboles a incluir en el parque.
  */
-Parque::Parque(int codigo, const string &nombre, const VDinamico<Arbol> &especies):
+Parque::Parque(int codigo, const string &nombre, const VDinamico<Arbol*> &especies):
             codigo_parque(codigo),nombre_parque(nombre),contenedor(especies) {
 }
 
@@ -79,7 +79,7 @@ void Parque::setNombreParque(const string &nombre) {
  * @param arbol Puntero al árbol que se va a insertar.
  */
 void Parque::insertarArbol(Arbol *arbol) {
-    if(arbol) this->contenedor.insertar(*arbol);
+    if(arbol) this->contenedor.insertar(arbol);
 }
 
 /**
@@ -89,7 +89,7 @@ void Parque::insertarArbol(Arbol *arbol) {
  */
 bool Parque::existeNComun(const string &nombre) {
     for(int i =0; i < this->contenedor.getLogico(); i++) {
-        if(this->contenedor[i].getNombreComun() == nombre) {
+        if(this->contenedor[i]->getNombreComun() == nombre) {
             return true;
         }
     }
@@ -102,11 +102,11 @@ bool Parque::existeNComun(const string &nombre) {
  */
 Arbol* Parque::arbolMasAlto() {
 
-    Arbol *a = &this->contenedor[0];
+    Arbol *a = this->contenedor[0];
 
     for(int i =1; i < this->contenedor.getLogico(); i++) {
-        if(this->contenedor[i].get_altura() > a->get_altura()) {
-            a= &this->contenedor[i];
+        if(this->contenedor[i]->get_altura() > a->get_altura()) {
+            a= this->contenedor[i];
         }
     }
     return a;
@@ -124,7 +124,7 @@ unsigned int Parque::contrarEspecies() {
     for(int i =0; i < this->contenedor.getLogico(); i++) {
         aux =0;
         for(int j = i+1; j < this->contenedor.getLogico(); j++) {
-            if(this->contenedor[i].getCodigoEspecie() == this->contenedor[j].getCodigoEspecie()) {
+            if(this->contenedor[i]->getCodigoEspecie() == this->contenedor[j]->getCodigoEspecie()) {
                 aux++;
             }
         }
@@ -144,7 +144,7 @@ unsigned int Parque::contarTipos() {
     for(int i =0; i < this->contenedor.getLogico(); i++) {
         aux =0;
         for(int j = i+1; j < this->contenedor.getLogico(); j++) {
-            if(this->contenedor[i].getTipoEspecie() == this->contenedor[j].getTipoEspecie()) {
+            if(this->contenedor[i]->getTipoEspecie() == this->contenedor[j]->getTipoEspecie()) {
                 aux++;
             }
         }
@@ -158,5 +158,5 @@ unsigned int Parque::contarTipos() {
  * @brief Obtiene la referencia al contenedor dinámico con los árboles del parque.
  * @return VDinamico<Arbol>& Referencia al vector dinámico de punteros a objetos Arbol.
  */
-VDinamico<Arbol>& Parque::get_contenedor() {return this->contenedor; }
+VDinamico<Arbol*>& Parque::get_contenedor() {return this->contenedor; }
 

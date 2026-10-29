@@ -30,8 +30,6 @@ ControlParques::ControlParques(const string &nomFichEspecies, const string &nomF
 		throw std::runtime_error("[ControlParques:cargaArboles]: error al abrir fichero ");
 	}
 
-
-
 }
 
 /**
@@ -146,6 +144,8 @@ VDinamico<Arbol*> * ControlParques::listaArbolesParque(const string &nombre_parq
 
 	while(!i.fin()) {
 		if(i.dato().getNombreParque() == nombre_parque) {
+			i.dato().ordenaArboles();
+
 			return &i.dato().get_contenedor();
 		}
 		i.siguiente(); 

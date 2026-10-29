@@ -318,6 +318,7 @@ bool LectorCSV::cargosArbol(AVL<Arbol> &arboles, const std::string &rutaFichero,
         Iterador<Parque> i = parques.iterador();
         while(!i.fin()) { //ligamos el arbol con un parque
             if(i.dato().getCodigoParque() == arbol.get_num_parque()) {
+             //   cout << " el arbol con codigo " << arbol.getAssetNum() << " esta en el parque " << i.dato().getCodigoParque() << endl;
                 i.dato().insertarArbol(new Arbol(arbol));
             }
             i.siguiente();

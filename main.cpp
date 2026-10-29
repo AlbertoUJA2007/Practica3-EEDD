@@ -251,6 +251,7 @@ void prueba1() {
 
 }
 
+
 void prueba2() {
      std::cout << "\nPROGRAMA DE PRUEBA II\n"
                   << "-------------------\n\n";
@@ -292,11 +293,13 @@ void prueba2() {
         VDinamico<Arbol *> *arbolesRetiro =
             control.listaArbolesParque("JARDINES DEL BUEN RETIRO");
 
+
+
         std::cout << "Numero de arboles: "
                   << arbolesRetiro->getLogico() << '\n';
 
-        for (unsigned int i = 0;
-             i < 10 && i < arbolesRetiro->getLogico(); ++i)
+        for ( int i = 0;
+             i < 10 ; ++i)
         {
             Arbol *arbol_1 = (*arbolesRetiro)[i];
 

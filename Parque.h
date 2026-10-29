@@ -34,6 +34,7 @@ public:
     unsigned int contrarEspecies();
     unsigned int contarTipos();
     VDinamico<Arbol*>& get_contenedor();
+    void ordenaArboles();
 };
 
 

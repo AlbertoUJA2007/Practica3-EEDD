@@ -34,6 +34,7 @@ public:
 
     Arbol *getArbolMasAlto();
 
+
     unsigned int contarEspecies(const string &nombreparque);
 
     unsigned int contarTipos();

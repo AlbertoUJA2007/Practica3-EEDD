@@ -20,6 +20,7 @@ Parque::Parque():codigo_parque(0),nombre_parque(" ") {}
  */
 Parque::Parque(int codigo, const string &nombre, const VDinamico<Arbol*> &especies):
             codigo_parque(codigo),nombre_parque(nombre),contenedor(especies) {
+    ordenaArboles();
 }
 
 /**
@@ -159,4 +160,17 @@ unsigned int Parque::contarTipos() {
  * @return VDinamico<Arbol>& Referencia al vector dinámico de punteros a objetos Arbol.
  */
 VDinamico<Arbol*>& Parque::get_contenedor() {return this->contenedor; }
+
+void Parque::ordenaArboles() {
+    for (int i = 0; i < this->contenedor.getLogico() - 1; i++) {
+        for (int j = 0; j <  this->contenedor.getLogico() - i - 1; j++) {
+            // Cambiamos a '<' para mover los elementos más pequeños al final
+            if (this->contenedor[j]->getAssetNum() > this->contenedor[j + 1]->getAssetNum()) {
+                Arbol *aux = this->contenedor[j];
+                this->contenedor[j] = this->contenedor[j + 1];
+                this->contenedor[j + 1] = aux;
+            }
+        }
+    }
+}
 

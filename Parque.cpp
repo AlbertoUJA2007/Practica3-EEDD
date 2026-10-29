@@ -119,19 +119,19 @@ Arbol* Parque::arbolMasAlto() {
  */
 unsigned int Parque::contrarEspecies() {
 
-    unsigned int num = this->contenedor.getLogico();
-    int aux;
+    bool repetida= false;
+    int cont=0;
 
     for(int i =0; i < this->contenedor.getLogico(); i++) {
-        aux =0;
-        for(int j = i+1; j < this->contenedor.getLogico(); j++) {
+        repetida = false;
+        for(int j = i+1; j < this->contenedor.getLogico() && !repetida; j++) {
             if(this->contenedor[i]->getCodigoEspecie() == this->contenedor[j]->getCodigoEspecie()) {
-                aux++;
+                repetida = true;
             }
         }
-        num -= num - aux;
+        if(!repetida) cont++;
     }
-    return num;
+    return cont;
 }
 
 /**
@@ -139,19 +139,19 @@ unsigned int Parque::contrarEspecies() {
  * @return unsigned int Cantidad de tipos de planta únicos almacenados.
  */
 unsigned int Parque::contarTipos() {
-    unsigned int num = this->contenedor.getLogico();
-    int aux;
+   bool repetida= false;
+    int cont=0;
 
     for(int i =0; i < this->contenedor.getLogico(); i++) {
-        aux =0;
-        for(int j = i+1; j < this->contenedor.getLogico(); j++) {
+       repetida = false;
+        for(int j = i+1; j < this->contenedor.getLogico() && !repetida; j++) {
             if(this->contenedor[i]->getTipoEspecie() == this->contenedor[j]->getTipoEspecie()) {
-                aux++;
+               repetida = true;
             }
         }
-        num -= num - aux;
+        if(!repetida) cont++;
     }
-    return num;
+    return cont;
 }
 
 

@@ -333,7 +333,7 @@ void prueba2() {
         std::cout << "Comprobaciones correctas: "
                   << correctos << '/' << comprobados << '\n';
 
-     /*   std::cout << "\nEJERCICIO 8: ESPECIES POR PARQUE\n";
+        std::cout << "\nEJERCICIO 8: ESPECIES POR PARQUE\n";
         std::cout << "-------------------------------\n";
 
         const std::string nombresParques[] = {
@@ -364,7 +364,7 @@ void prueba2() {
                           << " (" << maximoEspecies << " especies)\n";
         }
 
-        std::cout << "\nEJERCICIO 9: TIPOS DE PLANTA POR PARQUE\n";
+      /*  std::cout << "\nEJERCICIO 9: TIPOS DE PLANTA POR PARQUE\n";
         std::cout << "-------------------------------\n";
 
         for (const std::string &nombre : nombresParques)

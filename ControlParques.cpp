@@ -195,9 +195,9 @@ unsigned int ControlParques::contarTipos() {
 	unsigned int contador =0;
 
 	Iterador<Parque> i = this->parques.iterador();
+	bool repetida=false;
 	while (!i.fin()) {
-		contador += i.dato().contarTipos();
-		i.siguiente();
+		
 	}
 	return contador;
 }

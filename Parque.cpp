@@ -161,6 +161,16 @@ unsigned int Parque::contarTipos() {
  */
 VDinamico<Arbol*>& Parque::get_contenedor() {return this->contenedor; }
 
+/**
+ * @brief Ordena los árboles del parque de menor a mayor según su número de asset.
+ *
+ * Aplica el algoritmo de la burbuja (Bubble Sort) sobre el contenedor interno
+ * de árboles para organizarlos en orden ascendente basándose en el valor devuelto
+ * por getAssetNum().
+ *
+ * @note La complejidad temporal de esta función es O(n^2) en el peor caso,
+ *       donde n es el número lógico de elementos en el contenedor.
+ */
 void Parque::ordenaArboles() {
     for (int i = 0; i < this->contenedor.getLogico() - 1; i++) {
         for (int j = 0; j <  this->contenedor.getLogico() - i - 1; j++) {

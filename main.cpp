@@ -287,7 +287,7 @@ void prueba2() {
            printArbol(*arbol);
         }
 
-        std::cout << "\nEJERCICIO 6: ARBOLES DEL RETIRO\n";
+       /* std::cout << "\nEJERCICIO 6: ARBOLES DEL RETIRO\n";
         std::cout << "-------------------------------\n";
 
         VDinamico<Arbol *> *arbolesRetiro =
@@ -404,7 +404,7 @@ void prueba2() {
                           << (existe ? "PRESENTE" : "AUSENTE")
                           << '\n';
             }
-        }
+        }*/
 
         std::cout << "\nEJERCICIO 11: TIPOS DE PLANTA EN TODOS LOS PARQUES\n";
         std::cout << "-------------------------------\n";

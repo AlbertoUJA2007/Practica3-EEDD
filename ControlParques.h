@@ -33,8 +33,7 @@ public:
     VDinamico<Arbol*>& buscarArbolesRango();
 
     Arbol *getArbolMasAlto();
-
-
+    bool buscar_tipo_planta(const TipoPlanta &tipo_planta,  VDinamico<TipoPlanta> tipos);
     unsigned int contarEspecies(const string &nombreparque);
 
     unsigned int contarTipos();

@@ -145,31 +145,31 @@ void Especie::mostrarInfo() {
 }
 
 string Especie::tptostring(const TipoPlanta &p) {
-	if (p == TipoPlanta::ARBUSTO) return  "Arbusto";
-	if (p == TipoPlanta::CONIFERA)return  "Conifera";
-	if (p == TipoPlanta::PALMACEA) return "Almacea" ;
-	if (p == TipoPlanta::HERB_PERENNES) return "Herbácea Perenne" ;
-	if (p == TipoPlanta::FRONDOSA) return"Frondosa" ;
-	if (p == TipoPlanta::TAPIZANTE_TREPADORA) return "Tapizante/Trepadora";
-	if (p == TipoPlanta::CACTACEA_SUCULENTA) return "Cactácea/Suculenta" ;
-	if (p == TipoPlanta::SUBTROPICAL_TROPICAL) return "Subtropical/Tropical" ;
-	if (p == TipoPlanta::HERB_ANUAL) return "Herbácea Anual";
-	if (p == TipoPlanta::HERB_ANUALES) return "Herbáceas Anuales";
+	if (p == TipoPlanta::ARBUSTO) return "ARBUSTO";
+	if (p == TipoPlanta::CONIFERA) return "CONÍFERA";
+	if (p == TipoPlanta::PALMACEA) return "PALMÁCEA";
+	if (p == TipoPlanta::HERB_PERENNES) return "HERBÁCEA PERENNE";
+	if (p == TipoPlanta::FRONDOSA) return "FRONDOSA";
+	if (p == TipoPlanta::TAPIZANTE_TREPADORA) return "TAPIZANTE/TREPADORA";
+	if (p == TipoPlanta::CACTACEA_SUCULENTA) return "CACTÁCEA/SUCULENTA";
+	if (p == TipoPlanta::SUBTROPICAL_TROPICAL) return "SUBTROPICAL/TROPICAL";
+	if (p == TipoPlanta::HERB_ANUAL) return "HERBÁCEA ANUAL";
+	if (p == TipoPlanta::HERB_ANUALES) return "HERBÁCEAS ANUALES";
 
 	return "";
 }
 
 TipoPlanta Especie::stringtotp(const string &texto) {
 		if (texto == "ARBUSTO")              return TipoPlanta::ARBUSTO;
-		if (texto == "CONIFERA")             return TipoPlanta::CONIFERA;
-		if (texto == "PALMACEA")             return TipoPlanta::PALMACEA;
-		if (texto == "HERB_PERENNES")     return TipoPlanta::HERB_PERENNES;
+		if (texto == "CONÍFERA" || texto == "CONIFERA")             return TipoPlanta::CONIFERA;
+		if (texto == "PALMACEA" || texto == "PALMÁCEA")             return TipoPlanta::PALMACEA;
+		if (texto == "HERB_PERENNES" || texto == "HERBÁCEA PERENNE")     return TipoPlanta::HERB_PERENNES;
 		if (texto == "FRONDOSA")             return TipoPlanta::FRONDOSA;
 		if (texto == "TAPIZANTE/TREPADORA")  return TipoPlanta::TAPIZANTE_TREPADORA;
-		if (texto == "CACTACEA/SUCULENTA")   return TipoPlanta::CACTACEA_SUCULENTA;
+		if (texto == "CACTACEA/SUCULENTA" || texto == "CACTÁCEA/SUCULENTA")   return TipoPlanta::CACTACEA_SUCULENTA;
 		if (texto == "SUBTROPICAL/TROPICAL") return TipoPlanta::SUBTROPICAL_TROPICAL;
 		if (texto == "HERB_ANUAL")       return TipoPlanta::HERB_ANUAL;
-		if (texto == "HERB_ANUALES")    return TipoPlanta::HERB_ANUALES;
+		if (texto == "HERB_ANUALES" || texto == "HERBÁCEAS ANUALES")    return TipoPlanta::HERB_ANUALES;
 		if(texto.empty()) return TipoPlanta::NONE;
 
 	}

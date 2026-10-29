@@ -325,8 +325,5 @@ bool LectorCSV::cargosArbol(AVL<Arbol> &arboles, const std::string &rutaFichero,
         }
     }
 
-
-
-
     return true;
 }

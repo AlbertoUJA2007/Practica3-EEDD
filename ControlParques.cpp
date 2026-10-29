@@ -176,6 +176,15 @@ Arbol *ControlParques::getArbolMasAlto() {
 	return encontrado; 
 }
 
+bool ControlParques::buscar_tipo_planta(const TipoPlanta &tipo_planta,  VDinamico<TipoPlanta> tipos) {
+	for(int i =0; i < tipos.getLogico(); i++) {
+		if(tipos[i] == tipo_planta) {
+			return true;
+		}
+	}
+	return false;
+}
+
 /**
  * @brief Devuelve el número de especies distintas de un parque dado su nombre.
  * @param nombreparque Nombre del parque a consultar.
@@ -192,12 +201,18 @@ unsigned int ControlParques::contarEspecies(const string &nombreparque) {
  * @return int Suma de los tipos de planta distintos en todos los parques.
  */
 unsigned int ControlParques::contarTipos() {
-	unsigned int contador =0;
 
 	Iterador<Parque> i = this->parques.iterador();
-	bool repetida=false;
+	VDinamico<TipoPlanta> encontradas;
+	TipoPlanta aux;
 	while (!i.fin()) {
-		
+		for(int j=0; j < i.dato().get_contenedor().getLogico(); j++ ) {
+			aux = Especie::stringtotp(  i.dato().get_contenedor()[j]->getTipoEspecie());
+			if( !buscar_tipo_planta(aux, encontradas) && aux != TipoPlanta::NONE) {
+				encontradas.insertar(aux);
+			}
+		}
+		i.siguiente();
 	}
-	return contador;
+	return encontradas.getLogico();
 }

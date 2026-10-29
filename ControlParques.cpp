@@ -23,10 +23,12 @@ ControlParques::ControlParques(const string &nomFichEspecies, const string &nomF
 	}
 	this->variantes.ordenar();  //ordenamos por id de menor
 
+	LectorCSV a;
+
 	if(!LectorCSV::cargarParques(this->parques, nomFichParques)) {
 		throw std::runtime_error("[ControlParques:cargaParques]: error al abrir fichero ");
 	}
-	if(!LectorCSV::cargosArbol(this->arboles, nomFicheroArboles, this->parques, this->variantes)) { // lectura de arboles y ligue entre arbol y parque
+	if(!a.cargosArbol(this->arboles, nomFicheroArboles, this->parques, this->variantes)) { // lectura de arboles y ligue entre arbol y parque
 		throw std::runtime_error("[ControlParques:cargaArboles]: error al abrir fichero ");
 	}
 
@@ -60,7 +62,6 @@ Parque *ControlParques::buscarParque(const string &nombre) {
 		}
 		i.siguiente();
 	}
-
 
 	return parque;
 }
@@ -155,12 +156,23 @@ VDinamico<Arbol*> * ControlParques::listaArbolesParque(const string &nombre_parq
 
 }
 
+/**
+ * @brief Busca los árboles cuyos números de asset se encuentran dentro de un rango determinado.
+ *
+ * @param asNumMin Cota inferior del rango (en formato cadena).
+ * @param asNumMax Cota superior del rango (en formato cadena).
+ * @return Referencia a un nuevo vector dinámico con los punteros a los árboles encontrados.
+ *
+ * @throw std::invalid_argument Si la cota inferior es mayor que la cota superior.
+ *
+ */
 VDinamico<Arbol *> & ControlParques::buscarArbolesRango(const string &asNumMin, const string &asNumMax) {
 	VDinamico<Arbol*> *nuevo = new VDinamico<Arbol *>;
 
 	if(asNumMin > asNumMax) {
 		throw invalid_argument("[BUSCAR_ARBOLES_RANGO] se a introducido una cota inferior con valor mayor que la cota superior");
 	}
+
 	int min = stoi(asNumMin);
 	int max = stoi (asNumMax);
 	Arbol *aux;
@@ -178,13 +190,13 @@ VDinamico<Arbol *> & ControlParques::buscarArbolesRango(const string &asNumMin, 
  */
 Arbol *ControlParques::getArbolMasAlto() {
 	Iterador<Parque> i = this->parques.iterador();
-	Arbol *encontrado = i.dato().arbolMasAlto();
+	Arbol *encontrado = nullptr;
 	Arbol *aux; 
 
 	while(!i.fin()) {
 		for(int j =0; j < i.dato().get_contenedor().getLogico(); j++) {
-			aux = i.dato().arbolMasAlto(); 
-			if(aux->get_altura() > encontrado->get_altura()) {
+			aux = i.dato().arbolMasAlto();
+			if((aux ) && (!encontrado || aux->get_altura() > encontrado->get_altura())) {
 				encontrado = aux; 
 			}
 		}

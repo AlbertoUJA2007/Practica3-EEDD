@@ -34,14 +34,14 @@ private:
      * @param p Nodo raíz del subárbol a recorrer.
      * @param[out] vector Vector dinámico donde se almacenarán los punteros a los datos.
      */
-    void inorden_v(NodoArbol<T> *p, VDinamico<T> &vector);
+    void inorden_v(NodoArbol<T> *p, VDinamico<T*> &vector);
 
     /**
      * @brief Recorre en preorden el subárbol e inserta punteros a sus elementos en un vector dinámico.
      * @param p Nodo raíz del subárbol a recorrer.
      * @param[out] vector Vector dinámico donde se almacenarán los punteros a los datos.
      */
-    void preorden_v(NodoArbol<T> *p, VDinamico<T> vector);
+    void preorden_v(NodoArbol<T> *p, VDinamico<T*> vector);
 
     /**
      * @brief Realiza una copia profunda recursiva de una estructura de árbol.
@@ -135,7 +135,7 @@ public:
      * @brief Realiza un recorrido en inorden y devuelve un vector dinámico con los elementos.
      * @return VDinamico<T>* Vector dinámico con los punteros a los elementos del AVL.
      */
-    VDinamico<T>* recorreInorden_v();
+    VDinamico<T*> *recorreInorden_v();
 
     /**
      * @brief Obtiene el número total de elementos almacenados en el árbol.
@@ -154,6 +154,14 @@ public:
      */
     ~AVL<T>(); //En postorden
 
+    /**
+     * @brief Elimina de forma recursiva un nodo con un valor específico dentro de un árbol binario de búsqueda (ABB).
+     *
+     * @tparam T Tipo de dato almacenado en el árbol.
+     * @param dato Referencia al dato que se desea buscar y eliminar.
+     * @param[in,out] p Puntero (idealmente pasado por referencia `NodoArbol<T>* &p`) al nodo actual a evaluar.
+     * @return NodoArbol<T>* Retorna nullptr al finalizar la operación.
+     */
     NodoArbol<T> *borraDato(T &dato, NodoArbol<T> *p);
 };
 
@@ -207,18 +215,18 @@ void AVL<T>::rotIzq(NodoArbol<T> *&nodo) {
 }
 
 template<typename T>
-void AVL<T>::inorden_v(NodoArbol<T> *p, VDinamico<T> &vector) {
+void AVL<T>::inorden_v(NodoArbol<T> *p, VDinamico<T*> &vector) {
     if (p != nullptr) {                 //Vemos si ese nodo existe realmente, sino, va hacia atrás en la recursividad
         inorden_v(p->izq,vector);         //Hacemos una llamada recursiva al nodo de la izquierda
-        vector.insertar(p->dato);      //Si este existe y es el ultimo, lo insertamos en el vector. Si no existe
-                                        //  el nodo de la izquierda, insertamos el nodo padre en el vector
+        vector.insertar(&p->dato);      //Si este existe y es el ultimo, lo insertamos en el vector. Si no existe
+        //  el nodo de la izquierda, insertamos el nodo padre en el vector
         inorden_v(p->der,vector);         //hacemos una llamada recursiva al nodo de la derecha
     }
 }
 
 template<typename T>
-VDinamico<T>* AVL<T>::recorreInorden_v() {
-    VDinamico<T> *v = new VDinamico<T>();
+VDinamico<T*>* AVL<T>::recorreInorden_v() {
+    VDinamico<T*> *v = new VDinamico<T*>();
     inorden_v(this->raiz,*v);
     return v;               //Devuelve un vector de punteros a los elementos del AVL
 }
@@ -233,12 +241,12 @@ unsigned int AVL<T>::altura() {
 
 template<typename T>
 int AVL<T>::calculaAltura(NodoArbol<T> *p) {
-        int  h=0;
+        int  h=-1; //no se cuenta el nodo raiz
         if(p) {
             int izq = calculaAltura(p->izq);
             int der=calculaAltura(p->der);
 
-            h = max(izq,der) ;
+            h = max(izq,der);
             h+=1;
         }
 
@@ -247,7 +255,7 @@ int AVL<T>::calculaAltura(NodoArbol<T> *p) {
 
 
 template<typename T>
-void AVL<T>::preorden_v(NodoArbol<T> *p, VDinamico<T> vector) {
+void AVL<T>::preorden_v(NodoArbol<T> *p, VDinamico<T *> vector) {
     if (p != nullptr) {
         vector.insertar(&p->dato);
         preorden(p->getIzq(),vector);
@@ -282,7 +290,7 @@ bool AVL<T>::inserta(T &dato) {
 template<typename T>
 int AVL<T>::insertar_preorden(T &dato, NodoArbol<T> *&p) {
         NodoArbol<T> *c = p;
-        int deltaH=0;
+        int deltaH=0; //medidor de balanceo del arbol
 
         if(!c) {
             c =  new NodoArbol<T>(dato,0,0);
@@ -313,7 +321,7 @@ int AVL<T>::insertar_preorden(T &dato, NodoArbol<T> *&p) {
                }
            }
         }
-        if(c->dato == dato && c != raiz) return -1;
+        if(c->dato == dato && c != raiz) return -1; // indica error en repetidos
 
          return deltaH;
 
@@ -388,7 +396,7 @@ NodoArbol<T> *AVL<T>::borrarNodo(NodoArbol<T> *p) {
         if(p->izq) {
             return borrarNodo(p->izq);
         }else {
-            borrado  =p;
+            borrado=p;
             p = p->der;
         }
     }

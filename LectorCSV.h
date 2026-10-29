@@ -23,7 +23,7 @@ public:
     bool static  cargarEspecies(VDinamico<Especie*> &vector, const std::string& rutaFichero);
     bool static cargarParques(ListaDE<Parque> &parques, const std::string &rutaFichero);
 
-    bool static cargosArbol(AVL<Arbol> &arboles, const std::string &rutaFichero, ListaDE<Parque> &parques, VDinamico<Especie *> especies);
+    bool  cargosArbol(AVL<Arbol> &arboles, const std::string &rutaFichero, ListaDE<Parque> &parques, VDinamico<Especie *> especies);
 
     std::size_t numeroEspecies() const;
     std::size_t filasDescartadas() const;
@@ -36,9 +36,9 @@ private:
     static std::string extraerCampo(const std::string& linea, std::size_t indiceObjetivo);
     static void eliminarBOM(std::string& linea);
     static void mostrarEspecie(const Especie& especie);
-    static float leerMedida(string campo);
-    static Arbol& leerArbol_csv(const string &linea,  VDinamico<Especie*> especies) ;
-    static Especie* buscaEspecie(const string &cod, VDinamico<Especie*> especies);
+     float leerMedida(string campo);
+     Arbol* leerArbol_csv(const string &linea,  VDinamico<Especie*> especies) ;
+     Especie* buscaEspecie(const string &cod, VDinamico<Especie*> especies);
 
 
 };

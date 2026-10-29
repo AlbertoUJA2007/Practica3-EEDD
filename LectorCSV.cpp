@@ -223,7 +223,17 @@ float LectorCSV::leerMedida(string campo) {
     return campo.empty() ? -1.0f : std::stof(campo);
 }
 
-Arbol & LectorCSV::leerArbol_csv(const string &linea,  VDinamico<Especie*> especies) {
+Especie *LectorCSV::buscaEspecie(const string &cod, VDinamico<Especie*> especies) {
+    Especie *e = nullptr;
+    for(int i=0; i < especies.getLogico(); i++) {
+        e= especies[i];
+        if(e->get_codigo_especie() == cod) {
+            return e;
+        }
+    }
+    return e;
+}
+Arbol* LectorCSV::leerArbol_csv(const string &linea,  VDinamico<Especie*> especies) {
     std::stringstream registro(linea);
     std::string campos[12];
 
@@ -253,18 +263,7 @@ Arbol & LectorCSV::leerArbol_csv(const string &linea,  VDinamico<Especie*> espec
         leerMedida(campos[10]),
         leerMedida(campos[11]),
         new Especie(*buscaEspecie(campos[8], especies)));
-    return  *a;
-}
-
-Especie * LectorCSV::buscaEspecie(const string &cod, VDinamico<Especie*> especies) {
-    Especie *e = nullptr;
-    for(int i=0; i < especies.getLogico(); i++) {
-         e= especies[i];
-        if(e->get_codigo_especie() == cod) {
-            return e;
-        }
-    }
-    return e;
+    return  a;
 }
 
 bool  LectorCSV::cargarParques(ListaDE<Parque > &parques, const std::string &rutaFichero) {
@@ -321,17 +320,17 @@ bool LectorCSV::cargosArbol(AVL<Arbol> &arboles, const std::string &rutaFichero,
         if (linea.empty())
             continue;
 
-        Arbol arbol = leerArbol_csv(linea, especies);
+        Arbol *arbol = leerArbol_csv(linea, especies);
 
-        if (!arboles.inserta(arbol))
+        if (!arboles.inserta(*arbol))
             throw std::runtime_error(
-                "Identificador duplicado: " + arbol.getAssetNum());
+                "Identificador duplicado: " + arbol->getAssetNum());
 
         Iterador<Parque> i = parques.iterador();
         while(!i.fin()) { //ligamos el arbol con un parque
-            if(i.dato().getCodigoParque() == arbol.get_num_parque()) {
+            if(i.dato().getCodigoParque() == arbol->get_num_parque()) {
              //   cout << " el arbol con codigo " << arbol.getAssetNum() << " esta en el parque " << i.dato().getCodigoParque() << endl;
-                i.dato().insertarArbol(new Arbol(arbol));
+                i.dato().insertarArbol(arbol);
             }
             i.siguiente();
         }

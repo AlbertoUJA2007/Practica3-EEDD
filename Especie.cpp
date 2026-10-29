@@ -188,7 +188,7 @@ TipoPlanta Especie::stringtotp(const string &texto) {
 		if (texto == "HERB_ANUALES" || texto == "HERBÁCEAS ANUALES")    return TipoPlanta::HERB_ANUALES;
 		if(texto.empty()) return TipoPlanta::NONE;
 		else return TipoPlanta::NONE;
-	}
+}
 
 /**
  * @brief Destructor de la clase Especie.

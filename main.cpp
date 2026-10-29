@@ -236,14 +236,14 @@ void prueba1() {
                   << avl.altura() << '\n';
 
         // 8. Mostrar los 100 primeros árboles en inorden.
-        VDinamico<Arbol> *ordenados = avl.recorreInorden_v();
+        VDinamico<Arbol*> *ordenados = avl.recorreInorden_v();
 
         std::cout << "\nPrimeros 100 arboles en inorden:\n";
 
         for (unsigned int i = 0;
              i < 100 && i < ordenados->getLogico(); ++i)
         {
-            Arbol arbol = (*ordenados)[i];
+            Arbol arbol = *(*ordenados)[i];
 
             std::cout << i + 1
                       << ". ID: " << arbol.getAssetNum() << endl;
@@ -253,6 +253,7 @@ void prueba1() {
 
 
 void prueba2() {
+
      std::cout << "\nPROGRAMA DE PRUEBA II\n"
                   << "-------------------\n\n";
 
@@ -452,7 +453,7 @@ int main()
 {
     try
     {
-      //prueba1();
+      prueba1();
       prueba2();
     }
     catch (const std::exception &error)

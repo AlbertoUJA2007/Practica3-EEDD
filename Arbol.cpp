@@ -78,7 +78,7 @@ Arbol::~Arbol() {
     this->perimetro = 0;
     this->altura = 0;
 	if(especie_arbol) {
-		//delete especie_arbol;
+		delete especie_arbol;
 		especie_arbol = nullptr;
 	}
 
@@ -95,7 +95,10 @@ Arbol & Arbol::operator=(const Arbol &arbol) {
         delete especie_arbol;
         especie_arbol = nullptr;
 
-        this->especie_arbol = new Especie(*arbol.especie_arbol);
+    	  if(arbol.especie_arbol) {
+    		   this->especie_arbol = new Especie(*arbol.especie_arbol);
+    	  }
+
         this->assetnum = arbol.assetnum;
         this->num_parque = arbol.num_parque;
         this->num_distrito = arbol.num_distrito;
@@ -188,12 +191,24 @@ float Arbol::get_altura() const {
     return altura;
 }
 
+/**
+ * @brief Obtiene el número de identificador de asset del árbol.
+ * @return Cadena con el número de asset.
+ */
 string Arbol::getAssetNum() const {return this->assetnum;
 }
 
+/**
+ * @brief Obtiene el identificador del parque al que pertenece el árbol.
+ * @return Entero con el número de parque.
+ */
 int Arbol::get_num_parque() const {
 	return num_parque;
 }
+/**
+ * @brief Obtiene el nombre científico de la especie del árbol.
+ * @return Cadena con el nombre científico consultado en el objeto Especie asociado.
+ */
 
 string Arbol::getNombreCientifico() const {return this->especie_arbol->get_nombre_cientifico();
 }

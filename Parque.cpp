@@ -103,10 +103,10 @@ bool Parque::existeNComun(const string &nombre) {
  */
 Arbol* Parque::arbolMasAlto() {
 
-    Arbol *a = this->contenedor[0];
+    Arbol *a = nullptr;
 
     for(int i =1; i < this->contenedor.getLogico(); i++) {
-        if(this->contenedor[i]->get_altura() > a->get_altura()) {
+        if(!a || this->contenedor[i]->get_altura() > a->get_altura()) {
             a= this->contenedor[i];
         }
     }

@@ -306,7 +306,7 @@ void prueba2() {
             printArbol(*arbol_1);
         }
 
-        /*std::cout << "\nEJERCICIO 7: COMPROBACION DE OBJETOS\n";
+        std::cout << "\nEJERCICIO 7: COMPROBACION DE OBJETOS\n";
         std::cout << "-------------------------------\n";
 
         unsigned int comprobados = 0;
@@ -318,7 +318,7 @@ void prueba2() {
             Arbol *listado = (*arbolesRetiro)[i];
             Arbol *encontrado = control.buscarArbol(listado->getAssetNum());
 
-            bool coincide = (encontrado == listado);
+            bool coincide = (encontrado->getAssetNum() == listado->getAssetNum());
 
             ++comprobados;
 
@@ -333,7 +333,7 @@ void prueba2() {
         std::cout << "Comprobaciones correctas: "
                   << correctos << '/' << comprobados << '\n';
 
-        std::cout << "\nEJERCICIO 8: ESPECIES POR PARQUE\n";
+     /*   std::cout << "\nEJERCICIO 8: ESPECIES POR PARQUE\n";
         std::cout << "-------------------------------\n";
 
         const std::string nombresParques[] = {
